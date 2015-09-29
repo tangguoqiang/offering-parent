@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* CSS Document */
+body { 
+background:url(../images/login_bg.png) no-repeat;
+background-size:cover;
+-moz-background-size:cover;
+-ms-background-size:cover;
+-webkit-background-size:cover;
+ font-family:"微软雅黑"   }
+html {font-size: 100%;}
+html,body{ -webkit-text-size-adjust:none;  width:100%; min-width:980px;font-family:"微软雅黑";  }
+body{ padding:0; margin:0; font-size: 1em;line-height:1.5; }
+a,ul,li,dl,dd,dt,form,p,h1,h2,h3,h4,h5,h6,h7,textarea,input,select,pre,header,section,figure,nav,aside,fieldset,legend,pre,ins,button{padding:0; margin:0;font-family:"微软雅黑"; list-style:none; outline:none; font-family:inherit;text-decoration:none; font-size:inherit; color:#FFF;}
+.clearfix{ *zoom:1;}
+.clearfix:after,.clearfix:before{ display:table; clear:both; height:0; width:0; line-height:0; font-size:0; overflow:hidden; content:""; visibility:hidden}
+header,footer,section,figure,aside,article{ display:block;box-sizing:border-box;}
+a{ text-decoration:none; background-color:transparent; color:#FFF; cursor:pointer}
+a:link,a:visited{text-decoration:none;}
+a:hover {text-decoration:none;}
+a:active{text-decoration:none;}
+img{ vertical-align:middle; border:none}
+li{ list-style-type:none }
+input,button,select,textarea{outline:none; border:none}
+textarea{resize:none}
+::-webkit-input-placeholder { color:#999; }
+::-moz-placeholder { color:#999;  } /* firefox 19+ */
+:-ms-input-placeholder { color:#999;} /* ie */
+input:-moz-placeholder { color:#999; }
+
+
+/*register*/
+.header{ height:2.5em; line-height:2.5em; margin-top:3.75em; }
+.header-left{ float:left; margin-left:6.25em; }
+.header-left span{ font-size:1.25em; letter-spacing:2px;  }
+.header-right{float:right;margin-right:6.25em; }
+.header-right a{font-size:1em; }
+.header-right a:hover{ } 
+.header-right img{ padding-left:0.4em; }
+
+.ui_register{ width:28.75em; margin:0 auto; margin-top:12.5em; }
+.ui_register ul{overflow:hidden }
+.ui_register ul li{ margin-top:1em;float:left; }
+.ui_register ul li span{ width:140px; display:inline-block; text-align:left; font-size:1.1em }
+.ui_register ul li input{ border:1px solid #fff; border-radius:5px; background:rgba(0,0,0,0); height:2.8em; width:18em; text-align:left; padding:2px 5px;box-sizing:border-box; }
+.ui_register .error-message{ font-size:1.3em; margin-top:0.8em;margin-left:160px; text-align:right;letter-spacing:1px; color:#CC0000 ; }
+
+.ui_submit{ text-align:center; margin-top:1.8em; clear:both; overflow:hidden }
+.ui_submit a{text-decoration:underline;   }
+.ui_submit span{font-size:1em;letter-spacing:1px; }
+
+/*login*/
+.login-main{ width:38em; height:34em; position:absolute; display:inline-table; margin-left:-19em; left:50%; margin-top:-12.5em; top:50%; }
+.login-main .login-tit{ font-size:2.3em; text-align:center; letter-spacing:3px; color:#fff; }
+
+.login-main .login-prompt{ font-size:1.3em; margin-top:3.2em; text-align:center;letter-spacing:1px; color:#fff; }
+.login-main .login-prompt a{ text-decoration:underline; font-weight:bold } 
+.login-main .login{margin-top:2.2em;height:86px; width:540px; float:left }
+.login-main .login input{height:45px;font-size:1.3em;  padding-left:1em; color:#333; box-sizing:border-box;margin-left:0.875em; margin-top:7px; }
+ button.login_submit{ background:url(../images/login_btn.png) no-repeat; height:86px; width:49px; display:inline-block; margin-top:2.2em; cursor:pointer }
+.login-main .error-message{ font-size:1.3em; margin-top:0.8em; text-align:center;letter-spacing:1px; color:#CC0000 ; }
+
+
