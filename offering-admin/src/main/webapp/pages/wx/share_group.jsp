@@ -12,7 +12,7 @@
 <link href="<%=baseUrl%>/pages/common/media/css/share.css" rel="stylesheet" type="text/css"/>
 <title>群分享</title>
 </head>
-<body style="padding:0px 0px 0px 0px;  margin:0 auto;">
+<body style="padding:0px 0px 0px 0px;  margin:0 auto;overflow: hidden;">
 	<div class="container-fluid">
 		<div class="row">
 			<div id="memberDiv" style="margin-top:10px;">

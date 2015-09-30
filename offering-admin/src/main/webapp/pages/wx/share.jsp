@@ -12,7 +12,7 @@
 <link href="<%=baseUrl%>/pages/common/media/css/share.css" rel="stylesheet" type="text/css"/>
 <title>活动分享</title>
 </head>
-<body style="padding:0px 0px 0px 0px;  margin:0 auto;">
+<body style="padding:0px 0px 0px 0px;  margin:0 auto;overflow: hidden;">
 	<div class="container-fluid">
 		<div class="row">
 			<div id="mainDiv" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 205px;">
