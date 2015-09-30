@@ -34,4 +34,13 @@
     <servlet-name>springServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  
+  <filter> 
+     <filter-name>EnterFilter</filter-name> 
+     <filter-class>com.offering.core.EnterFilter</filter-class> 
+ </filter> 
+ <filter-mapping> 
+     <filter-name>EnterFilter</filter-name> 
+     <url-pattern>/app/*</url-pattern> 
+ </filter-mapping> 
 </web-app>
