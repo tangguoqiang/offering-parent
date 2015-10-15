@@ -738,6 +738,8 @@ public class AppController_new {
 				activities = new ArrayList<Activity>();
 			if(activities.size() != 3)
 			{
+				if(activities.size() > 0)
+					endTime = activities.get(activities.size() - 1).getStartTime();
 				List<Activity> addList = activityService.listActivities_app(
 						null,endTime,GloabConstant.LIMIT_ACTIVITY - activities.size());
 				if(addList != null)
@@ -751,6 +753,17 @@ public class AppController_new {
 			activities = activityService.listActivities_app(startTime,endTime,GloabConstant.LIMIT_ACTIVITY);
 			if(activities== null)
 				activities = new ArrayList<Activity>();
+			else{
+				if(GloabConstant.OP_DOWN.equals(type))
+				{
+					List<Activity> tmpList = new ArrayList<Activity>();
+					for(int len = activities.size() - 1;len >= 0;len--)
+					{
+						tmpList.add(activities.get(len));
+					}
+					activities = tmpList;
+				}
+			}
 		}
 		
 		if(activities.size() > 0)
