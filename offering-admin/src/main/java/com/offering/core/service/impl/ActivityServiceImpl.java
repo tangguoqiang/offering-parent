@@ -322,6 +322,7 @@ public class ActivityServiceImpl implements ActivityService{
 			}
 			sql.replace(sql.length() - 1, sql.length(), ")");
 		}
+		sql.append(" order by T1.id DESC ");
 		List<Member> members = memberDao.getRecords(sql.toString(), paramInfo, Member.class);
 		Map<String, List<Member>> m = new HashMap<String, List<Member>>();
 		if(members != null)
@@ -330,9 +331,15 @@ public class ActivityServiceImpl implements ActivityService{
 			String id = null;
 			for(Member member : members)
 			{
+				if(Utils.isEmpty(member.getUrl()))
+					continue;
 				id = member.getGroupId();
 				if(m.containsKey(id))
+				{
 					l = m.get(id);
+					if(l.size() >= 15)
+						continue;
+				}
 				else
 					l = new ArrayList<Member>();
 				l.add(member);
