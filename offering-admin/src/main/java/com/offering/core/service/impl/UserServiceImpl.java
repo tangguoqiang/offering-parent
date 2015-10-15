@@ -304,9 +304,6 @@ public class UserServiceImpl implements UserService{
 		{
 			sql.append("schoolId=?,");
 			paramInfo.setTypeAndData(Types.BIGINT, user.getSchoolId());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-			String d = sdf.format(new Date());
-			redisOp.increase(d + "_school_" +user.getSchoolId(), 1);
 		}
 		
 		if(!Utils.isEmpty(user.getMajor()))

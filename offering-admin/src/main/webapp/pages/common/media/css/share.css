@@ -4,7 +4,6 @@
 }
 
 .top {
-	height: 684px;
 	filter:
 		"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
 	-moz-background-size: 100% 100%;
@@ -42,16 +41,16 @@
 	margin-top: 90px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 318px;
-	height: 318px;
+	width: 100%;
+	height: auto;
 	filter:
 		"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
 	-moz-background-size: 100% 100%;
 	background-size: 100% 100%;
 }
 .member {
-	width: 210px;
-	height: 210px;
+	width: 100%;
+	height: auto;
 	margin-top: 60px;
 	margin-left: auto;
 	margin-right: auto;

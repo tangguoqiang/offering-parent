@@ -10,7 +10,7 @@
 <link href="<%=baseUrl%>/pages/common/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <title>活动分享</title>
 </head>
-<body style="padding:0px 0px 0px 0px;  margin:0 auto;">
+<body style="padding:0px 0px 0px 0px;  margin:0 auto;overflow: hidden;">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;font-size: 48px;font-weight: bold;">

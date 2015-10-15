@@ -1,6 +1,7 @@
 package com.offering.core.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.offering.bean.Activity;
 import com.offering.bean.ChartGroup;
@@ -12,12 +13,21 @@ import com.offering.bean.Speaker;
 public interface ActivityService {
 
 	/**
-	 * 获取活动列表
+	 * 获取活动列表(web端)
 	 * @param act
 	 * @param page
 	 * @return
 	 */
 	List<Activity> listActivities(Activity act,PageInfo page);
+	
+	/**
+	 * 获取活动列表(app端)
+	 * @param startTime
+	 * @param endTime
+	 * @param limit
+	 * @return
+	 */
+	List<Activity> listActivities_app(String startTime,String endTime,int limit);
 	
 	/**
 	 * 获取活动数量
@@ -39,6 +49,13 @@ public interface ActivityService {
 	 * @return
 	 */
 	List<Speaker> listSpeakers(String activityId);
+	
+	/**
+	 * 根据活动ID获取主讲人列表(批量)
+	 * @param activityId
+	 * @return
+	 */
+	Map<String, Speaker> listSpeakers(List<String> ids);
 	
 	/**
 	 * 根据群聊id获取群聊信息
@@ -74,6 +91,13 @@ public interface ActivityService {
 	 * @return
 	 */
 	List<Member> listMembers(String groupId);
+	
+	/**
+	 * 根据群组id获取群成员
+	 * @param groupId
+	 * @return
+	 */
+	Map<String, List<Member>> listMembers(List<String> ids);
 	
 	/**
 	 * 创建私聊

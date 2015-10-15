@@ -9,9 +9,7 @@
   </parent>
   <groupId>com.offering.redis</groupId>
   <artifactId>offering-redis</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>offering-redis</name>
-  <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

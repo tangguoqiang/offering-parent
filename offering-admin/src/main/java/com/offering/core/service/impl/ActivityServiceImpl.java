@@ -2,7 +2,9 @@ package com.offering.core.service.impl;
 
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,43 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 	
 	/**
+	 * 获取活动列表(app端)
+	 * @param act
+	 * @param page
+	 * @return
+	 */
+	public List<Activity> listActivities_app(String startTime,String endTime,int limit){
+		StringBuilder sql = new StringBuilder();
+		sql.append("select id,title,startTime,endTime,type, ")
+		   .append("status,url,remark, ")
+		   .append("(select count(1) from RC_GROUP_MEMBER T where T.groupId=T1.id) joinMembers ")
+		   .append("FROM ACTIVITY_INFO T1 ")
+		   .append("WHERE status <> ? ");
+		ParamInfo paramInfo = new ParamInfo();
+		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.ACTIVITY_STATUS_CG);
+		
+		if(!Utils.isEmpty(startTime))
+		{
+			sql.append("AND startTime > ? ");
+			paramInfo.setTypeAndData(Types.BIGINT, startTime);
+		}
+		
+		if(!Utils.isEmpty(endTime))
+		{
+			sql.append("AND startTime < ? ");
+			paramInfo.setTypeAndData(Types.BIGINT, endTime);
+		}
+		if(Utils.isEmpty(endTime) && !Utils.isEmpty(startTime))
+		{
+			sql.append("order by startTime asc ");
+		}else{
+			sql.append("order by startTime desc ");
+		}
+		sql.append("limit ").append(limit);
+		return activityDao.getRecords(sql.toString(), paramInfo, Activity.class);
+	}
+	
+	/**
 	 * 获取活动数量
 	 * @param act
 	 * @return
@@ -112,8 +151,8 @@ public class ActivityServiceImpl implements ActivityService{
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT T1.id,title,startTime,endTime,type,status,url,summary, ")
-		   .append("share_activity_image ")
-//		   .append("T2.groupName,T2.createTime,T2.groupInfo ")
+		   .append("share_activity_image,address,remark, ")
+		   .append("(select count(1) from RC_GROUP_MEMBER T where T.groupId=T1.id) joinMembers ")
 		   .append("FROM ACTIVITY_INFO T1 ")
 //		   .append("LEFT JOIN RC_GROUP T2 ON T2.id=T1.id ")
 		   .append("WHERE T1.id=? ");
@@ -137,6 +176,44 @@ public class ActivityServiceImpl implements ActivityService{
 		ParamInfo paramInfo = new ParamInfo();
 		paramInfo.setTypeAndData(Types.BIGINT, activityId);
 		return speakerDao.getRecords(sql.toString(), paramInfo, Speaker.class);
+	}
+	
+	/**
+	 * 根据活动ID获取主讲人列表(批量)
+	 * @param activityId
+	 * @return
+	 */
+	public Map<String, Speaker> listSpeakers(List<String> ids)
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT T1.id,T1.speakerId,T1.activityId,T1.remark,T2.nickname AS name,T2.url, ")
+		   .append("T3.company,T3.post,T3.tags ")
+		   .append("FROM ACTIVITY_SPEAKER T1 ")
+		   .append("INNER JOIN USER_INFO T2 ON T2.id=T1.speakerId ")
+		   .append("INNER JOIN USER_GREATER T3 ON T3.id=T1.speakerId ")
+		   .append("WHERE T2.nickname <> '小O' ");
+		ParamInfo paramInfo = new ParamInfo();
+		if(ids != null && ids.size() > 0)
+		{
+			sql.append("AND T1.activityId in (");
+			for(String id : ids)
+			{
+				sql.append("?,");
+				paramInfo.setTypeAndData(Types.BIGINT, id);
+			}
+			sql.replace(sql.length() - 1, sql.length(), ")");
+		}
+		List<Speaker> speakers = speakerDao.getRecords(sql.toString(), paramInfo, Speaker.class);
+		
+		Map<String, Speaker> m = new HashMap<String, Speaker>();
+		if(speakers != null)
+		{
+			for(Speaker speaker : speakers)
+			{
+				m.put(speaker.getActivityId(), speaker);
+			}
+		}
+		return m;
 	}
 	
 	/**
@@ -190,7 +267,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public List<Message> listMessages(String userId)
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT T1.groupId id,T2.groupName name,'0' AS type,'' AS url ")
+		sql.append("SELECT T1.groupId id,T2.groupName name,'0' AS type,T2.share_group_image AS url ")
 		   .append("FROM RC_GROUP_MEMBER T1 ")
 		   .append("LEFT JOIN RC_GROUP T2 ON T2.ID=T1.groupId ")
 		   .append("WHERE T1.memberId=? ");
@@ -220,6 +297,49 @@ public class ActivityServiceImpl implements ActivityService{
 		ParamInfo paramInfo = new ParamInfo();
 		paramInfo.setTypeAndData(Types.BIGINT, groupId);
 		return memberDao.getRecords(sql.toString(), paramInfo, Member.class);
+	}
+	
+	/**
+	 * 根据群组id获取群成员
+	 * @param groupId
+	 * @return
+	 */
+	public Map<String, List<Member>> listMembers(List<String> ids)
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT T1.memberId id,T2.nickname,T2.url,T1.groupId ")
+		   .append("FROM RC_GROUP_MEMBER T1 ")
+		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.memberId ")
+		   .append("WHERE 1=1 ");
+		ParamInfo paramInfo = new ParamInfo();
+		if(ids != null && ids.size() > 0)
+		{
+			sql.append("AND T1.groupId in (");
+			for(String id : ids)
+			{
+				sql.append("?,");
+				paramInfo.setTypeAndData(Types.BIGINT, id);
+			}
+			sql.replace(sql.length() - 1, sql.length(), ")");
+		}
+		List<Member> members = memberDao.getRecords(sql.toString(), paramInfo, Member.class);
+		Map<String, List<Member>> m = new HashMap<String, List<Member>>();
+		if(members != null)
+		{
+			List<Member> l = null;
+			String id = null;
+			for(Member member : members)
+			{
+				id = member.getGroupId();
+				if(m.containsKey(id))
+					l = m.get(id);
+				else
+					l = new ArrayList<Member>();
+				l.add(member);
+				m.put(id,l);
+			}
+		}
+		return m;
 	}
 	
 	/**

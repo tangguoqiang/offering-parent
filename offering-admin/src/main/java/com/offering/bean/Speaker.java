@@ -14,6 +14,28 @@ public class Speaker {
 	private String remark;
 	private String url;
 	
+	private String company;
+	private String post;
+	private String tags;
+	
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getPost() {
+		return post;
+	}
+	public void setPost(String post) {
+		this.post = post;
+	}
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 	public String getId() {
 		return id;
 	}

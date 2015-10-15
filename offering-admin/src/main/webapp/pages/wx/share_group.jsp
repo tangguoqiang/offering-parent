@@ -51,15 +51,8 @@
 	</div>
 	
 	<div class="modal fade" id="iosModal">
-	  	<div class="row" style="margin-top: 85px;">
-	  		<div class="col-md-offset-8 col-sm-4 col-xs-6 col-md-4">
-	  			<img src="../images/arrow.png">
-	  		</div>
-	  	</div>
-	  	<div class="row" style="margin-top: 85px;">
-	  		<div class="col-sm-12 col-xs-18 col-md-12">
-	  			<p style="font-size: 48px;text-align:center;color:#FFFFFF;font-weight: bolder;">点击右上角，选择在浏览器中打开，等你哦！</p>
-	  		</div>
+	  	<div class="col-xs-12">
+	  		<img class="img-responsive" src="../images/arrow.png">
 	  	</div>
 	</div>
 </body>

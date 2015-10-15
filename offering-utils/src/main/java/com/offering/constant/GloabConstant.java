@@ -82,15 +82,34 @@ public class GloabConstant {
 	public final static String CHART_PRIVATE = "1";
 	
 	/**
-	 * 活动类型  0：求职咨询 1：线上宣讲会
+	 * 活动类型  0：求职咨询 1：线上宣讲会 2:线下宣讲会 3:分享会精华
 	 */
 	public final static String ACTIVITY_TYPE_QZZX = "0";
-	public final static String CHART_PRIVATE_XSXJH = "1";
+	public final static String ACTIVITY_TYPE_XSXJH = "1";
+	public final static String ACTIVITY_TYPE_XXXJH = "2";
+	public final static String ACTIVITY_TYPE_FXHJH = "3";
 	
 	/**
 	 * 系统字典分组-年级
 	 */
 	public final static String GROUP_GRADE = "grade";
+	
+	/**
+	 * 活动一次返回数量
+	 */
+	public final static int LIMIT_ACTIVITY = 3;
+	
+	/**
+	 * 活动加载操作 0:初始 1:下拉 2:上拉
+	 */
+	public final static String OP_INIT = "0";
+	public final static String OP_DOWN = "1";
+	public final static String OP_UP = "2";
+	
+	/**
+	 * APP服务版本
+	 */
+	public final static int APP_SERVICE_VERSION = 1;
 	
 	/**
 	 * 文件系统根目录 /home/offering/images/ and C:\\gtang\\picture\\
