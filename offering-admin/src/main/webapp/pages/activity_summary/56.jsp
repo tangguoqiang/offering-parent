@@ -19,7 +19,7 @@ p{
 
 p.title
 {
-	font-size: 1.5em;
+	font-size: 1.3em;
 	text-align: center;
 	font-weight: bold;
 	color: red;
@@ -27,7 +27,7 @@ p.title
 </style>
 </head>
 <body>
-	<div class="container-fluid">
+	<div class="container-fluid" style="padding-top: 3%;">
 		<p class="col-xs-12 title">
 			互联网产品运营
 		</p>
@@ -87,11 +87,4 @@ p.title
 		</p>
 	</div>
 </body>
-<script src="<%=baseUrl%>/pages/common/media/js/jquery.min.js" type="text/javascript"></script>
-<script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	
-});
-</script> 
 </html>

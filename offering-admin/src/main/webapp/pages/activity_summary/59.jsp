@@ -19,7 +19,7 @@ p{
 </style>
 </head>
 <body>
-	<div class="container-fluid">
+	<div class="container-fluid" style="padding-top: 3%;">
 		<p class="col-xs-12">
 			你的前辈们或多或少会和你分享说，“第一份工作很重要，这关乎到你未来的职业生涯。”Arrow老师并不认同此话。
 		</p>
@@ -215,11 +215,4 @@ p{
 		</p>
 	</div>
 </body>
-<script src="<%=baseUrl%>/pages/common/media/js/jquery.min.js" type="text/javascript"></script>
-<script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	
-});
-</script> 
 </html>

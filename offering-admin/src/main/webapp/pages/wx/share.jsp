@@ -17,7 +17,6 @@
 	font-weight:bold;
 	line-height:1.5em;
 }
-
 </style>
 </head>
 <body style="font-size: 1em;overflow: hidden;background-color: #F2F3EE;">
@@ -35,7 +34,7 @@
 		</div>
 		
 		<!-- 活动状态非已结束时显示 start -->
-		<div id="speakerDiv_wjs" class="container" style="margin-left: 3%;margin-right: 3%;margin-top: 5%;border-radius:15px;background-color: #FFFFFF;">
+		<div id="speakerDiv_wjs" class="container" style="display:none;margin-left: 3%;margin-right: 3%;margin-top: 5%;border-radius:15px;background-color: #FFFFFF;">
 			<div  class="row" >
 				<div style='width: 12.6%;margin-left:4%;float: left;margin-top: -3.5%;' >
 					<img id="speakerImg_wjs" style='width: 100%;' class='img-circle' alt="">
@@ -50,27 +49,27 @@
 					<p style='font-size:1.5em;font-weight:bold;color: #FFCD19;'>分享嘉宾</p>
 				</div>
 			</div>
-			<div class="row" style="margin-left: 13%;margin-right: 10%;">
-				<div class="col-xs-4" style="margin-right: 0px;width: 35%;">
+			<div class="row" style="margin-left: 10%;margin-right: 7%;">
+				<div class="col-xs-4" style="margin-right: 0px;width: 36%;">
 					<hr color="#000000" style="height:1px;width: 100%;">
 				</div>
 				<div class="col-xs-4" style="padding-right: 0px;padding-left: 0px;width: auto">
 					<p style='font-size:1.5em;font-weight:bold;text-align: center;margin-top: 10px;'>嘉宾介绍</p>
 				</div>
-				<div class="col-xs-3" style="margin-left: 0px;width: 35%;">
+				<div class="col-xs-3" style="margin-left: 0px;width: 36%;">
 					<hr color="#000000" style="height:1px;width: 100%;">
 				</div>
 			</div>
-			<div class="row" style="margin-left: 13%;margin-right: 10%;" >
+			<div class="row" style="margin-left: 7%;margin-right: 7%;" >
 				<div class="col-xs-12">
-					<p id="speaker_remark" style='font-size:1.5em;margin-top: 10px;'></p>
+					<p id="speaker_remark" style='font-size:1.5em;margin-top: 10px;text-align: center;'></p>
 				</div>
 			</div>
 		</div>
-		<div id="activityDiv_wjs" class="container" style="margin-left: 3%;margin-right: 3%;margin-top: 1.4%;border-radius:15px;background-color: #FFFFFF;">
+		<div id="activityDiv_wjs" class="container" style="display:none;margin-left: 3%;margin-right: 3%;margin-top: 1.4%;border-radius:15px;background-color: #FFFFFF;">
 			<div class="row" style="margin-top: 1.6%;">
 				<div style="margin-left: 5.3%;float: left;">
-					<p style='font-size:2em;font-weight:bold;'>活动简介</p>
+					<p style='font-size:1.6em;font-weight:bold;'>活动简介</p>
 				</div>
 				<div style="margin-right: 3.9%;float: right;">
 					<p id="time" style='font-size:1.5em;color: #ffcb19;'></p>
@@ -99,10 +98,10 @@
 				</div>
 			</div>
 		</div>
-		<div id="memberDiv_wjs" class="container" style="margin-left: 3%;margin-right: 3%;margin-top: 1.4%;border-radius:15px;background-color: #FFFFFF;margin-bottom: 20%;">
+		<div id="memberDiv_wjs" class="container" style="display:none;margin-left: 3%;margin-right: 3%;margin-top: 1.4%;border-radius:15px;background-color: #FFFFFF;margin-bottom: 20%;">
 			<div class="row" style="margin-top: 1.6%;">
 				<div style="margin-left: 5.3%;float: left;">
-					<p style='font-size:2em;font-weight:bold;'>小伙伴们</p>
+					<p style='font-size:1.6em;font-weight:bold;'>小伙伴们</p>
 				</div>
 				<div style="margin-right: 3.9%;float: right;">
 					<p id="joinMembers" style='font-size:1.5em;color: #ffcb19;'></p>
@@ -112,9 +111,8 @@
 			</div>
 		</div>
 		<!-- end -->
-		
 		<!-- 活动状态为已结束时显示 start -->
-		<div id="speakerDiv" class="row">
+		<div id="speakerDiv" class="row" style="display:none; background-color: #FFFFFF;">
 			<div style='width: 10.3%;margin-left:30px;float: left;' >
 				<img id="speakerImg" style='width: 100%;' class='img-circle' alt="">
 			</div>
@@ -128,10 +126,9 @@
 				<p style='font-size:1.5em;font-weight:bold;color: #FFCD19;'>分享嘉宾</p>
 			</div>
 		</div>
-		<iframe id="content" style="width: 100%;overflow: auto;padding-right: 0px;border:none;padding-top: 2%;margin-bottom: 20%;">
+		<iframe id="content" style="display:none;width: 100%;overflow: auto;padding-right: 0px;border:none;margin-bottom: 20%;">
 		</iframe>
 		<!-- end -->
-		
 		<div class="navbar-fixed-bottom col-xs-12" style="background:#545158;opacity:1;height:60px;padding: 0px 0px 0px 0px;">
 				<img class="img-responsive" src="../images/icon.png" style="float:left;margin:2% 3% 4% 3%;height: 41px;"/>
 				<div style="float:left;margin-top:2%;">
@@ -151,7 +148,7 @@
 	</div>
 </body>
 <script src="<%=baseUrl%>/pages/common/media/js/jquery.min.js" type="text/javascript"></script>
-<script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script>
+<%-- <script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script> --%>
 <script src="<%=baseUrl%>/pages/common/media/js/common.js" type="text/javascript"></script>
 <script type="text/javascript">
 var version = '<%=GloabConstant.APP_SERVICE_VERSION%>';
@@ -198,21 +195,21 @@ $(document).ready(function(){
         	
         	if(data.data.status == ACTIVITY_STATUS_JS)
         	{
-        		$("#speakerDiv_wjs").hide();
-        		$("#activityDiv_wjs").hide();
-        		$("#memberDiv_wjs").hide();
+        		$("#speakerDiv").show();
+        		$("#content").show();
         		$("#speakerImg").attr("src",'<%=baseUrl%>'+speaker.url);
             	$("#speakerName").text(speaker.name);
             	$("#post").text(speaker.company+speaker.post);
             	$("#content").attr("src",'<%=baseUrl%>/app/v1/activitySummary?id=' + $("#activityId").val());
         	}else{
-        		$("#speakerDiv").hide();
-        		$("#content").hide();
+        		$("#speakerDiv_wjs").show();
+        		$("#activityDiv_wjs").show();
+        		$("#memberDiv_wjs").show();
         		$("#speakerImg_wjs").attr("src",'<%=baseUrl%>'+speaker.url);
             	$("#speakerName_wjs").text(speaker.name);
             	$("#post_wjs").text(speaker.company+speaker.post);
-            	$("#speaker_remark").text(speaker.remark);
-            	$("#activity_remark").text(data.data.remark);
+            	$("#speaker_remark").html(speaker.remark.replace(/\n/g,"<br>"));
+            	$("#activity_remark").html(data.data.remark.replace(/\n/g,"<br>"));
             	
             	var startTime = new Date();
             	startTime.setTime(parseInt(data.data.startTime));
@@ -223,7 +220,7 @@ $(document).ready(function(){
             	
             	var type = data.data.type;
             	if(type=='0' || type=='1')
-            		$("#type").text("分享方式：线上分析会");
+            		$("#type").text("分享方式：线上分享会");
             	else
             		$("#type").text("地点："+data.data.address);
             	
