@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +42,7 @@ import com.offering.bean.Suggest;
 import com.offering.bean.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.ActivityService;
+import com.offering.core.service.AppService;
 import com.offering.core.service.SystemService;
 import com.offering.core.service.UserService;
 import com.offering.redis.RedisOp;
@@ -71,6 +73,9 @@ public class AppController_new {
 	
 	@Autowired
 	private ActivityService activityService;
+	
+	@Autowired
+	private AppService appService;
 	
 	@Autowired
 	private RedisOp redisOp;
@@ -1044,13 +1049,14 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/listGreaters",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> listGreaters(PageInfo page) {
+	public Map<String, Object> listGreaters(PageInfo page,@PathVariable("version")int v) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		List<Greater> greaters = userService.listGreaters(null,page);
+		List<Greater> greaters = appService.listGreaters(page,v);
 		if(greaters != null && greaters.size() > 0)
 		{
 			dataMap.put("greaters", Utils.convertBeanToMap(greaters,
-					new String[]{"id","nickname","company","post","url","answerTimes"}, Greater.class));
+					new String[]{"id","nickname","post","url","tags","introduce",
+					"onlineTime","topic"}, Greater.class));
 		}
 		
 		return Utils.success(dataMap);
@@ -1064,23 +1070,23 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/getGreaterInfo",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> getGreaterInfo(String id,HttpServletRequest req) {
+	public Map<String, Object> getGreaterInfo(String id,HttpServletRequest req,@PathVariable("version")int v) {
 		Map<String, Object> m = Utils.checkParam(req, new String[]{"id"});
 		if(m != null)
 			return m;
-		Greater greater = userService.getGreaterInfoById(id);
+		Greater greater = appService.getGreaterInfoById(id, v);
 		if(greater == null)
 			return Utils.failture("大拿不存在！");
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("nickname", greater.getNickname());
-		dataMap.put("company", greater.getCompany());
 		dataMap.put("post", greater.getPost());
 		dataMap.put("tags", greater.getTags());
-		dataMap.put("experience", greater.getExperience());
-		dataMap.put("specialty", greater.getSpecialty());
-		dataMap.put("job", greater.getJob());
 		dataMap.put("url", greater.getUrl());
 		dataMap.put("backgroud_url", greater.getBackgroud_url());
+		dataMap.put("onlineTime", greater.getOnlineTime());
+		dataMap.put("introduce", greater.getIntroduce());
+		dataMap.put("topics", greater.getTopics());
+		dataMap.put("activities", greater.getActivities());
 		return Utils.success(dataMap);
 	}
 	
@@ -1094,12 +1100,12 @@ public class AppController_new {
 	@RequestMapping(value = "/askGreater",method={RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> askGreater(String userId,String token,String greaterId
-			,HttpServletRequest req) {
+			,String type,String topicId,HttpServletRequest req) {
 		Map<String, Object> m = Utils.checkParam(req, new String[]{"userId","token","greaterId"});
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
-			activityService.createPrivateChart(userId,greaterId);
+			appService.createPrivateChart(userId,greaterId,type,topicId);
 			return Utils.success(null);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");

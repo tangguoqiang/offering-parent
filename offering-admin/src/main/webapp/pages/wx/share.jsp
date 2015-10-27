@@ -148,7 +148,7 @@
 	</div>
 </body>
 <script src="<%=baseUrl%>/pages/common/media/js/jquery.min.js" type="text/javascript"></script>
-<%-- <script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script> --%>
+<script src="<%=baseUrl%>/pages/common/media/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="<%=baseUrl%>/pages/common/media/js/common.js" type="text/javascript"></script>
 <script type="text/javascript">
 var version = '<%=GloabConstant.APP_SERVICE_VERSION%>';

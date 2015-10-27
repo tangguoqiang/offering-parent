@@ -90,9 +90,10 @@ public class GloabConstant {
 	public final static String ACTIVITY_TYPE_FXHJH = "3";
 	
 	/**
-	 * 系统字典分组-年级
+	 * 系统字典分组-年级,行业
 	 */
 	public final static String GROUP_GRADE = "grade";
+	public final static String GROUP_INDUSTRY = "industry";
 	
 	/**
 	 * 活动一次返回数量
@@ -105,6 +106,12 @@ public class GloabConstant {
 	public final static String OP_INIT = "0";
 	public final static String OP_DOWN = "1";
 	public final static String OP_UP = "2";
+	
+	/**
+	 * 私聊类型 0:问大拿 1:话题咨询
+	 */
+	public final static String PRIVATECHAT_0 = "0";
+	public final static String PRIVATECHAT_1 = "1";
 	
 	/**
 	 * APP服务版本

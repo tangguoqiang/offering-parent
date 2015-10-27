@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import java.util.List;
+
 public class Greater {
 
 	private String id;
@@ -17,6 +19,64 @@ public class Greater {
 	private String isshow;
 	private String orderNo;
 	
+	private String school;
+	private String industry;
+	private String workYears;
+	private String introduce;
+	private String online_startTime;
+	private String online_endTime;
+	private String onlineTime;
+	private List<Topic> topics;
+	private List<Activity> activities;
+	
+	/**
+	 * 参与人数最多的话题
+	 */
+	private Topic topic;
+	
+	public String getSchool() {
+		return school;
+	}
+	public void setSchool(String school) {
+		this.school = school;
+	}
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+	public String getWorkYears() {
+		return workYears;
+	}
+	public void setWorkYears(String workYears) {
+		this.workYears = workYears;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
+	public String getOnline_startTime() {
+		return online_startTime;
+	}
+	public void setOnline_startTime(String online_startTime) {
+		this.online_startTime = online_startTime;
+	}
+	public String getOnline_endTime() {
+		return online_endTime;
+	}
+	public void setOnline_endTime(String online_endTime) {
+		this.online_endTime = online_endTime;
+	}
+	public String getOnlineTime() {
+		onlineTime = online_startTime + "-" + online_endTime;
+		return onlineTime;
+	}
+	public void setOnlineTime(String onlineTime) {
+		this.onlineTime = onlineTime;
+	}
 	public String getId() {
 		return id;
 	}
@@ -100,5 +160,23 @@ public class Greater {
 	}
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+	public List<Topic> getTopics() {
+		return topics;
+	}
+	public void setTopics(List<Topic> topics) {
+		this.topics = topics;
+	}
+	public Topic getTopic() {
+		return topic;
+	}
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
+	public List<Activity> getActivities() {
+		return activities;
+	}
+	public void setActivities(List<Activity> activities) {
+		this.activities = activities;
 	}
 }
