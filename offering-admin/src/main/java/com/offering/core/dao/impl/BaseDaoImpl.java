@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.offering.annotation.Column;
 import com.offering.bean.PageInfo;
 import com.offering.bean.ParamInfo;
 import com.offering.common.mapper.CommonRowMapper;
@@ -126,7 +127,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		String name;
 		for (Field field : fields) {
 			name = field.getName();
-			if ("serialVersionUID".equals(field.getName()))
+			if(field.getAnnotation(Column.class) == null)
 				continue;
 			try {
 				value = cls.getMethod(

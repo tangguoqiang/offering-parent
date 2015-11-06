@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 /**
  * 话题
  * @author surfacepro3
@@ -7,9 +9,13 @@ package com.offering.bean;
  */
 public class Topic {
 
+	@Column
 	private String id;
+	@Column
 	private String greaterId;
+	@Column
 	private String title;
+	@Column
 	private String content;
 	private String askNums;
 	

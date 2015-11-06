@@ -114,6 +114,12 @@ public class GloabConstant {
 	public final static String PRIVATECHAT_1 = "1";
 	
 	/**
+	 * 未读消息类型  1:评论 2:点赞
+	 */
+	public final static String COMMENT_TYPE_1 = "1";
+	public final static String COMMENT_TYPE_2 = "2";
+	
+	/**
 	 * APP服务版本
 	 */
 	public final static int APP_SERVICE_VERSION = 1;

@@ -2,14 +2,20 @@ package com.offering.bean;
 
 import java.io.Serializable;
 
+import com.offering.annotation.Column;
+
 public class School implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6767828762920792901L;
+	
+	@Column
 	private String id;
+	@Column
 	private String name;
+	@Column
 	private String province;
 //	private String city;
 //	private String orderNum;

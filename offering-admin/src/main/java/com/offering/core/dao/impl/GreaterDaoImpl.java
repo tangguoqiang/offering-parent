@@ -29,10 +29,10 @@ public class GreaterDaoImpl extends BaseDaoImpl<Greater> implements GreaterDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT T1.id,T2.nickname,T1.post,T2.url,T1.introduce,")
 		   .append("T1.online_startTime,T1.online_endTime,")
-		   .append("CONCAT(IFNULL(T4.name,''),',',T1.company,',',T3.name,',',T1.workYears,'年工作经验,',T1.tags) tags ")
+		   .append("CONCAT(IFNULL(T4.name,''),',',T1.company,',',IFNULL(T3.name,''),',',T1.workYears,'年工作经验,',T1.tags) tags ")
 		   .append("FROM USER_GREATER T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.ID ")
-		   .append("LEFT JOIN SYS_DICT T3 ON T3.code=T1.industry AND T3.groupName=? ")
+		   .append("LEFT JOIN SYS_DICT T3 ON T3.code=T2.industry AND T3.groupName=? ")
 		   .append("LEFT JOIN SYS_SCHOOL T4 ON T4.ID=T2.schoolId ")
 		   .append("WHERE isshow=?  ");
 		ParamInfo paramInfo = new ParamInfo();
@@ -53,12 +53,14 @@ public class GreaterDaoImpl extends BaseDaoImpl<Greater> implements GreaterDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT T1.id,T2.nickname,T1.post,T2.url,T1.introduce,")
 		   .append("T1.online_startTime,T1.online_endTime,T1.backgroud_url,")
-		   .append("CONCAT(IFNULL(T3.name,''),',',T1.company,',',T1.industry,',',T1.workYears,'年工作经验,',T1.tags) tags ")
+		   .append("CONCAT(IFNULL(T3.name,''),',',T1.company,',',IFNULL(T4.name,''),',',T1.workYears,'年工作经验,',T1.tags) tags ")
 		   .append("FROM USER_GREATER T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.ID ")
 		   .append("LEFT JOIN SYS_SCHOOL T3 ON T3.ID=T2.schoolId ")
+		   .append("LEFT JOIN SYS_DICT T4 ON T4.code=T2.industry AND T4.groupName=? ")
 		   .append("WHERE T1.id=?  ");
 		ParamInfo paramInfo = new ParamInfo();
+		paramInfo.setTypeAndData(Types.VARCHAR, GloabConstant.GROUP_INDUSTRY);
 		paramInfo.setTypeAndData(Types.BIGINT, id);
 		
 		return getRecord(sql.toString(),paramInfo,Greater.class);

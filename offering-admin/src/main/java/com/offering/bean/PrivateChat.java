@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 /**
  * 私聊信息
  * @author surfacepro3
@@ -7,8 +9,11 @@ package com.offering.bean;
  */
 public class PrivateChat {
 
+	@Column
 	private String id;
+	@Column
 	private String sender;
+	@Column
 	private String receiver;
 	
 	public String getId() {

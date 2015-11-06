@@ -31,6 +31,9 @@ import com.offering.bean.Activity;
 import com.offering.bean.AppVersion;
 import com.offering.bean.ChartGroup;
 import com.offering.bean.Comcode;
+import com.offering.bean.CommunityTopic;
+import com.offering.bean.CommunityTopicComment;
+import com.offering.bean.CommunityTopicPraise;
 import com.offering.bean.Greater;
 import com.offering.bean.IDCode;
 import com.offering.bean.Member;
@@ -47,6 +50,7 @@ import com.offering.core.service.SystemService;
 import com.offering.core.service.UserService;
 import com.offering.redis.RedisOp;
 import com.offering.utils.CCPUtils;
+import com.offering.utils.QiniuUtils;
 import com.offering.utils.RCUtils;
 import com.offering.utils.Utils;
 
@@ -114,6 +118,21 @@ public class AppController_new {
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
 		}
+	}
+	
+	/**
+	 * 获取融云token
+	 * @param userId
+	 * @param token
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/getQiniuToken",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> getQiniuToken() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("token", QiniuUtils.getUpToken());
+		return Utils.success(dataMap);
 	}
 	
 	/**
@@ -1146,4 +1165,223 @@ public class AppController_new {
 	public String activitySummary(String id) {
 		return "pages/activity_summary/" + id;
 	}
+	
+	
+	/*============================ 社区相关接口 start =====================*/
+	
+	/**
+	 * 获取最新话题列表
+	 * @param type
+	 * @param time
+	 * @return
+	 */
+	@RequestMapping(value = "/listTopics_new",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> listTopics_new(String type,String time) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		dataMap.put("topic", appService.listTopics_new(type,time));
+		return Utils.success(dataMap);
+	}
+	
+	/**
+	 * 获取热门话题列表
+	 * @param type
+	 * @param time
+	 * @return
+	 */
+	@RequestMapping(value = "/listTopics_hot",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> listTopics_hot(String type,String praiseNum) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		dataMap.put("topic", appService.listTopics_hot(type,praiseNum));
+		return Utils.success(dataMap);
+	}
+	
+	/**
+	 * 发布话题
+	 * @param type
+	 * @param time
+	 * @return
+	 */
+	@RequestMapping(value = "/publishTopic",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> publishTopic(String userId,String token,
+			String content,String images,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			CommunityTopic topic = new CommunityTopic();
+			topic.setCreaterId(userId);
+			topic.setContent(content);
+			topic.setCreateTime(System.currentTimeMillis() + "");
+			topic.setIsTop(GloabConstant.YESNO_NO);
+			CommunityTopic returnTopic = appService.publishTopic(topic,images);
+			
+			dataMap.put("id", returnTopic.getId());
+			dataMap.put("createrId", returnTopic.getCreaterId());
+			dataMap.put("name", returnTopic.getName());
+			dataMap.put("url", returnTopic.getUrl());
+			dataMap.put("type", returnTopic.getType());
+			dataMap.put("company", returnTopic.getCompany());
+			dataMap.put("post", returnTopic.getPost());
+			dataMap.put("school", returnTopic.getSchool());
+			dataMap.put("createTime", returnTopic.getCreateTime());
+			dataMap.put("content", returnTopic.getContent());
+			dataMap.put("praiseNum", returnTopic.getPraiseNum());
+			dataMap.put("commentNum", returnTopic.getCommentNum());
+			dataMap.put("images", returnTopic.getImages());
+			return Utils.success(null);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 话题点赞
+	 * @param userId
+	 * @param token
+	 * @param topicId
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/praise",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> praise(String userId,String token,
+			String topicId,String topic_createrId,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			CommunityTopicPraise praise = new CommunityTopicPraise();
+			praise.setTopicId(topicId);
+			praise.setCreaterId(userId);
+			praise.setCreateTime(System.currentTimeMillis() + "");
+			praise.setIsRead(GloabConstant.YESNO_NO);
+			dataMap.put("praiseNum", appService.praise(praise,topic_createrId));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 获取未读消息列表
+	 * @param userId
+	 * @param token
+	 * @param topicId
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/listComments_unread",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> listComments_unread(String userId,String token,
+			HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			dataMap.put("comments", appService.listComments_unread(userId));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 删除未读消息
+	 * @param userId
+	 * @param token
+	 * @param commentId
+	 * @param commentType
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/delComment_unread",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> delComment_unread(String userId,String token,
+			String commentId,String commentType,HttpServletRequest req) {
+		if(userService.checkToken(userId,token)){
+			appService.delComment_unread(commentId,commentType);
+			return Utils.success(null);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 清空未读消息
+	 * @param userId
+	 * @param token
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/clearComments_unread",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> clearComments_unread(String userId,String token,
+			HttpServletRequest req) {
+		if(userService.checkToken(userId,token)){
+			appService.clearComments_unread(userId);
+			return Utils.success(null);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 加载评论列表
+	 * @param userId
+	 * @param token
+	 * @param topicId
+	 * @param time
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/listComments",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> listComments(String userId,String token,
+			String topicId,String time,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			CommunityTopic topic = appService.getTopicInfoById(topicId);
+			if(topic != null){
+				dataMap.put("createrId", topic.getCreaterId());
+				dataMap.put("name", topic.getName());
+				dataMap.put("url", topic.getUrl());
+				dataMap.put("type", topic.getType());
+				dataMap.put("company", topic.getCompany());
+				dataMap.put("post", topic.getPost());
+				dataMap.put("school", topic.getSchool());
+				dataMap.put("createTime", topic.getCreateTime());
+				dataMap.put("content", topic.getContent());
+				dataMap.put("images", topic.getImages());
+				dataMap.put("praiseNum", topic.getPraiseNum());
+				dataMap.put("commentNum", topic.getCommentNum());
+			}
+			dataMap.put("comments", appService.listComments(topicId,time));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 发表评论
+	 * @param userId
+	 * @param token
+	 * @param comment
+	 * @param topic_createrId
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/addComment",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> addComment(String userId,String token,
+			CommunityTopicComment comment,String topic_createrId,HttpServletRequest req) {
+		if(userService.checkToken(userId,token)){
+			comment.setIsRead(GloabConstant.YESNO_NO);
+			comment.setCreaterId(userId);
+			comment.setCreateTime(System.currentTimeMillis() + "");
+			appService.addComment(comment,topic_createrId);
+			return Utils.success(null);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/*============================ 社区相关接口 end =====================*/
 }

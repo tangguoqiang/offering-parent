@@ -28,13 +28,15 @@ public class QiniuUtils {
 	
 	private final static String KEY_PREV = "test/";
 	
+	private final static String BASE_URL = "http://7xntb5.com1.z0.glb.clouddn.com/";
+	
 	private static UploadManager uploadManager = new UploadManager();
 	
 	private QiniuUtils(){
 		
 	}
 	
-	private static String getUpToken(){
+	public static String getUpToken(){
 		return AUTH.uploadToken(BUCKET);
 	}
 	
@@ -72,7 +74,12 @@ public class QiniuUtils {
 	}
 	
 	public static void main(String[] args) {
-		upload("C:\\Users\\surfacepro3\\Desktop\\test.jpg", "test/test.jpg");
+//		upload("C:\\Users\\surfacepro3\\Desktop\\test.jpg", "test/test.jpg");
+		System.out.println(getUpToken());
+	}
+
+	public static String getBaseUrl() {
+		return BASE_URL;
 	}
 	
 }

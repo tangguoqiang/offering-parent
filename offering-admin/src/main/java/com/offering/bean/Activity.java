@@ -2,6 +2,8 @@ package com.offering.bean;
 
 import java.util.List;
 
+import com.offering.annotation.Column;
+
 /**
  * 活动
  * @author surfacepro3
@@ -9,17 +11,30 @@ import java.util.List;
  */
 public class Activity {
 
+	@Column
 	private String id;
+	@Column
 	private String title;
+	@Column
 	private String startTime;
+	@Column
 	private String endTime;
+	@Column
 	private String type;
+	@Column
 	private String status;
+	@Column
 	private String url;
+	@Column
 	private String summary;
+	@Column
 	private String share_activity_image;
+	@Column
 	private String remark;
+	@Column
 	private String address;
+	@Column
+	private String createrId;
 	
 	private String joinMembers;
 	
@@ -109,5 +124,11 @@ public class Activity {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getCreaterId() {
+		return createrId;
+	}
+	public void setCreaterId(String createrId) {
+		this.createrId = createrId;
 	}
 }

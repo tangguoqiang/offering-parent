@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 /**
  * 活动演讲人
  * @author surfacepro3
@@ -7,13 +9,17 @@ package com.offering.bean;
  */
 public class Speaker {
 
+	@Column
 	private String id;
+	@Column
 	private String speakerId;
+	@Column
 	private String activityId;
-	private String name;
+	@Column
 	private String remark;
-	private String url;
 	
+	private String name;
+	private String url;
 	private String company;
 	private String post;
 	private String tags;

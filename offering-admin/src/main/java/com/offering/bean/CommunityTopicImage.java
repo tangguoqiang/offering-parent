@@ -3,17 +3,18 @@ package com.offering.bean;
 import com.offering.annotation.Column;
 
 /**
- * 话题成员
+ * 话题附件表
  * @author surfacepro3
  *
  */
-public class TopicMember {
+public class CommunityTopicImage {
+
 	@Column
 	private String id;
 	@Column
 	private String topicId;
 	@Column
-	private String memberId;
+	private String url;
 	
 	public String getId() {
 		return id;
@@ -27,10 +28,10 @@ public class TopicMember {
 	public void setTopicId(String topicId) {
 		this.topicId = topicId;
 	}
-	public String getMemberId() {
-		return memberId;
+	public String getUrl() {
+		return url;
 	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

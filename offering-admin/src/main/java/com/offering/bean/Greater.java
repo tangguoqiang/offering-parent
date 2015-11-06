@@ -2,44 +2,60 @@ package com.offering.bean;
 
 import java.util.List;
 
-public class Greater {
+import com.offering.annotation.Column;
 
+public class Greater {
+	@Column
 	private String id;
+	@Column
+	private String company;
+	@Column
+	private String post;
+	@Column
+	private String tags;
+	@Column
+	private String backgroud_url;
+	@Column
+	private String isshow;
+	@Column
+	private String orderNo;
+	@Column
+	private String workYears;
+	@Column
+	private String introduce;
+	@Column
+	private String online_startTime;
+	@Column
+	private String online_endTime;
+	
+	/**
+	 * 基本信息
+	 */
 	private String nickname;
 	private String phone;
-	private String company;
-	private String post;
-	private String tags;
-	private String experience;
-	private String specialty;
-	private String job;
 	private String url;
-	private String answerTimes;
-	private String backgroud_url;
-	private String isshow;
-	private String orderNo;
-	
-	private String school;
 	private String industry;
-	private String workYears;
-	private String introduce;
-	private String online_startTime;
-	private String online_endTime;
+	private String industryName;
+	private String schoolId;
+	private String schoolName;
+	
+	@Deprecated
+	private String experience;
+	@Deprecated
+	private String specialty;
+	@Deprecated
+	private String job;
+	@Deprecated
+	private String answerTimes;
+	
 	private String onlineTime;
 	private List<Topic> topics;
 	private List<Activity> activities;
-	
 	/**
 	 * 参与人数最多的话题
 	 */
 	private Topic topic;
 	
-	public String getSchool() {
-		return school;
-	}
-	public void setSchool(String school) {
-		this.school = school;
-	}
 	public String getIndustry() {
 		return industry;
 	}
@@ -178,5 +194,23 @@ public class Greater {
 	}
 	public void setActivities(List<Activity> activities) {
 		this.activities = activities;
+	}
+	public String getIndustryName() {
+		return industryName;
+	}
+	public void setIndustryName(String industryName) {
+		this.industryName = industryName;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	public String getSchoolId() {
+		return schoolId;
+	}
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
 	}
 }

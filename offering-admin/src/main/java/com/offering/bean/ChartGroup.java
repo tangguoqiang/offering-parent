@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 /**
  * 群聊信息
  * @author surfacepro3
@@ -7,12 +9,17 @@ package com.offering.bean;
  */
 public class ChartGroup {
 
+	@Column
 	private String id;
+	@Column
 	private String groupName;
+	@Column
 	private String createTime;
+	@Column
 	private String groupInfo;
-	private String status;
+	@Column
 	private String share_group_image;
+	private String status;
 	
 	public String getId() {
 		return id;

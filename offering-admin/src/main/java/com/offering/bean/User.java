@@ -2,6 +2,8 @@ package com.offering.bean;
 
 import java.io.Serializable;
 
+import com.offering.annotation.Column;
+
 /**
  * 用户
  * @author gtang
@@ -14,36 +16,43 @@ public class User implements Serializable{
 	 */
 	private static final long serialVersionUID = -3090998508934097699L;
 
+	@Column
 	private String id;
-	
+	@Column
 	private String name;
-	
+	@Column
 	private String phone;
+	@Column
 	private String openId;
-	
+	@Column
 	private String nickname;
-
+	@Column
 	private String schoolId;
 	private String schoolName;
+	@Column
 	private String major;
+	@Column
 	private String grade;
 	private String gradeName;
-	
+	@Column
 	private String url;
+	@Column
 	private String background_url;
-	
+	@Column
 	private String token;
-	
+	@Column
 	private String type;
+	@Column
 	private String login_type;
-	
+	@Column
 	private String status;
-	
+	@Column
 	private String password;
-	
+	@Column
 	private String rc_token;
-	
+	@Column
 	private String industry;
+	@Column
 	private String insertTime;
 	
 	public String getId() {

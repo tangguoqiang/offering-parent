@@ -1,10 +1,16 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 public class Suggest {
 
+	@Column
 	private String id;
+	@Column
 	private String suggest;
+	@Column
 	private String contact;
+	@Column
 	private String insertTime;
 	
 	public String getId() {
