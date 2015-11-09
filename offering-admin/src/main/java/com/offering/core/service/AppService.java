@@ -103,5 +103,5 @@ public interface AppService {
 	 * @param comment
 	 * @param topic_createrId
 	 */
-	void addComment(CommunityTopicComment comment,String topic_createrId);
+	CommunityTopicComment addComment(CommunityTopicComment comment,String topic_createrId);
 }

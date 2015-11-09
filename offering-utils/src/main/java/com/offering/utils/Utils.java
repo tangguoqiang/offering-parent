@@ -72,6 +72,16 @@ public class Utils {
 		return m;
 	}
 	
+	public static <T> Map<String, Object> success(T t)
+	{
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put(REP_CODE, CODE_SUCCESS);
+		m.put(REP_MSG, "操作成功！");
+		if(t != null)
+			m.put(REP_DATA, t);
+		return m;
+	}
+	
 	public static Map<String, Object> failture(String msg)
 	{
 		Map<String, Object> m = new HashMap<String, Object>();

@@ -36,4 +36,11 @@ public interface CommunityTopicCommentDao extends BaseDao<CommunityTopicComment>
 	 * @return
 	 */
 	List<CommunityTopicComment> listComments(String topicId,String time);
+	
+	/**
+	 * 根据id获取评论信息
+	 * @param id
+	 * @return
+	 */
+	CommunityTopicComment getCommentById(String id);
 }

@@ -30,6 +30,8 @@ import com.offering.core.dao.TopicDao;
 import com.offering.core.dao.TopicMemberDao;
 import com.offering.core.service.AppService;
 import com.offering.redis.RedisOp;
+import com.offering.utils.JpushUtils;
+import com.offering.utils.JpushUtils.JpushType;
 import com.offering.utils.QiniuUtils;
 import com.offering.utils.Utils;
 
@@ -241,6 +243,12 @@ public class AppServiceImpl implements AppService{
 		if(!Utils.isEmpty(images)){
 			communityTopicImageDao.insertRecords(id + "", images.split("[,，]"));
 		}
+		
+		//发送通知
+		Map<String, String> extras = new HashMap<String, String>();
+		extras.put("type", GloabConstant.NOTIFY_TYPE_1);
+		JpushUtils.sendMessage("有新话题", null, extras,JpushType.MESSAGE);
+		
 		CommunityTopic returnTopic = communityTopicDao.getTopicInfoById(id + "");
 		List<String> idList = new ArrayList<String>();
 		idList.add(id + "");
@@ -265,6 +273,10 @@ public class AppServiceImpl implements AppService{
 		if(!communityTopicPraiseDao.isExistsPraise(praise.getCreaterId(),praise.getTopicId())){
 			communityTopicPraiseDao.insertRecord(praise, "COMMUNITY_TOPIC_PRAISE");
 			//TODO 需要推送通知给话题创建人
+			Map<String, String> extras = new HashMap<String, String>();
+			extras.put("topicId", praise.getTopicId());
+			JpushUtils.sendMessage("您收获了一个赞！", 
+					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
 		}
 		
 		return communityTopicPraiseDao.getPraiseCount(praise.getTopicId());
@@ -388,8 +400,13 @@ public class AppServiceImpl implements AppService{
 	 * @param comment
 	 * @param topic_createrId
 	 */
-	public void addComment(CommunityTopicComment comment,String topic_createrId){
-		communityTopicCommentDao.insertRecord(comment, "COMMUNITY_TOPIC_COMMENT");
+	public CommunityTopicComment addComment(CommunityTopicComment comment,String topic_createrId){
+		long id = communityTopicCommentDao.insertRecord(comment, "COMMUNITY_TOPIC_COMMENT");
 		//TODO 推送消息通知
+		Map<String, String> extras = new HashMap<String, String>();
+		extras.put("topicId", comment.getTopicId());
+		JpushUtils.sendMessage("您有新的评论！", 
+				new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+		return communityTopicCommentDao.getCommentById(id + "");
 	}
 }

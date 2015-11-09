@@ -118,4 +118,26 @@ public class CommunityTopicCommentDaoImpl extends BaseDaoImpl<CommunityTopicComm
 		sql.append("ORDER BY T1.createTime DESC LIMIT 15 ");
 		return getRecords(sql.toString(), paramInfo, CommunityTopicComment.class);
 	}
+	
+	/**
+	 * 根据id获取评论信息
+	 * @param id
+	 * @return
+	 */
+	public CommunityTopicComment getCommentById(String id){
+		StringBuilder sql = new StringBuilder();
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("SELECT T1.id,T1.createrId,T1.comment,T1.createTime,")
+		   .append("T2.nickname name,T2.url,T2.type,T3.company,T3.post,T4.name school,")
+		   .append("T6.type toType,T6.nickname toUserName ")
+		   .append("FROM COMMUNITY_TOPIC_COMMENT T1 ")
+		   .append("INNER JOIN USER_INFO T2 ON T2.id=T1.createrId ")
+		   .append("LEFT JOIN USER_GREATER T3 ON T3.id=T1.createrId ")
+		   .append("LEFT JOIN SYS_SCHOOL T4 ON T4.id=T2.schoolId ")
+		   .append("LEFT JOIN COMMUNITY_TOPIC_COMMENT T5 ON T5.id=T1.parentId ")
+		   .append("LEFT JOIN USER_INFO T6 ON T6.id=T5.createrId ")
+		   .append("WHERE T1.id=? ");
+		paramInfo.setTypeAndData(Types.BIGINT, id);
+		return getRecord(sql.toString(), paramInfo, CommunityTopicComment.class);
+	}
 }

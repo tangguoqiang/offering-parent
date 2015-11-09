@@ -9,6 +9,11 @@ package com.offering.constant;
 public class GloabConstant {
 	
 	/**
+	 * 产品状态 0：测试 1:生产
+	 */
+	public final static String PRODUCT_MODEL = "0";
+	
+	/**
 	 *  是否 0：是  1：否
 	 */
 	public final static String YESNO_YES = "0";
@@ -118,6 +123,12 @@ public class GloabConstant {
 	 */
 	public final static String COMMENT_TYPE_1 = "1";
 	public final static String COMMENT_TYPE_2 = "2";
+	
+	/**
+	 * 通知消息类型  1:新话题 2:新评论
+	 */
+	public final static String NOTIFY_TYPE_1 = "1";
+	public final static String NOTIFY_TYPE_2 = "2";
 	
 	/**
 	 * APP服务版本

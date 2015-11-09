@@ -1229,7 +1229,7 @@ public class AppController_new {
 			dataMap.put("praiseNum", returnTopic.getPraiseNum());
 			dataMap.put("commentNum", returnTopic.getCommentNum());
 			dataMap.put("images", returnTopic.getImages());
-			return Utils.success(null);
+			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
 		}
@@ -1376,8 +1376,8 @@ public class AppController_new {
 			comment.setIsRead(GloabConstant.YESNO_NO);
 			comment.setCreaterId(userId);
 			comment.setCreateTime(System.currentTimeMillis() + "");
-			appService.addComment(comment,topic_createrId);
-			return Utils.success(null);
+			CommunityTopicComment returnComment = appService.addComment(comment,topic_createrId);
+			return Utils.success(returnComment);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
 		}
