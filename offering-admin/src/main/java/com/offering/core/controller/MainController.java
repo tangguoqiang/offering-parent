@@ -129,7 +129,7 @@ public class MainController {
 			@PathVariable("fileName")String fileName,@PathVariable("suff")String suff,
 			HttpServletResponse rep){
 		rep.setHeader("Content-Disposition", "attachment; filename=" + fileName + "." + suff);  
-		LOG.info(fileName + "." + suff);
+		LOG.debug(fileName + "." + suff);
 		if("apk".equals(suff))
 		{
 //			rep.setHeader("Content-Encoding","gzip");
@@ -139,7 +139,7 @@ public class MainController {
 			rep.setContentType("image/*");  
 		String filePath = GloabConstant.ROOT_DIR + path + "/" + fileName + "." + suff;
 		long contentLength = new File(filePath).length();
-		LOG.info("apk文件大小:" + contentLength);
+		LOG.debug("文件大小:" + contentLength);
         rep.setContentLength((int) contentLength);
 		FileInputStream fis = null; 
         OutputStream os = null; 

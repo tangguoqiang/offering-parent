@@ -15,7 +15,7 @@
 		system-properties-mode="OVERRIDE" properties-ref="databaseProps" order="10" ignore-unresolvable="true"/>
 	<util:properties id="databaseProps" location="/WEB-INF/config/mysql/mysql-dev.properties" /> -->
 
-	<bean id="dataSource"
+	<bean id="dataSource_mysql"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${batch.jdbc.driver}" />
 		<property name="url" value="${batch.jdbc.url}"></property>
@@ -31,9 +31,9 @@
 	</bean>
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="dataSource_mysql" />
 	</bean>
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource">
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource_mysql">
 		<!-- <property name="dataSource" ref="dataSource"/> -->
 	</bean>
 

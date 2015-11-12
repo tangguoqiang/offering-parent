@@ -223,7 +223,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	public ChartGroup getGroupById(String groupId){
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT status,T2.groupName,T2.createTime,T2.groupInfo,T2.share_group_image ")
+		sql.append("SELECT status,T2.groupName,T2.createTime,T2.groupInfo,T2.share_group_image,T1.url,T1.id ")
 		   .append("FROM ACTIVITY_INFO T1 ")
 		   .append("INNER JOIN RC_GROUP T2 ON T2.id=T1.id ")
 		   .append("WHERE T1.id=? ");

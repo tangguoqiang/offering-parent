@@ -1,5 +1,7 @@
 package com.offering.bean;
 
+import com.offering.annotation.Column;
+
 /**
  * 群成员表
  * @author surfacepro3
@@ -7,8 +9,11 @@ package com.offering.bean;
  */
 public class Member {
 
+	@Column
 	private String id;
+	@Column
 	private String groupId;
+	@Column
 	private String memberId;
 	private String nickname;
 	private String url;

@@ -44,7 +44,7 @@ public class CommunityTopicCommentDaoImpl extends BaseDaoImpl<CommunityTopicComm
 		
 		sql.append("UNION ALL ");
 		sql.append("SELECT P1.id,P1.topicId,'2' commentType,P1.createrId,P2.content,P1.createTime,")
-		   .append("'有人给你点了一个赞' comment ")
+		   .append("'给你点了个赞' comment ")
 		   .append("FROM COMMUNITY_TOPIC_PRAISE P1 ")
 		   .append("INNER JOIN COMMUNITY_TOPIC P2 ON P2.id=P1.topicId ")
 		   .append("WHERE P1.isRead=? AND P2.createrId=? ");
@@ -55,7 +55,8 @@ public class CommunityTopicCommentDaoImpl extends BaseDaoImpl<CommunityTopicComm
 		sql.append(") O1 ")
 		   .append("INNER JOIN USER_INFO O2 ON O2.id=O1.createrId ")
 		   .append("LEFT JOIN USER_GREATER O3 ON O3.id=O2.id ")
-		   .append("LEFT JOIN SYS_SCHOOL O4 ON O4.id=O2.schoolId ");
+		   .append("LEFT JOIN SYS_SCHOOL O4 ON O4.id=O2.schoolId ")
+		   .append("ORDER BY createTime DESC ");
 		
 		return getRecords(sql.toString(), paramInfo, CommunityTopicComment.class);
 	}

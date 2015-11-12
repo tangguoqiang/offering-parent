@@ -47,7 +47,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	 * @return
 	 */
 	public long getCount(String sql, ParamInfo paramInfo,int type) {
-		log.info(sql);
+		log.debug(sql);
 		if (paramInfo == null) {
 			return jdbcTemplate.queryForObject(sql, Long.class);
 		} else {
@@ -72,7 +72,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			}
 		}
 		sql = sql.replaceAll("limit \\d* offset \\d*", "");
-		log.info(sql);
+		log.debug(sql);
 		if (paramInfo == null) {
 			return jdbcTemplate.queryForObject(sql, Long.class);
 		} else {
@@ -93,7 +93,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 					.append(page.getPageSize() * (page.getCurrentPage() -1));
 			sql = sb.toString();
 		}
-		log.info(sql);
+		log.debug(sql);
 		if (paramInfo == null)
 			return jdbcTemplate.query(sql, new CommonRowMapper<T>(cls));
 		return jdbcTemplate.query(sql, paramInfo.getParams(),
@@ -149,7 +149,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			sql.append("?,");
 		}
 		sql.replace(sql.length() - 1, sql.length(), ")");
-		log.info(sql.toString());
+		log.debug(sql.toString());
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {

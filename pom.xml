@@ -71,6 +71,10 @@
   	<module>offering-utils</module>
   	<module>offering-admin</module>
   	<module>offering-redis</module>
+  	
+  	
+  	
+  	<module>offering-job</module>
   </modules>
   <build>
   	<pluginManagement>

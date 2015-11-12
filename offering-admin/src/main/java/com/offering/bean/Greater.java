@@ -3,6 +3,7 @@ package com.offering.bean;
 import java.util.List;
 
 import com.offering.annotation.Column;
+import com.offering.utils.Utils;
 
 public class Greater {
 	@Column
@@ -121,6 +122,17 @@ public class Greater {
 		return tags;
 	}
 	public void setTags(String tags) {
+		if(tags != null){
+			String[] arr = tags.split("[,，]");
+			String tmp = "";
+			for(String s : arr){
+				if(!Utils.isEmpty(s))
+					tmp = tmp + s + ",";
+			}
+			if(tmp.endsWith(","))
+				tmp = tmp.substring(0,tmp.length() - 1);
+			tags = tmp;
+		}
 		this.tags = tags;
 	}
 	public String getExperience() {

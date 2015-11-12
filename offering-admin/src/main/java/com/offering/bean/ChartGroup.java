@@ -21,6 +21,7 @@ public class ChartGroup {
 	private String share_group_image;
 	private String status;
 	
+	private String url;
 	public String getId() {
 		return id;
 	}
@@ -56,5 +57,11 @@ public class ChartGroup {
 	}
 	public void setShare_group_image(String share_group_image) {
 		this.share_group_image = share_group_image;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

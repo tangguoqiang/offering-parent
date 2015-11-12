@@ -155,12 +155,14 @@ public class AppServiceImpl implements AppService{
 	 * @param time
 	 * @return
 	 */
-	public List<CommunityTopic> listTopics_new(String type,String time){
-		List<CommunityTopic> l =  communityTopicDao.listTopics_new(type, time);
+	public List<CommunityTopic> listTopics_new(String userId,String type,String time){
+		List<CommunityTopic> l =  communityTopicDao.listTopics_new(userId,type, time);
 		if(Utils.isEmpty(type) || GloabConstant.OP_DOWN.equals(type)){
-			CommunityTopic topTopic = communityTopicDao.getTopTopic();
-			if(topTopic != null)
+			CommunityTopic topTopic = communityTopicDao.getTopTopic(userId);
+			if(topTopic != null && l.size() >= 2){
+				topTopic.setPost("这里是置3的帖子!");
 				l.add(2, topTopic);
+			}
 		}
 		
 		List<String> idList = new ArrayList<String>();
@@ -179,7 +181,7 @@ public class AppServiceImpl implements AppService{
 						tmpList = imageMap.get(topicId);
 					else
 						tmpList = new ArrayList<String>();
-					tmpList.add(QiniuUtils.getBaseUrl() +  image.getUrl());
+					tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
 					imageMap.put(topicId, tmpList);
 				}
 			}
@@ -196,12 +198,14 @@ public class AppServiceImpl implements AppService{
 	 * @param praiseNum
 	 * @return
 	 */
-	public List<CommunityTopic> listTopics_hot(String type,String praiseNum){
-		List<CommunityTopic> l =  communityTopicDao.listTopics_hot(type, praiseNum);
+	public List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum){
+		List<CommunityTopic> l =  communityTopicDao.listTopics_hot(userId,type, praiseNum);
 		if(Utils.isEmpty(type) || GloabConstant.OP_DOWN.equals(type)){
-			CommunityTopic topTopic = communityTopicDao.getTopTopic();
-			if(topTopic != null)
+			CommunityTopic topTopic = communityTopicDao.getTopTopic(userId);
+			if(topTopic != null && l.size() >= 2){
+				topTopic.setPost("这里是置3的帖子!");
 				l.add(2, topTopic);
+			}
 		}
 		
 		List<String> idList = new ArrayList<String>();
@@ -220,7 +224,7 @@ public class AppServiceImpl implements AppService{
 						tmpList = imageMap.get(topicId);
 					else
 						tmpList = new ArrayList<String>();
-					tmpList.add(QiniuUtils.getBaseUrl() +  image.getUrl());
+					tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
 					imageMap.put(topicId, tmpList);
 				}
 			}
@@ -249,14 +253,14 @@ public class AppServiceImpl implements AppService{
 		extras.put("type", GloabConstant.NOTIFY_TYPE_1);
 		JpushUtils.sendMessage("有新话题", null, extras,JpushType.MESSAGE);
 		
-		CommunityTopic returnTopic = communityTopicDao.getTopicInfoById(id + "");
+		CommunityTopic returnTopic = communityTopicDao.getTopicInfoById(topic.getCreaterId(),id + "");
 		List<String> idList = new ArrayList<String>();
 		idList.add(id + "");
 		List<CommunityTopicImage> imageList = communityTopicImageDao.listImagesByTopicId(idList);
 		if(imageList != null && imageList.size() > 0){
 			List<String> tmpList = new ArrayList<String>();
 			for(CommunityTopicImage image : imageList){
-				tmpList.add(QiniuUtils.getBaseUrl() +  image.getUrl());
+				tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
 			}
 			returnTopic.setImages(tmpList);
 		}
@@ -272,11 +276,16 @@ public class AppServiceImpl implements AppService{
 	public long praise(CommunityTopicPraise praise,String topic_createrId){
 		if(!communityTopicPraiseDao.isExistsPraise(praise.getCreaterId(),praise.getTopicId())){
 			communityTopicPraiseDao.insertRecord(praise, "COMMUNITY_TOPIC_PRAISE");
-			//TODO 需要推送通知给话题创建人
-			Map<String, String> extras = new HashMap<String, String>();
-			extras.put("topicId", praise.getTopicId());
-			JpushUtils.sendMessage("您收获了一个赞！", 
-					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+			
+			if(!Utils.isEmpty(topic_createrId) && 
+					(!topic_createrId.equals(praise.getCreaterId()))){
+				Map<String, String> extras = new HashMap<String, String>();
+				extras.put("topicId", praise.getTopicId());
+				JpushUtils.sendMessage("您收获了一个赞！", 
+						new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+			}
+		}else{
+			communityTopicPraiseDao.delPraise(praise.getCreaterId(),praise.getTopicId());
 		}
 		
 		return communityTopicPraiseDao.getPraiseCount(praise.getTopicId());
@@ -298,7 +307,6 @@ public class AppServiceImpl implements AppService{
 				}
 			}
 				
-			
 			List<CommunityTopicImage> imageList = communityTopicImageDao.listImagesByTopicId(idList);
 			Map<String, List<String>> imageMap = new HashMap<String, List<String>>();
 			List<String> tmpList = null;
@@ -310,13 +318,13 @@ public class AppServiceImpl implements AppService{
 						tmpList = imageMap.get(topicId);
 					else
 						tmpList = new ArrayList<String>();
-					tmpList.add(QiniuUtils.getBaseUrl() +  image.getUrl());
+					tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
 					imageMap.put(topicId, tmpList);
 				}
 			}
 			
 			for(CommunityTopicComment comment : l){
-				comment.setImages(tmpList);
+				comment.setImages(imageMap.get(comment.getTopicId()));
 			}
 		}
 		return l;
@@ -369,8 +377,8 @@ public class AppServiceImpl implements AppService{
 	 * @param id
 	 * @return
 	 */
-	public CommunityTopic getTopicInfoById(String id){
-		CommunityTopic topic = communityTopicDao.getTopicInfoById(id);
+	public CommunityTopic getTopicInfoById(String userId,String id){
+		CommunityTopic topic = communityTopicDao.getTopicInfoById(userId,id);
 		if(topic == null)
 			return null;
 		List<String> idList = new ArrayList<String>();
@@ -379,7 +387,7 @@ public class AppServiceImpl implements AppService{
 		if(imageList != null && imageList.size() > 0){
 			List<String> tmpList = new ArrayList<String>();
 			for(CommunityTopicImage image : imageList){
-				tmpList.add(QiniuUtils.getBaseUrl() +  image.getUrl());
+				tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
 			}
 			topic.setImages(tmpList);
 		}
@@ -402,11 +410,13 @@ public class AppServiceImpl implements AppService{
 	 */
 	public CommunityTopicComment addComment(CommunityTopicComment comment,String topic_createrId){
 		long id = communityTopicCommentDao.insertRecord(comment, "COMMUNITY_TOPIC_COMMENT");
-		//TODO 推送消息通知
-		Map<String, String> extras = new HashMap<String, String>();
-		extras.put("topicId", comment.getTopicId());
-		JpushUtils.sendMessage("您有新的评论！", 
-				new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+		if(!Utils.isEmpty(topic_createrId) && 
+				(!topic_createrId.equals(comment.getCreaterId()))){
+			Map<String, String> extras = new HashMap<String, String>();
+			extras.put("topicId", comment.getTopicId());
+			JpushUtils.sendMessage("您有新的评论！", 
+					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+		}
 		return communityTopicCommentDao.getCommentById(id + "");
 	}
 }

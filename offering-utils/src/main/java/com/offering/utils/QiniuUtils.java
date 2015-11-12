@@ -29,6 +29,8 @@ public class QiniuUtils {
 	private final static String KEY_PREV = "test/";
 	
 	private final static String BASE_URL = "http://7xntb5.com1.z0.glb.clouddn.com/";
+	private final static String STYLE_SEP = "-";
+	public final static String STYLE_ZOOM = "zoomh200w200";
 	
 	private static UploadManager uploadManager = new UploadManager();
 	
@@ -78,8 +80,8 @@ public class QiniuUtils {
 		System.out.println(getUpToken());
 	}
 
-	public static String getBaseUrl() {
-		return BASE_URL;
+	public static String getFullUrl(String key,String style) {
+		return BASE_URL + key + STYLE_SEP + (Utils.isEmpty(style) ? "" : style);
 	}
 	
 }

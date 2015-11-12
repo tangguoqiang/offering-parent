@@ -37,4 +37,11 @@ public interface CommunityTopicPraiseDao extends BaseDao<CommunityTopicPraise>{
 	 * @param userId
 	 */
 	void updateToRead(List<String> idList);
+	
+	/**
+	 * 删除赞
+	 * @param createrId
+	 * @param topicId
+	 */
+	void delPraise(String createrId,String topicId);
 }

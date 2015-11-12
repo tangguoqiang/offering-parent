@@ -40,7 +40,7 @@ public interface AppService {
 	 * @param time
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_new(String type,String time);
+	List<CommunityTopic> listTopics_new(String userId,String type,String time);
 	
 	/**
 	 * 获取热门话题列表
@@ -48,7 +48,7 @@ public interface AppService {
 	 * @param praiseNum
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_hot(String type,String praiseNum);
+	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum);
 	
 	/**
 	 * 发布话题
@@ -89,7 +89,7 @@ public interface AppService {
 	 * @param id
 	 * @return
 	 */
-	CommunityTopic getTopicInfoById(String id);
+	CommunityTopic getTopicInfoById(String userId,String id);
 	
 	/**
 	 * 根据话题id加载评论列表

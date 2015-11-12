@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Utils {
 
 	public static boolean isEmpty(String s){
-		return s == null || "".equals(s);
+		return s == null || "".equals(s.trim());
 	}
 	
 	public static String getUUID() {  

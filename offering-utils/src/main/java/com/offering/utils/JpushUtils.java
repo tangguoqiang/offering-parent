@@ -11,6 +11,7 @@ import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -35,7 +36,7 @@ public class JpushUtils {
 	
 	public final static String ALIAS_PREV = "userId_";
 	
-	private static Thread thread = null;
+	private final static Thread thread = new JpushThread("Jpush");
 	
 	public enum JpushType{
 		NOTIFY,MESSAGE;
@@ -49,10 +50,7 @@ public class JpushUtils {
 	}
 	
 	public static void init(){
-		if(thread == null){
-			thread = new JpushThread("JpushUtils");
-			thread.start();
-		}
+		thread.start();
 	}
 	
 	public static void destroy(){
@@ -63,7 +61,9 @@ public class JpushUtils {
 	
 	public static void sendMessage(String content, String[] alias,
 			Map<String, String> extras,JpushType type) {
-		queue.add(new JpushMessage(content, alias, extras,type));
+		JpushMessage mess = new JpushMessage(content, alias, extras,type);
+		LOG.info("新增推送消息:" + mess);
+		queue.add(mess);
 	}
 	
 	static class JpushMessage{
@@ -124,9 +124,12 @@ public class JpushUtils {
 			while(true){
 				if(!queue.isEmpty()){
 					mess = queue.poll();
-					LOG.info(mess);
-					System.out.println(mess);
-					send(mess);
+					synchronized (queue) {
+						LOG.info("推送消息(begin) :" + mess);
+						long startTime = System.currentTimeMillis();
+						send(mess);
+						LOG.info("推送消息(end) :" + mess + ",耗时:" + (System.currentTimeMillis() - startTime));
+					}
 				}
 			}
 		}
@@ -146,6 +149,9 @@ public class JpushUtils {
 				}
 				
 				builder.setPlatform(Platform.all());
+				builder.setOptions(Options.newBuilder()
+                        .setApnsProduction(true)
+                        .build());
 				String[] alias = mess.getAlias();
 				if(alias != null && alias.length > 0)
 					builder.setAudience(Audience.alias(alias));
@@ -155,7 +161,7 @@ public class JpushUtils {
 				PushPayload pushPayload = builder.build();
 				jpushClient.sendPush(pushPayload);
 			} catch (APIConnectionException | APIRequestException e) {
-				LOG.error(e);
+				LOG.error(e.getMessage());
 			}
 		}
 		
@@ -186,8 +192,8 @@ public class JpushUtils {
 	
 	public static void main(String[] args) {
 		JpushUtils.init();
-		for(int i=0;i<20;i++){
-			JpushUtils.sendMessage("aaa" + i, new String[]{ALIAS_PREV+191}, null, JpushType.NOTIFY);
-		}
+//		for(int i=0;i<20;i++){
+			JpushUtils.sendMessage("aaa" , new String[]{ALIAS_PREV+202}, null, JpushType.NOTIFY);
+//		}
 	}
 }

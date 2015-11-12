@@ -30,6 +30,7 @@ public class CommunityTopic {
 	private String school;
 	private String praiseNum;
 	private String commentNum;
+	private String isPraise;
 	
 	private List<String> images;
 	
@@ -116,5 +117,11 @@ public class CommunityTopic {
 	}
 	public void setImages(List<String> images) {
 		this.images = images;
+	}
+	public String getIsPraise() {
+		return isPraise;
+	}
+	public void setIsPraise(String isPraise) {
+		this.isPraise = isPraise;
 	}
 }

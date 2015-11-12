@@ -970,6 +970,31 @@ public class AppController_new {
 	}
 	
 	/**
+	 * 获取群组信息
+	 * @param userId
+	 * @param token
+	 * @param groupId
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/getGroupInfo",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> getGroupInfo(String userId,String token,String groupId,
+			HttpServletRequest req) {
+		Map<String, Object> m = Utils.checkParam(req, new String[]{"userId","token","groupId"});
+		if(m != null)
+			return m;
+		if(userService.checkToken(userId,token)){
+			ChartGroup group = activityService.getGroupById(groupId);
+			if(group == null)
+				return Utils.failture("群组不存在！");
+			return Utils.success(group);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
 	 * 获取群成员
 	 * @param userId
 	 * @param token
@@ -1177,9 +1202,9 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/listTopics_new",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> listTopics_new(String type,String time) {
+	public Map<String, Object> listTopics_new(String userId,String type,String time) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("topic", appService.listTopics_new(type,time));
+		dataMap.put("topic", appService.listTopics_new(userId,type,time));
 		return Utils.success(dataMap);
 	}
 	
@@ -1191,9 +1216,9 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/listTopics_hot",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> listTopics_hot(String type,String praiseNum) {
+	public Map<String, Object> listTopics_hot(String userId,String type,String praiseNum) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("topic", appService.listTopics_hot(type,praiseNum));
+		dataMap.put("topic", appService.listTopics_hot(userId,type,praiseNum));
 		return Utils.success(dataMap);
 	}
 	
@@ -1337,7 +1362,7 @@ public class AppController_new {
 			String topicId,String time,HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			CommunityTopic topic = appService.getTopicInfoById(topicId);
+			CommunityTopic topic = appService.getTopicInfoById(userId,topicId);
 			if(topic != null){
 				dataMap.put("createrId", topic.getCreaterId());
 				dataMap.put("name", topic.getName());
@@ -1351,6 +1376,7 @@ public class AppController_new {
 				dataMap.put("images", topic.getImages());
 				dataMap.put("praiseNum", topic.getPraiseNum());
 				dataMap.put("commentNum", topic.getCommentNum());
+				dataMap.put("isPraise", topic.getIsPraise());
 			}
 			dataMap.put("comments", appService.listComments(topicId,time));
 			return Utils.success(dataMap);

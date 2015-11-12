@@ -20,6 +20,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
 	<context:component-scan base-package="com.offering.core" />
 	<context:component-scan base-package="com.offering.redis" />
 	
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+	</bean>
+	
 	<tx:annotation-driven  transaction-manager="transactionManager"/>
 	<context:property-placeholder
 		system-properties-mode="OVERRIDE" properties-ref="databaseProps" order="10" ignore-unresolvable="true"/>

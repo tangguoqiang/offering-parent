@@ -17,7 +17,7 @@ public interface CommunityTopicDao extends BaseDao<CommunityTopic>{
 	 * @param time
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_new(String type,String time);
+	List<CommunityTopic> listTopics_new(String userId,String type,String time);
 	
 	/**
 	 * 获取热门话题列表
@@ -25,18 +25,18 @@ public interface CommunityTopicDao extends BaseDao<CommunityTopic>{
 	 * @param praiseNum
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_hot(String type,String praiseNum);
+	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum);
 	
 	/**
 	 * 获取置顶帖
 	 * @return
 	 */
-	CommunityTopic getTopTopic();
+	CommunityTopic getTopTopic(String userId);
 	
 	/**
 	 * 根据id获取话题信息
 	 * @param id
 	 * @return
 	 */
-	CommunityTopic getTopicInfoById(String id);
+	CommunityTopic getTopicInfoById(String userId,String id);
 }
