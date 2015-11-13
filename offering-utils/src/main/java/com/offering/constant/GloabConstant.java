@@ -8,10 +8,14 @@ package com.offering.constant;
  */
 public class GloabConstant {
 	
+	public final static String CURRENT_MODEL = "0";
+	
+	
 	/**
 	 * 产品状态 0：测试 1:生产
 	 */
-	public final static String PRODUCT_MODEL = "0";
+	public final static String MODEL_TEST = "0";
+	public final static String MODEL_PRODUCT = "1";
 	
 	/**
 	 *  是否 0：是  1：否

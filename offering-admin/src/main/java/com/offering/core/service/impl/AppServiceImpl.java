@@ -79,8 +79,26 @@ public class AppServiceImpl implements AppService{
 		if(greaterList != null && greaterList.size() > 0)
 		{
 			List<String> idList = new ArrayList<String>();
-			for(Greater greater : greaterList)
+			String tags = "";
+			for(Greater greater : greaterList){
+				tags = "";
+				if(!Utils.isEmpty(greater.getSchoolName()))
+					tags = tags + greater.getSchoolName() + ",";
+				if(!Utils.isEmpty(greater.getCompany()))
+					tags = tags + greater.getCompany() + ",";
+				if(!Utils.isEmpty(greater.getIndustryName()))
+					tags = tags + greater.getIndustryName() + ",";
+				if(!Utils.isEmpty(greater.getWorkYears())){
+					if(Integer.valueOf(greater.getWorkYears()) <= 5)
+						tags = tags + greater.getWorkYears() + "年工作经验,";
+					else
+						tags = tags + "五年以上工作经验,";
+				}
+				
+				greater.setTags(tags + greater.getTags());
+					
 				idList.add(greater.getId());
+			}
 			
 			List<Topic> topicList = topicDao.listTopicsByGreaterId(idList);
 			Map<String, Topic> topicMap = new HashMap<String, Topic>();
@@ -116,6 +134,22 @@ public class AppServiceImpl implements AppService{
 		idList.add(id);
 		greater.setTopics(topicDao.listTopicsByGreaterId(idList));
 		greater.setActivities(activityDao.listActivitysByGreaterId(id));
+		
+		String tags = "";
+		if(!Utils.isEmpty(greater.getSchoolName()))
+			tags = tags + greater.getSchoolName() + ",";
+		if(!Utils.isEmpty(greater.getCompany()))
+			tags = tags + greater.getCompany() + ",";
+		if(!Utils.isEmpty(greater.getIndustryName()))
+			tags = tags + greater.getIndustryName() + ",";
+		if(!Utils.isEmpty(greater.getWorkYears())){
+			if(Integer.valueOf(greater.getWorkYears()) <= 5)
+				tags = tags + greater.getWorkYears() + "年工作经验,";
+			else
+				tags = tags + "五年以上工作经验,";
+		}
+		
+		greater.setTags(tags + greater.getTags());
 		return greater;
 	}
 	
@@ -281,7 +315,7 @@ public class AppServiceImpl implements AppService{
 					(!topic_createrId.equals(praise.getCreaterId()))){
 				Map<String, String> extras = new HashMap<String, String>();
 				extras.put("topicId", praise.getTopicId());
-				JpushUtils.sendMessage("您收获了一个赞！", 
+				JpushUtils.sendMessage("有人给您点了一个赞！", 
 						new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
 			}
 		}else{
@@ -414,7 +448,7 @@ public class AppServiceImpl implements AppService{
 				(!topic_createrId.equals(comment.getCreaterId()))){
 			Map<String, String> extras = new HashMap<String, String>();
 			extras.put("topicId", comment.getTopicId());
-			JpushUtils.sendMessage("您有新的评论！", 
+			JpushUtils.sendMessage("看!有评论！", 
 					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
 		}
 		return communityTopicCommentDao.getCommentById(id + "");

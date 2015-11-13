@@ -29,7 +29,7 @@ public class GreaterDaoImpl extends BaseDaoImpl<Greater> implements GreaterDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT T1.id,T2.nickname,T1.post,T2.url,T1.introduce,")
 		   .append("T1.online_startTime,T1.online_endTime,")
-		   .append("CONCAT(IFNULL(T4.name,''),',',T1.company,',',IFNULL(T3.name,''),',',T1.workYears,'年工作经验,',T1.tags) tags ")
+		   .append("T4.name schoolName,T1.company,T3.name industryName,T1.workYears,T1.tags ")
 		   .append("FROM USER_GREATER T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.ID ")
 		   .append("LEFT JOIN SYS_DICT T3 ON T3.code=T2.industry AND T3.groupName=? ")
@@ -53,7 +53,7 @@ public class GreaterDaoImpl extends BaseDaoImpl<Greater> implements GreaterDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT T1.id,T2.nickname,T1.post,T2.url,T1.introduce,")
 		   .append("T1.online_startTime,T1.online_endTime,T1.backgroud_url,")
-		   .append("CONCAT(IFNULL(T3.name,''),',',T1.company,',',IFNULL(T4.name,''),',',T1.workYears,'年工作经验,',T1.tags) tags ")
+		   .append("T4.name schoolName,T1.company,T3.name industryName,T1.workYears,T1.tags ")
 		   .append("FROM USER_GREATER T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.ID ")
 		   .append("LEFT JOIN SYS_SCHOOL T3 ON T3.ID=T2.schoolId ")

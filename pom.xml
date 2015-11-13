@@ -75,6 +75,7 @@
   	
   	
   	<module>offering-job</module>
+  	<module>offering-pay</module>
   </modules>
   <build>
   	<pluginManagement>

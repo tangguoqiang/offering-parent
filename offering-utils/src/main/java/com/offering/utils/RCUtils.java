@@ -11,6 +11,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import com.offering.constant.GloabConstant;
+
 /**
  * 融云接口
  * @author surfacepro3
@@ -20,10 +22,27 @@ public class RCUtils {
 
 	private final static Logger LOG = Logger.getLogger(RCUtils.class);
 	//测试环境pvxdm17jx829r/TYkLhjaVE7,正式环境uwd1c0sxd3lt1/Vm4N3C2JLcS1
-	private final static String APP_KEY = "pvxdm17jx829r";
-	private final static String APP_SECRET = "TYkLhjaVE7";
+	private final static String APP_KEY_TEST = "pvxdm17jx829r";
+	private final static String APP_SECRET_TEST = "TYkLhjaVE7";
+	
+	private final static String APP_KEY_RPODUCT = "uwd1c0sxd3lt1";
+	private final static String APP_SECRET_RPODUCT  = "Vm4N3C2JLcS1";
+	
+	private static String APP_KEY = "";
+	private static String APP_SECRET = "";
 	
 	private final static int CODE_OK = 200;
+	
+	static{
+		if(GloabConstant.CURRENT_MODEL.equals(GloabConstant.MODEL_PRODUCT)){
+			//生产环境
+			APP_KEY = APP_KEY_RPODUCT;
+			APP_SECRET = APP_SECRET_RPODUCT;
+		}else{
+			APP_KEY = APP_KEY_TEST;
+			APP_SECRET = APP_SECRET_TEST;
+		}
+	}
 	
 	/**
 	 * 用户登录获取token

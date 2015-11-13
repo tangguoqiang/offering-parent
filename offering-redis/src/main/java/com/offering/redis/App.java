@@ -40,6 +40,7 @@ public class App {
 //		redisOp.delete("user");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		System.out.println(sdf.format(new Date()));;
+		System.err.println(System.getProperty("os.name"));
 	}
 	
 	public static class TestBean{
