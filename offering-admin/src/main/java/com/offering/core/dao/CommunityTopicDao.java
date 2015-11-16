@@ -21,11 +21,13 @@ public interface CommunityTopicDao extends BaseDao<CommunityTopic>{
 	
 	/**
 	 * 获取热门话题列表
+	 * @param userId
 	 * @param type
 	 * @param praiseNum
+	 * @param time
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum);
+	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum,String time);
 	
 	/**
 	 * 获取置顶帖

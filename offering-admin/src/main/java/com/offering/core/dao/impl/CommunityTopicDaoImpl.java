@@ -61,7 +61,8 @@ public class CommunityTopicDaoImpl extends BaseDaoImpl<CommunityTopic> implement
 	 * @param praiseNum
 	 * @return
 	 */
-	public List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum){
+	public List<CommunityTopic> listTopics_hot(String userId,String type,
+			String praiseNum,String time){
 		StringBuilder sql = new StringBuilder();
 		ParamInfo paramInfo = new ParamInfo();
 		sql.append("SELECT * FROM (");
@@ -78,14 +79,16 @@ public class CommunityTopicDaoImpl extends BaseDaoImpl<CommunityTopic> implement
 		   .append("INNER JOIN USER_INFO T2 ON T2.id=T1.createrId ")
 		   .append("LEFT JOIN SYS_SCHOOL T3 ON T3.id=T2.schoolId ")
 		   .append("LEFT JOIN USER_GREATER T4 ON T4.id=T1.createrId ")
-		   .append("WHERE T1.isTop=? ) TMP ");
+		   .append("WHERE T1.isTop=? ) TMP WHERE praiseNum >= 5 ");
 		
 		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.YESNO_NO);
 		if(!Utils.isEmpty(praiseNum)){
-			sql.append("WHERE praiseNum < ? ");
+			sql.append("AND (praiseNum < ? OR (praiseNum = ? AND createTime < ?))");
 			paramInfo.setTypeAndData(Types.BIGINT, praiseNum);
+			paramInfo.setTypeAndData(Types.BIGINT, praiseNum);
+			paramInfo.setTypeAndData(Types.BIGINT, time);
 		}
-		sql.append("ORDER BY praiseNum DESC ");
+		sql.append("ORDER BY praiseNum DESC,createTime DESC ");
 		sql.append("LIMIT 15 ");
 		return getRecords(sql.toString(), paramInfo, CommunityTopic.class);
 	}

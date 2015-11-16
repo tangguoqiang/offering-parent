@@ -232,8 +232,9 @@ public class AppServiceImpl implements AppService{
 	 * @param praiseNum
 	 * @return
 	 */
-	public List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum){
-		List<CommunityTopic> l =  communityTopicDao.listTopics_hot(userId,type, praiseNum);
+	public List<CommunityTopic> listTopics_hot(String userId,String type,
+			String praiseNum,String time){
+		List<CommunityTopic> l =  communityTopicDao.listTopics_hot(userId,type, praiseNum,time);
 		if(Utils.isEmpty(type) || GloabConstant.OP_DOWN.equals(type)){
 			CommunityTopic topTopic = communityTopicDao.getTopTopic(userId);
 			if(topTopic != null && l.size() >= 2){

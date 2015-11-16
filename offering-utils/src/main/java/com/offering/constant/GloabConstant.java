@@ -8,7 +8,7 @@ package com.offering.constant;
  */
 public class GloabConstant {
 	
-	public final static String CURRENT_MODEL = "0";
+	public final static String CURRENT_MODEL = "1";
 	
 	
 	/**

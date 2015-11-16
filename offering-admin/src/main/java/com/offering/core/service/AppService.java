@@ -48,7 +48,7 @@ public interface AppService {
 	 * @param praiseNum
 	 * @return
 	 */
-	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum);
+	List<CommunityTopic> listTopics_hot(String userId,String type,String praiseNum,String time);
 	
 	/**
 	 * 发布话题

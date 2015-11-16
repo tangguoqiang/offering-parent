@@ -1216,9 +1216,10 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/listTopics_hot",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> listTopics_hot(String userId,String type,String praiseNum) {
+	public Map<String, Object> listTopics_hot(String userId,String type,
+			String praiseNum,String time) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("topic", appService.listTopics_hot(userId,type,praiseNum));
+		dataMap.put("topic", appService.listTopics_hot(userId,type,praiseNum,time));
 		return Utils.success(dataMap);
 	}
 	

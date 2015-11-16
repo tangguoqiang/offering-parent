@@ -9,6 +9,8 @@ import static com.offering.constant.GloabConstant.REP_MSG;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,10 +139,50 @@ public class Utils {
 		int n = rand.nextInt(10000);
 		while(n <1000)
 		{
-			System.out.println(n);
 			n = rand.nextInt(10000);
 		}
 			
 		return  n + "";
+	}
+	
+	/**
+	 * 生成随机数（1-9位）
+	 * @param digit 位数
+	 * @return
+	 */
+	public static String randNum(int digit)
+	{
+		if(digit < 1 || digit > 9)
+			return "";
+		int maxNum = 1;
+		for(int i = 0;i < digit;i++)
+			maxNum *= 10;
+		int minNum = 0;
+		if(digit > 1)
+			minNum = maxNum/10;
+		Random rand = new Random();
+		int n = rand.nextInt(maxNum);
+		while(n < minNum)
+		{
+			n = rand.nextInt(maxNum);
+		}
+		return  n + "";
+	}
+	
+	/**
+	 * 获取本机id
+	 * @return
+	 */
+	public static String getLocalIp(){
+		InetAddress addr;
+		String ip = null;
+		try {
+			addr = InetAddress.getLocalHost();
+			ip =addr.getHostAddress();//获得本机IP
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+//		address=addr.getHostName()toString;//获得本机名称
+		return ip;
 	}
 }

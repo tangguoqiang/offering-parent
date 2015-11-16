@@ -1,5 +1,6 @@
 package com.offering.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 /**
@@ -49,6 +50,37 @@ public class MD5Util {
 		}
 		String s = new String(a);
 		return s;
+
+	}
+	
+	/***
+	 * MD5加码 生成32位md5码
+	 */
+	public static String string2MD5(String inStr,String charset){
+		MessageDigest md5 = null;
+		try{
+			md5 = MessageDigest.getInstance("MD5");
+		}catch (Exception e){
+			System.out.println(e.toString());
+			e.printStackTrace();
+			return "";
+		}
+		
+		byte[] md5Bytes = null;
+		try {
+			md5Bytes = md5.digest(inStr.getBytes(charset));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return "";
+		}
+		StringBuffer hexValue = new StringBuffer();
+		for (int i = 0; i < md5Bytes.length; i++){
+			int val = ((int) md5Bytes[i]) & 0xff;
+			if (val < 16)
+				hexValue.append("0");
+			hexValue.append(Integer.toHexString(val));
+		}
+		return hexValue.toString();
 
 	}
 
