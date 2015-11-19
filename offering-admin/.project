@@ -3,6 +3,7 @@
 	<name>offering-admin</name>
 	<comment></comment>
 	<projects>
+		<project>offering-pay</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

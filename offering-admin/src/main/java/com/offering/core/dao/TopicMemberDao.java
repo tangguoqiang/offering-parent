@@ -1,6 +1,6 @@
 package com.offering.core.dao;
 
-import com.offering.bean.TopicMember;
+import com.offering.bean.user.TopicMember;
 
 /**
  * 话题成员dao

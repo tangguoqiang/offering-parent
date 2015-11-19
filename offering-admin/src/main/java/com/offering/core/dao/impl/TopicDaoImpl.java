@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.offering.bean.ParamInfo;
-import com.offering.bean.Topic;
+import com.offering.bean.sys.ParamInfo;
+import com.offering.bean.user.Topic;
 import com.offering.core.dao.TopicDao;
 
 /**

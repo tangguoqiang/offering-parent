@@ -2,8 +2,8 @@ package com.offering.core.dao;
 
 import java.util.List;
 
-import com.offering.bean.Greater;
-import com.offering.bean.PageInfo;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.user.Greater;
 
 /**
  * 大拿dao

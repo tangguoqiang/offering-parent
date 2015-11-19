@@ -44,7 +44,7 @@ public class WeixinPay {
 		//接收微信支付异步通知回调地址
 		params.put("notify_url", "http://www.weixin.qq.com/wxpay/pay.php");
 		//订单号
-		params.put("out_trade_no", getTradeNo());
+		params.put("out_trade_no", PayUtils.getTradeNo());
 		//终端id
 		params.put("spbill_create_ip", Utils.getLocalIp());
 		//总金额 (单位为分)
@@ -65,14 +65,6 @@ public class WeixinPay {
 		return MD5Util.string2MD5(Utils.randNum(6));
 	}
 	
-	/**
-	 * 商户订单号
-	 * @return
-	 */
-	private static String getTradeNo(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		return sdf.format(new Date()) + Utils.randNum(6);
-	}
 	
 	/**
 	 * 签名

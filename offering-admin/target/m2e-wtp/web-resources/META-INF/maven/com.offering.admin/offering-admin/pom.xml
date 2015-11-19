@@ -53,6 +53,11 @@
 		<artifactId>offering-job</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
+	<dependency>
+		<groupId>com.offering.pay</groupId>
+		<artifactId>offering-pay</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
   </dependencies>
   <build>
     <finalName>offering-admin</finalName>

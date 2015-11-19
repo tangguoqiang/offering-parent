@@ -11,7 +11,7 @@ import com.offering.constant.GloabConstant;
  * @author surfacepro3
  *
  */
-public class Log4jFileAppender extends FileAppender{
+public final class Log4jFileAppender extends FileAppender{
 	
 	@Override
 	public void append(LoggingEvent event) {

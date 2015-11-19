@@ -2,8 +2,8 @@ package com.offering.core.dao;
 
 import java.util.List;
 
-import com.offering.bean.PageInfo;
-import com.offering.bean.ParamInfo;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.sys.ParamInfo;
 
 public interface BaseDao<T> {
 

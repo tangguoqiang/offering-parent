@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.offering.bean.Activity;
-import com.offering.bean.ChartGroup;
-import com.offering.bean.Member;
-import com.offering.bean.PageInfo;
-import com.offering.bean.Speaker;
+import com.offering.bean.activity.Activity;
+import com.offering.bean.activity.Speaker;
+import com.offering.bean.chart.ChartGroup;
+import com.offering.bean.chart.Member;
+import com.offering.bean.sys.PageInfo;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.ActivityService;
 import com.offering.utils.Utils;
@@ -289,7 +289,6 @@ public class ActivityController {
 	 * @param req
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> uploadImage(HttpServletRequest req){

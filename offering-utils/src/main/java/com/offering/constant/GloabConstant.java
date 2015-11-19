@@ -6,9 +6,9 @@ package com.offering.constant;
  * @author gtang
  *
  */
-public class GloabConstant {
+public final class GloabConstant {
 	
-	public final static String CURRENT_MODEL = "1";
+	public final static String CURRENT_MODEL = "0";
 	
 	
 	/**
@@ -133,6 +133,17 @@ public class GloabConstant {
 	 */
 	public final static String NOTIFY_TYPE_1 = "1";
 	public final static String NOTIFY_TYPE_2 = "2";
+	
+	/**
+	 * 交易渠道  1:支付宝 2:微信
+	 */
+	public final static String CHANNEL_ALIPAY = "1";
+	public final static String CHANNEL_WX = "2";
+	
+	/**
+	 * 交易类型 1:打赏
+	 */
+	public final static String TRADE_TYPE_1 = "1";
 	
 	/**
 	 * APP服务版本

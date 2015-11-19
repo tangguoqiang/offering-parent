@@ -2,7 +2,7 @@ package com.offering.core.dao;
 
 import java.util.List;
 
-import com.offering.bean.CommunityTopic;
+import com.offering.bean.community.CommunityTopic;
 
 /**
  * 社区话题dao

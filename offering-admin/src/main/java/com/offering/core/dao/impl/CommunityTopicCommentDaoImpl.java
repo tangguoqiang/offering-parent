@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.offering.bean.CommunityTopicComment;
-import com.offering.bean.ParamInfo;
+import com.offering.bean.community.CommunityTopicComment;
+import com.offering.bean.sys.ParamInfo;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.CommunityTopicCommentDao;
 import com.offering.utils.Utils;

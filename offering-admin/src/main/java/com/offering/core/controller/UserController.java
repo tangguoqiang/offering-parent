@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.offering.bean.PageInfo;
-import com.offering.bean.User;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.user.User;
 import com.offering.core.service.UserService;
 import com.offering.utils.Utils;
 

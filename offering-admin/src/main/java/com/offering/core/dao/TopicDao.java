@@ -2,7 +2,7 @@ package com.offering.core.dao;
 
 import java.util.List;
 
-import com.offering.bean.Topic;
+import com.offering.bean.user.Topic;
 
 /**
  * 话题dao

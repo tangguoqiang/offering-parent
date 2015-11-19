@@ -2,9 +2,9 @@ package com.offering.core.service;
 
 import java.util.List;
 
-import com.offering.bean.Greater;
-import com.offering.bean.PageInfo;
-import com.offering.bean.User;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.user.Greater;
+import com.offering.bean.user.User;
 
 public interface UserService {
 

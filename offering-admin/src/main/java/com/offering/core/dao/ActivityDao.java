@@ -2,7 +2,7 @@ package com.offering.core.dao;
 
 import java.util.List;
 
-import com.offering.bean.Activity;
+import com.offering.bean.activity.Activity;
 
 /**
  * 活动dao

@@ -3,12 +3,12 @@ package com.offering.core.service;
 import java.util.List;
 import java.util.Map;
 
-import com.offering.bean.Activity;
-import com.offering.bean.ChartGroup;
-import com.offering.bean.Member;
-import com.offering.bean.Message;
-import com.offering.bean.PageInfo;
-import com.offering.bean.Speaker;
+import com.offering.bean.activity.Activity;
+import com.offering.bean.activity.Speaker;
+import com.offering.bean.chart.ChartGroup;
+import com.offering.bean.chart.Member;
+import com.offering.bean.chart.Message;
+import com.offering.bean.sys.PageInfo;
 
 public interface ActivityService {
 

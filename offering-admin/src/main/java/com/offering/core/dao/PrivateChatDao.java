@@ -1,6 +1,6 @@
 package com.offering.core.dao;
 
-import com.offering.bean.PrivateChat;
+import com.offering.bean.chart.PrivateChat;
 
 /**
  * 私聊

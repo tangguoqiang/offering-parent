@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.offering.bean.AppVersion;
-import com.offering.bean.Comcode;
-import com.offering.bean.ParamInfo;
-import com.offering.bean.School;
-import com.offering.bean.Suggest;
+import com.offering.bean.sys.AppVersion;
+import com.offering.bean.sys.Comcode;
+import com.offering.bean.sys.ParamInfo;
+import com.offering.bean.sys.School;
+import com.offering.bean.sys.Suggest;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.BaseDao;
 import com.offering.core.service.SystemService;

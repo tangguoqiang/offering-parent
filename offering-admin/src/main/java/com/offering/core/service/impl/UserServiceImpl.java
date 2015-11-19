@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.offering.bean.Greater;
-import com.offering.bean.PageInfo;
-import com.offering.bean.ParamInfo;
-import com.offering.bean.User;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.sys.ParamInfo;
+import com.offering.bean.user.Greater;
+import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.BaseDao;
 import com.offering.core.service.UserService;

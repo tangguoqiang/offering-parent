@@ -4,8 +4,8 @@ import java.sql.Types;
 
 import org.springframework.stereotype.Repository;
 
-import com.offering.bean.ParamInfo;
-import com.offering.bean.TopicMember;
+import com.offering.bean.sys.ParamInfo;
+import com.offering.bean.user.TopicMember;
 import com.offering.core.dao.TopicMemberDao;
 
 /**

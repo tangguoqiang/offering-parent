@@ -2,10 +2,10 @@ package com.offering.core.service;
 
 import java.util.List;
 
-import com.offering.bean.AppVersion;
-import com.offering.bean.Comcode;
-import com.offering.bean.School;
-import com.offering.bean.Suggest;
+import com.offering.bean.sys.AppVersion;
+import com.offering.bean.sys.Comcode;
+import com.offering.bean.sys.School;
+import com.offering.bean.sys.Suggest;
 
 public interface SystemService {
 

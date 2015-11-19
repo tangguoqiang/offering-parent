@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import com.offering.utils.Utils;
-
 /**
  * token校验filter
  * @author surfacepro3

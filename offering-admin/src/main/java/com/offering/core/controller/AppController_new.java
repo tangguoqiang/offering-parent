@@ -27,32 +27,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.offering.bean.Activity;
-import com.offering.bean.AppVersion;
-import com.offering.bean.ChartGroup;
-import com.offering.bean.Comcode;
-import com.offering.bean.CommunityTopic;
-import com.offering.bean.CommunityTopicComment;
-import com.offering.bean.CommunityTopicPraise;
-import com.offering.bean.Greater;
-import com.offering.bean.IDCode;
-import com.offering.bean.Member;
-import com.offering.bean.Message;
-import com.offering.bean.PageInfo;
-import com.offering.bean.School;
-import com.offering.bean.Speaker;
-import com.offering.bean.Suggest;
-import com.offering.bean.User;
+import com.offering.bean.activity.Activity;
+import com.offering.bean.activity.Speaker;
+import com.offering.bean.chart.ChartGroup;
+import com.offering.bean.chart.Member;
+import com.offering.bean.chart.Message;
+import com.offering.bean.community.CommunityTopic;
+import com.offering.bean.community.CommunityTopicComment;
+import com.offering.bean.community.CommunityTopicPraise;
+import com.offering.bean.sys.AppVersion;
+import com.offering.bean.sys.Comcode;
+import com.offering.bean.sys.IDCode;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.sys.School;
+import com.offering.bean.sys.Suggest;
+import com.offering.bean.trade.TradeRecord;
+import com.offering.bean.user.Greater;
+import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.ActivityService;
-import com.offering.core.service.AppService;
+import com.offering.core.service.GreaterService;
+import com.offering.core.service.ChartService;
+import com.offering.core.service.CommunityService;
 import com.offering.core.service.SystemService;
+import com.offering.core.service.TradeService;
 import com.offering.core.service.UserService;
 import com.offering.redis.RedisOp;
 import com.offering.utils.CCPUtils;
 import com.offering.utils.QiniuUtils;
 import com.offering.utils.RCUtils;
 import com.offering.utils.Utils;
+import com.pingplusplus.model.Charge;
 
 /**
  * 第三方APP接口
@@ -79,7 +84,16 @@ public class AppController_new {
 	private ActivityService activityService;
 	
 	@Autowired
-	private AppService appService;
+	private GreaterService greaterService;
+	
+	@Autowired
+	private ChartService chartService;
+	
+	@Autowired
+	private CommunityService communityService;
+	
+	@Autowired
+	private TradeService tradeService;
 	
 	@Autowired
 	private RedisOp redisOp;
@@ -1064,27 +1078,7 @@ public class AppController_new {
 		}
 	}
 	
-	/**
-	 * 意见反馈
-	 * @param suggest
-	 * @param contact
-	 * @param req
-	 * @return
-	 */
-	@RequestMapping(value = "/suggest",method={RequestMethod.POST})
-	@ResponseBody
-	public Map<String, Object> suggest(String suggest,String contact,HttpServletRequest req) {
-		Map<String, Object> m = Utils.checkParam(req, new String[]{"suggest"});
-		if(m != null)
-			return m;
-		Suggest s = new Suggest();
-		s.setSuggest(suggest);
-		s.setContact(contact);
-		s.setInsertTime(String.valueOf(System.currentTimeMillis()));
-		sysService.insertSuggest(s);
-		return Utils.success(null);
-	}
-	
+	/*============================ 大拿接口 start =====================*/
 	/**
 	 * 查询大拿列表
 	 * @param group
@@ -1095,7 +1089,7 @@ public class AppController_new {
 	@ResponseBody
 	public Map<String, Object> listGreaters(PageInfo page,@PathVariable("version")int v) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		List<Greater> greaters = appService.listGreaters(page,v);
+		List<Greater> greaters = greaterService.listGreaters(page,v);
 		if(greaters != null && greaters.size() > 0)
 		{
 			dataMap.put("greaters", Utils.convertBeanToMap(greaters,
@@ -1118,7 +1112,7 @@ public class AppController_new {
 		Map<String, Object> m = Utils.checkParam(req, new String[]{"id"});
 		if(m != null)
 			return m;
-		Greater greater = appService.getGreaterInfoById(id, v);
+		Greater greater = greaterService.getGreaterInfoById(id, v);
 		if(greater == null)
 			return Utils.failture("大拿不存在！");
 		Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -1149,47 +1143,13 @@ public class AppController_new {
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
-			appService.createPrivateChart(userId,greaterId,type,topicId);
+			chartService.createPrivateChart(userId,greaterId,type,topicId);
 			return Utils.success(null);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
 		}
 	}
-	
-	/**
-	 * 获取当前app版本
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/getCurrentVersion",method={RequestMethod.POST})
-	@ResponseBody
-	public Map<String, Object> getCurrentVersion(String deviceType) {
-		AppVersion version = sysService.getCurrentVersion(deviceType);
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		if(version != null)
-		{
-			dataMap.put("versionCode", version.getVersionCode());
-			dataMap.put("versionName", version.getVersionName());
-			dataMap.put("updateDesc", version.getUpdateDesc());
-			dataMap.put("appUrl", version.getAppUrl());
-		}else{
-			dataMap.put("versionCode", "");
-			dataMap.put("versionName", "");
-			dataMap.put("updateDesc", "");
-			dataMap.put("appUrl", "");
-		}
-		return Utils.success(dataMap);
-	}
-	
-	/**
-	 * 获取活动内容总结页面
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/activitySummary",method={RequestMethod.GET})
-	public String activitySummary(String id) {
-		return "pages/activity_summary/" + id;
-	}
+	/*============================ 大拿接口 start =====================*/
 	
 	
 	/*============================ 社区相关接口 start =====================*/
@@ -1204,7 +1164,7 @@ public class AppController_new {
 	@ResponseBody
 	public Map<String, Object> listTopics_new(String userId,String type,String time) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("topic", appService.listTopics_new(userId,type,time));
+		dataMap.put("topic", communityService.listTopics_new(userId,type,time));
 		return Utils.success(dataMap);
 	}
 	
@@ -1219,7 +1179,7 @@ public class AppController_new {
 	public Map<String, Object> listTopics_hot(String userId,String type,
 			String praiseNum,String time) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("topic", appService.listTopics_hot(userId,type,praiseNum,time));
+		dataMap.put("topic", communityService.listTopics_hot(userId,type,praiseNum,time));
 		return Utils.success(dataMap);
 	}
 	
@@ -1240,7 +1200,7 @@ public class AppController_new {
 			topic.setContent(content);
 			topic.setCreateTime(System.currentTimeMillis() + "");
 			topic.setIsTop(GloabConstant.YESNO_NO);
-			CommunityTopic returnTopic = appService.publishTopic(topic,images);
+			CommunityTopic returnTopic = communityService.publishTopic(topic,images);
 			
 			dataMap.put("id", returnTopic.getId());
 			dataMap.put("createrId", returnTopic.getCreaterId());
@@ -1280,7 +1240,7 @@ public class AppController_new {
 			praise.setCreaterId(userId);
 			praise.setCreateTime(System.currentTimeMillis() + "");
 			praise.setIsRead(GloabConstant.YESNO_NO);
-			dataMap.put("praiseNum", appService.praise(praise,topic_createrId));
+			dataMap.put("praiseNum", communityService.praise(praise,topic_createrId));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1301,7 +1261,7 @@ public class AppController_new {
 			HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			dataMap.put("comments", appService.listComments_unread(userId));
+			dataMap.put("comments", communityService.listComments_unread(userId));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1322,7 +1282,7 @@ public class AppController_new {
 	public Map<String, Object> delComment_unread(String userId,String token,
 			String commentId,String commentType,HttpServletRequest req) {
 		if(userService.checkToken(userId,token)){
-			appService.delComment_unread(commentId,commentType);
+			communityService.delComment_unread(commentId,commentType);
 			return Utils.success(null);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1341,7 +1301,7 @@ public class AppController_new {
 	public Map<String, Object> clearComments_unread(String userId,String token,
 			HttpServletRequest req) {
 		if(userService.checkToken(userId,token)){
-			appService.clearComments_unread(userId);
+			communityService.clearComments_unread(userId);
 			return Utils.success(null);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1363,7 +1323,7 @@ public class AppController_new {
 			String topicId,String time,HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			CommunityTopic topic = appService.getTopicInfoById(userId,topicId);
+			CommunityTopic topic = communityService.getTopicInfoById(userId,topicId);
 			if(topic != null){
 				dataMap.put("createrId", topic.getCreaterId());
 				dataMap.put("name", topic.getName());
@@ -1379,7 +1339,7 @@ public class AppController_new {
 				dataMap.put("commentNum", topic.getCommentNum());
 				dataMap.put("isPraise", topic.getIsPraise());
 			}
-			dataMap.put("comments", appService.listComments(topicId,time));
+			dataMap.put("comments", communityService.listComments(topicId,time));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1403,7 +1363,7 @@ public class AppController_new {
 			comment.setIsRead(GloabConstant.YESNO_NO);
 			comment.setCreaterId(userId);
 			comment.setCreateTime(System.currentTimeMillis() + "");
-			CommunityTopicComment returnComment = appService.addComment(comment,topic_createrId);
+			CommunityTopicComment returnComment = communityService.addComment(comment,topic_createrId);
 			return Utils.success(returnComment);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1411,4 +1371,87 @@ public class AppController_new {
 	}
 	
 	/*============================ 社区相关接口 end =====================*/
+	
+	/*============================ 支付接口 start =====================*/
+	
+	/**
+	 * 支付接口
+	 * @param userId
+	 * @param token
+	 * @param trade
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/pay",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> pay(String userId,String token,
+			TradeRecord trade,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			trade.setPayer(userId);
+			Charge charge = tradeService.pay(trade);
+			dataMap.put("charge", charge);
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/*============================ 支付接口 end =====================*/
+	
+	/**
+	 * 获取当前app版本
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/getCurrentVersion",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> getCurrentVersion(String deviceType) {
+		AppVersion version = sysService.getCurrentVersion(deviceType);
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(version != null)
+		{
+			dataMap.put("versionCode", version.getVersionCode());
+			dataMap.put("versionName", version.getVersionName());
+			dataMap.put("updateDesc", version.getUpdateDesc());
+			dataMap.put("appUrl", version.getAppUrl());
+		}else{
+			dataMap.put("versionCode", "");
+			dataMap.put("versionName", "");
+			dataMap.put("updateDesc", "");
+			dataMap.put("appUrl", "");
+		}
+		return Utils.success(dataMap);
+	}
+	
+	/**
+	 * 获取活动内容总结页面
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/activitySummary",method={RequestMethod.GET})
+	public String activitySummary(String id) {
+		return "pages/activity_summary/" + id;
+	}
+	
+	/**
+	 * 意见反馈
+	 * @param suggest
+	 * @param contact
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/suggest",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> suggest(String suggest,String contact,HttpServletRequest req) {
+		Map<String, Object> m = Utils.checkParam(req, new String[]{"suggest"});
+		if(m != null)
+			return m;
+		Suggest s = new Suggest();
+		s.setSuggest(suggest);
+		s.setContact(contact);
+		s.setInsertTime(String.valueOf(System.currentTimeMillis()));
+		sysService.insertSuggest(s);
+		return Utils.success(null);
+	}
 }

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.offering.bean.Greater;
-import com.offering.bean.PageInfo;
-import com.offering.bean.ParamInfo;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.sys.ParamInfo;
+import com.offering.bean.user.Greater;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.GreaterDao;
 

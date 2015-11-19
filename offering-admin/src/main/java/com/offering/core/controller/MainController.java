@@ -1,5 +1,6 @@
 package com.offering.core.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.offering.bean.User;
+import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
-import com.offering.core.service.MainService;
+import com.offering.core.service.TradeService;
 import com.offering.core.service.UserService;
 import com.offering.utils.MD5Util;
+import com.pingplusplus.model.Event;
+import com.pingplusplus.model.Webhooks;
 
 @Controller
 public class MainController {
@@ -33,10 +37,10 @@ public class MainController {
 	private final static Logger LOG = Logger.getLogger(MainController.class);
 	
 	@Autowired
-	private MainService mainService;
+	private UserService userService;
 	
 	@Autowired
-	private UserService userService;
+	private TradeService tradeService;
 
 	/**
 	 * 入口操作
@@ -92,29 +96,6 @@ public class MainController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("success", true);
 		req.getSession().setAttribute("user",null);
-		return m;
-	}
-	
-	/**
-	 * 密码修改
-	 * 
-	 * @param locale
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/resetPass", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> resetPass(String userName,
-			String oldPass,String newPass) {
-		Map<String, Object> m = new HashMap<String, Object>();
-		User user = mainService.getUserInfo(userName,MD5Util.string2MD5(oldPass));
-		if(user != null){
-			mainService.resetPass(userName,MD5Util.string2MD5(newPass));
-			m.put("success", true);
-		}else{
-			m.put("success", false);
-			m.put("msg", "旧密码输入错误！");
-		}
 		return m;
 	}
 	
@@ -200,5 +181,52 @@ public class MainController {
 	@RequestMapping(value = "/wxshare/open_app",  method ={RequestMethod.POST,RequestMethod.GET})
 	public String open_app() {
 		return "pages/wx/open_app";
+	}
+	
+	/**
+	 * 支付回调函数
+	 * @param userName
+	 * @param oldPass
+	 * @param newPass
+	 * @return
+	 */
+	@RequestMapping(value = "/payCallBack", method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public Map<String, Object> payCallBack(HttpServletRequest req,
+			HttpServletResponse response) throws Exception{
+		Map<String, Object> m = new HashMap<String, Object>();
+		req.setCharacterEncoding("UTF8");
+        //获取头部所有信息
+//        Enumeration<String> headerNames = req.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String key = (String) headerNames.nextElement();
+//            String value = req.getHeader(key);
+//            LOG.info(key+" "+value);
+//        }
+        // 获得 http body 内容
+        BufferedReader reader = req.getReader();
+        StringBuffer buffer = new StringBuffer();
+        String string;
+        while ((string = reader.readLine()) != null) {
+            buffer.append(string);
+        }
+        reader.close();
+        
+        
+        // 解析异步通知数据
+        Event event = Webhooks.eventParse(buffer.toString());
+        if ("charge.succeeded".equals(event.getType())) {
+        	//TODO 交易成功后的处理
+        	JSONObject jsonObj = new JSONObject(buffer.toString());
+            LOG.info(jsonObj);
+            tradeService.trade_success(jsonObj);
+            response.setStatus(200);
+        } else if ("refund.succeeded".equals(event.getType())) {
+        	//退款成功事件
+            response.setStatus(200);
+        } else {
+            response.setStatus(500);
+        }
+		return m;
 	}
 }

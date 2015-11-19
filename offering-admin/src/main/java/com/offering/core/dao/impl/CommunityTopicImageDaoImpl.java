@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.offering.bean.CommunityTopicImage;
-import com.offering.bean.ParamInfo;
+import com.offering.bean.community.CommunityTopicImage;
+import com.offering.bean.sys.ParamInfo;
 import com.offering.core.dao.CommunityTopicImageDao;
 
 @Repository

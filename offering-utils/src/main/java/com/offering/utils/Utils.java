@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author gtang
  *
  */
-public class Utils {
+public final class Utils {
 
 	public static boolean isEmpty(String s){
 		return s == null || "".equals(s.trim());

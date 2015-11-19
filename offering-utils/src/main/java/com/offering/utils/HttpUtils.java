@@ -18,7 +18,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-public class HttpUtils {
+public final class HttpUtils {
 	
 	private final static Logger LOG = Logger.getLogger(HttpUtils.class);
 	

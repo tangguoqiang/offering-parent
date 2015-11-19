@@ -20,8 +20,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.offering.annotation.Column;
-import com.offering.bean.PageInfo;
-import com.offering.bean.ParamInfo;
+import com.offering.bean.sys.PageInfo;
+import com.offering.bean.sys.ParamInfo;
 import com.offering.common.mapper.CommonRowMapper;
 import com.offering.core.dao.BaseDao;
 import com.offering.utils.Utils;
