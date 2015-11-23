@@ -34,4 +34,12 @@ public interface GreaterService {
 	 * @param title
 	 */
 	void askGreater(ConsultRecord cr,String title);
+	
+	/**
+	 * 咨询历史纪录
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	List<ConsultRecord>  consultHistory(String userId,String type);
 }

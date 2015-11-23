@@ -185,4 +185,27 @@ public class GreaterServiceImpl implements GreaterService{
 		}
 	}
 	
+	/**
+	 * 咨询历史纪录
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public List<ConsultRecord>  consultHistory(String userId,String type){
+		List<ConsultRecord> crList = crDao.consultHistory(userId,type);
+		if(crList != null && crList.size() > 0){
+			String status = null;
+			for(ConsultRecord cr : crList){
+				status = cr.getStatus();
+				if(GloabConstant.CONSULT_STATUS_0.equals(status))
+					cr.setStatus("进行中");
+				else if(GloabConstant.CONSULT_STATUS_1.equals(status))
+					cr.setStatus("待评价");
+				else if(GloabConstant.CONSULT_STATUS_2.equals(status))
+					cr.setStatus("已评价");
+			}
+		}
+		return crList;
+	}
+	
 }

@@ -24,7 +24,7 @@ public final class ConsultJob extends BaseJob{
 		LOG.info("任务开始执行");
 		if(jobData != null && jobData.containsKey("groupId")
 				&& jobData.containsKey("userId")&& jobData.containsKey("crId")){
-			LOG.info(jobData.getString("userId") + "," +jobData.getString("groupId"));
+			LOG.info("任务id:" +jobData.getString("groupId"));
 			//解散群组
 			RCUtils.dismissGroup(jobData.getString("userId"), 
 					jobData.getString("groupId"));

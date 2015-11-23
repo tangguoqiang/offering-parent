@@ -23,4 +23,12 @@ public interface ConsultRecDao extends BaseDao<ConsultRecord>{
 	 * @return
 	 */
 	List<ConsultRecord> listRecs_in();
+	
+	/**
+	 * 咨询历史纪录
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	List<ConsultRecord> consultHistory(String userId,String type);
 }

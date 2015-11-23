@@ -1413,6 +1413,10 @@ public class AppController_new {
 		}
 	}
 	
+	/*============================ 支付接口 end =====================*/
+	
+	/*============================ 个人中心接口 start =====================*/
+	
 	/**
 	 * 打赏记录接口
 	 * @param userId
@@ -1434,7 +1438,30 @@ public class AppController_new {
 		}
 	}
 	
-	/*============================ 支付接口 end =====================*/
+	/**
+	 * 咨询历史记录接口
+	 * @param userId
+	 * @param token
+	 * @param type
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/consultHistory",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> consultHistory(String userId,String token,
+			String type,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			dataMap.put("consults", Utils.convertBeanToMap(greaterService.consultHistory(userId,type),
+					new String[]{"createrName","createrUrl","greaterName","greaterUrl",
+					"createTime","description","title","status"}, ConsultRecord.class));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/*============================ 个人中心接口 end =====================*/
 	
 	/**
 	 * 获取当前app版本

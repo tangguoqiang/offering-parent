@@ -39,7 +39,7 @@ public class GreaterDaoImpl extends BaseDaoImpl<Greater> implements GreaterDao{
 		paramInfo.setTypeAndData(Types.VARCHAR, GloabConstant.GROUP_INDUSTRY);
 		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.YESNO_YES);
 		
-		sql.append("ORDER BY orderNo ASC ");
+		sql.append("ORDER BY orderNo ASC,T1.id DESC ");
 		return getRecords(sql.toString(),paramInfo,page,Greater.class);
 	}
 	

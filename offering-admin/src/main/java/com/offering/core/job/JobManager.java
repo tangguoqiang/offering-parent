@@ -67,7 +67,7 @@ public final class JobManager {
 		List<ConsultRecord> crList = crDao.listRecs_in();
 		if(crList != null && crList.size() > 0){
 			for(ConsultRecord cr : crList){
-				LOG.info("groupId:" + cr.getChatId());
+				LOG.info("任务初始化(groupId:" + cr.getChatId() + ")");
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(Long.valueOf(cr.getCreateTime()));
 				//TODO 应该设置成24后删除

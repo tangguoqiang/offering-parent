@@ -26,6 +26,42 @@ public class ConsultRecord {
 	@Column
 	private String chatId;
 	
+	private String createrName;
+	private String createrUrl;
+	private String greaterName;
+	private String greaterUrl;
+	private String title;
+	
+	public String getCreaterName() {
+		return createrName;
+	}
+	public void setCreaterName(String createrName) {
+		this.createrName = createrName;
+	}
+	public String getCreaterUrl() {
+		return createrUrl;
+	}
+	public void setCreaterUrl(String createrUrl) {
+		this.createrUrl = createrUrl;
+	}
+	public String getGreaterName() {
+		return greaterName;
+	}
+	public void setGreaterName(String greaterName) {
+		this.greaterName = greaterName;
+	}
+	public String getGreaterUrl() {
+		return greaterUrl;
+	}
+	public void setGreaterUrl(String greaterUrl) {
+		this.greaterUrl = greaterUrl;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public String getChatId() {
 		return chatId;
 	}
