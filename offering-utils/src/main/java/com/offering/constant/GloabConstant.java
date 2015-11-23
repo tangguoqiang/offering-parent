@@ -146,6 +146,14 @@ public final class GloabConstant {
 	public final static String TRADE_TYPE_1 = "1";
 	
 	/**
+	 * 咨询状态 0:进行中 1:待评价 2:已评价
+	 */
+	public final static String CONSULT_STATUS_0 = "0";
+	public final static String CONSULT_STATUS_1 = "1";
+	public final static String CONSULT_STATUS_2 = "2";
+	
+	
+	/**
 	 * APP服务版本
 	 */
 	public final static int APP_SERVICE_VERSION = 1;

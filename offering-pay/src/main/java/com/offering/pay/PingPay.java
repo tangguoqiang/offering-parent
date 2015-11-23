@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import com.offering.bean.trade.TradeRecord;
 import com.offering.constant.GloabConstant;
-import com.offering.utils.Utils;
 import com.pingplusplus.Pingpp;
 import com.pingplusplus.exception.APIConnectionException;
 import com.pingplusplus.exception.APIException;
@@ -21,7 +20,8 @@ public class PingPay {
 	
 	private final static Logger LOG = Logger.getLogger(PingPay.class);
 
-	private final static String TEST_SK = "sk_test_WbzHKGbzH4CO1uHq5OGiz9G8";
+//	private final static String TEST_SK = "sk_test_WbzHKGbzH4CO1uHq5OGiz9G8";
+	private final static String LIVE_SK = "sk_live_4GOizT4q1OaDvfDSS0vvXPe5";
 	
 	private final static String APP_ID = "app_a90iTGqbD00Cjv5i";
 	
@@ -32,7 +32,7 @@ public class PingPay {
 	private final static String CHANNEL_WX = "wx";
 	
 	public static void init(){
-		Pingpp.apiKey = TEST_SK;
+		Pingpp.apiKey = LIVE_SK;
 	}
 	
 	public static Charge pay(TradeRecord trade,String orderNo){
@@ -65,11 +65,12 @@ public class PingPay {
 	}
 	
 	public static void main(String[] args) {
-		TradeRecord trade = new TradeRecord();
-		trade.setAmount("1.11");
-		trade.setChannel(GloabConstant.CHANNEL_ALIPAY);
-		trade.setClientIp(Utils.getLocalIp());
-		Charge charge = pay(trade,PayUtils.getTradeNo());
-		System.out.println(charge);
+//		TradeRecord trade = new TradeRecord();
+//		trade.setAmount("1.11");
+//		trade.setChannel(GloabConstant.CHANNEL_ALIPAY);
+//		trade.setClientIp(Utils.getLocalIp());
+//		Charge charge = pay(trade,PayUtils.getTradeNo());
+//		System.out.println(charge);
+		System.out.println(new BigDecimal("0.0300").toString());
 	}
 }

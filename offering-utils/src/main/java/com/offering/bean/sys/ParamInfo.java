@@ -20,9 +20,16 @@ public class ParamInfo {
 	 */
 	private List<Integer> typeList;
 	
+	private final static int DEFAULT_SIZE = 5;
+	
 	public ParamInfo(){
-		paramList = new ArrayList<String>();
-		typeList = new ArrayList<Integer>();
+		paramList = new ArrayList<String>(DEFAULT_SIZE);
+		typeList = new ArrayList<Integer>(DEFAULT_SIZE);
+	}
+	
+	public ParamInfo(int initSize){
+		paramList = new ArrayList<String>(initSize);
+		typeList = new ArrayList<Integer>(initSize);
 	}
 
 	public void setTypeAndData(int type,String param){

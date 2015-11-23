@@ -1,5 +1,7 @@
 package com.offering.core.dao;
 
+import java.math.BigDecimal;
+
 import com.offering.bean.trade.Account;
 
 /**
@@ -21,5 +23,5 @@ public interface TradeAccountDao extends BaseDao<Account>{
 	 * @param userId
 	 * @param balance
 	 */
-	void updateBalance(String userId,String balance);
+	void updateBalance(String userId,BigDecimal balance);
 }

@@ -1397,6 +1397,27 @@ public class AppController_new {
 		}
 	}
 	
+	/**
+	 * 打赏记录接口
+	 * @param userId
+	 * @param token
+	 * @param type
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/rewardHistory",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> rewardHistory(String userId,String token,
+			String type,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			dataMap.put("rewards", tradeService.rewardHistory(userId,type));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
 	/*============================ 支付接口 end =====================*/
 	
 	/**

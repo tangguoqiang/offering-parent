@@ -20,8 +20,37 @@ public class TradeHistory {
 	@Column
 	private String payee;
 	@Column
-	private String tradeInfo;
+	private String amount;
 	
+	private String payerName;
+	private String payeeName;
+	private String payerUrl;
+	private String payeeUrl;
+	
+	public String getPayerName() {
+		return payerName;
+	}
+	public void setPayerName(String payerName) {
+		this.payerName = payerName;
+	}
+	public String getPayeeName() {
+		return payeeName;
+	}
+	public void setPayeeName(String payeeName) {
+		this.payeeName = payeeName;
+	}
+	public String getPayerUrl() {
+		return payerUrl;
+	}
+	public void setPayerUrl(String payerUrl) {
+		this.payerUrl = payerUrl;
+	}
+	public String getPayeeUrl() {
+		return payeeUrl;
+	}
+	public void setPayeeUrl(String payeeUrl) {
+		this.payeeUrl = payeeUrl;
+	}
 	public String getPayer() {
 		return payer;
 	}
@@ -52,10 +81,10 @@ public class TradeHistory {
 	public void setTradeTime(String tradeTime) {
 		this.tradeTime = tradeTime;
 	}
-	public String getTradeInfo() {
-		return tradeInfo;
+	public String getAmount() {
+		return amount;
 	}
-	public void setTradeInfo(String tradeInfo) {
-		this.tradeInfo = tradeInfo;
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 }

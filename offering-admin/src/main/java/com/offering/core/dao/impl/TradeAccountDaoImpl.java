@@ -1,5 +1,6 @@
 package com.offering.core.dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 
 import org.springframework.stereotype.Repository;
@@ -38,11 +39,11 @@ public class TradeAccountDaoImpl extends BaseDaoImpl<Account> implements TradeAc
 	 * @param userId
 	 * @param balance
 	 */
-	public void updateBalance(String id,String balance){
+	public void updateBalance(String id,BigDecimal balance){
 		StringBuilder sql = new StringBuilder(128);
 		sql.append("UPDATE TRADE_ACCOUNT SET balance=?,opTime=? WHERE id=? ");
 		ParamInfo paramInfo = new ParamInfo();
-		paramInfo.setTypeAndData(Types.DECIMAL, balance);
+		paramInfo.setTypeAndData(Types.VARCHAR, balance + "");
 		paramInfo.setTypeAndData(Types.BIGINT, String.valueOf(System.currentTimeMillis()));
 		paramInfo.setTypeAndData(Types.BIGINT, id);
 		updateRecord(sql.toString(), paramInfo);

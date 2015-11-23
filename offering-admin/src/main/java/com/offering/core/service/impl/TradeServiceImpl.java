@@ -1,6 +1,7 @@
 package com.offering.core.service.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -88,12 +89,8 @@ public class TradeServiceImpl implements TradeService{
 		th.setType(trade.getType());
 		th.setPayer(trade.getPayer());
 		th.setPayee(trade.getPayee());
-		StringBuilder tradeInfo = new StringBuilder(64);
-		tradeInfo.append(trade.getPayerName())
-		         .append(GloabConstant.TRADE_TYPE_1.equals(trade.getType()) ? "打赏" : "支付")
-		         .append(trade.getPayeeName())
-		         .append(trade.getAmount()).append("元");
-		th.setTradeInfo(tradeInfo.toString());
+		th.setTradeTime(trade.getTradeTime());
+		th.setAmount(trade.getAmount());
 		tradeHistoryDao.insertRecord(th, "TRADE_HISTORY");
 	}
 	
@@ -118,7 +115,17 @@ public class TradeServiceImpl implements TradeService{
 			BigDecimal balance = new BigDecimal(acc.getBalance());
 			balance = balance.add(new BigDecimal(amount));
 			LOG.info("用户" + userId + "的余额为" + balance);
-			accountDao.updateBalance(userId,balance.toString());
+			accountDao.updateBalance(acc.getId(),balance);
 		}
+	}
+	
+	/**
+	 * 打赏历史纪录
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public List<TradeHistory> rewardHistory(String userId,String type){
+		return tradeHistoryDao.rewardHistory(userId,type);
 	}
 }
