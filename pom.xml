@@ -71,10 +71,6 @@
   	<module>offering-utils</module>
   	<module>offering-admin</module>
   	<module>offering-redis</module>
-  	
-  	
-  	
-  	<module>offering-job</module>
   	<module>offering-pay</module>
   </modules>
   <build>

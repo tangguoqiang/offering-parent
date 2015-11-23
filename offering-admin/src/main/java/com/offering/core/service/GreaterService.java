@@ -3,6 +3,7 @@ package com.offering.core.service;
 import java.util.List;
 
 import com.offering.bean.sys.PageInfo;
+import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
 
 /**
@@ -26,4 +27,11 @@ public interface GreaterService {
 	 * @return
 	 */
 	Greater getGreaterInfoById(String id,int v);
+	
+	/**
+	 * 问大拿
+	 * @param cr
+	 * @param title
+	 */
+	void askGreater(ConsultRecord cr,String title);
 }

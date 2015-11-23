@@ -42,6 +42,7 @@ import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.School;
 import com.offering.bean.sys.Suggest;
 import com.offering.bean.trade.TradeRecord;
+import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
 import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
@@ -67,6 +68,11 @@ import com.pingplusplus.model.Charge;
 public class AppController_new {
 	
 	private final static Logger LOG = Logger.getLogger(AppController_new.class);
+	
+	/**
+	 * 当前APP服务版本
+	 */
+	public final static int APP_SERVICE_VERSION = 2;
 	
 	/**
 	 * 验证码过期时间
@@ -1138,12 +1144,22 @@ public class AppController_new {
 	@RequestMapping(value = "/askGreater",method={RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> askGreater(String userId,String token,String greaterId
-			,String type,String topicId,HttpServletRequest req) {
+			,String type,String topicId,String title,String description,
+			HttpServletRequest req,@PathVariable("version")int version) {
 		Map<String, Object> m = Utils.checkParam(req, new String[]{"userId","token","greaterId"});
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
-			chartService.createPrivateChart(userId,greaterId,type,topicId);
+			if(version == 1){
+				chartService.createPrivateChart(userId,greaterId,type,topicId);
+			}else{
+				ConsultRecord cr = new ConsultRecord();
+				cr.setCreater(userId);
+				cr.setGreaterId(greaterId);
+				cr.setTopicId(topicId);
+				cr.setDescription(description);
+				greaterService.askGreater(cr,title);
+			}
 			return Utils.success(null);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");

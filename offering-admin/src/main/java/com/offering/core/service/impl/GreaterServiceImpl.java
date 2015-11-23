@@ -1,21 +1,32 @@
 package com.offering.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.quartz.JobDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.offering.bean.sys.PageInfo;
+import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
 import com.offering.bean.user.Topic;
+import com.offering.constant.DBConstant;
+import com.offering.constant.GloabConstant;
 import com.offering.core.dao.ActivityDao;
+import com.offering.core.dao.ConsultRecDao;
 import com.offering.core.dao.GreaterDao;
 import com.offering.core.dao.TopicDao;
+import com.offering.core.job.JobManager;
+import com.offering.core.job.JobManager.JobType;
 import com.offering.core.service.GreaterService;
 import com.offering.redis.RedisOp;
+import com.offering.utils.RCUtils;
 import com.offering.utils.Utils;
 
 /**
@@ -26,6 +37,8 @@ import com.offering.utils.Utils;
 @Service
 public class GreaterServiceImpl implements GreaterService{
 
+	private final static Logger LOG = Logger.getLogger(GreaterServiceImpl.class);
+	
 	@Autowired
 	private GreaterDao greaterDao;
 	
@@ -35,6 +48,8 @@ public class GreaterServiceImpl implements GreaterService{
 	@Autowired
 	private TopicDao topicDao;
 	
+	@Autowired
+	private ConsultRecDao crDao;
 	
 	@Autowired
 	private RedisOp redisOp;
@@ -123,4 +138,51 @@ public class GreaterServiceImpl implements GreaterService{
 		greater.setTags(tags + greater.getTags());
 		return greater;
 	}
+	
+	/**
+	 * 问大拿
+	 * @param cr
+	 * @param title
+	 */
+	@Transactional
+	public void askGreater(ConsultRecord cr,String title){
+		if(cr != null){
+			StringBuilder groupId = new StringBuilder(64);
+			groupId.append(cr.getGreaterId()).append("_")
+			       .append(cr.getCreater());
+			String groupName = "咨询大拿";
+			if(!Utils.isEmpty(cr.getTopicId())){
+				groupId.append("_").append(cr.getTopicId());
+				groupName = title;
+			}
+			LOG.info("groupId:" + groupId);
+			cr.setChatId(groupId.toString());
+			long createTime = System.currentTimeMillis();
+			cr.setCreateTime(String.valueOf(createTime));
+			cr.setStatus(GloabConstant.CONSULT_STATUS_0);
+			//如果存在相同的任务则不进行操作
+			if(JobManager.checkExists(groupId.toString(), JobType.CONSULT))
+				return;
+			//插入咨询记录
+			long crId = crDao.insertRecord(cr, DBConstant.CONSULT_RECORD);
+			
+			//创建群组
+			List<String> userIds = new ArrayList<String>();
+			userIds.add(cr.getCreater());
+			userIds.add(cr.getGreaterId());
+			RCUtils.createGroup(userIds, groupId.toString(), groupName);
+			
+			//新增定时任务
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(createTime);
+			cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+//			cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) +1 );
+			JobDataMap jobData = new JobDataMap();
+			jobData.put("groupId", groupId.toString());
+			jobData.put("userId", cr.getCreater());
+			jobData.put("crId", crId);
+			JobManager.addJob(groupId.toString(), JobType.CONSULT, cal.getTime(),jobData);
+		}
+	}
+	
 }

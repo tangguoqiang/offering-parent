@@ -154,11 +154,6 @@ public final class GloabConstant {
 	
 	
 	/**
-	 * APP服务版本
-	 */
-	public final static int APP_SERVICE_VERSION = 1;
-	
-	/**
 	 * 文件系统根目录 /home/offering/images/ and C:\\gtang\\picture\\
 	 */
 	public final static String ROOT_DIR = "/home/offering/images/";
