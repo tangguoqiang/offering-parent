@@ -18,6 +18,7 @@ import com.offering.bean.chart.Message;
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.ParamInfo;
 import com.offering.constant.GloabConstant;
+import com.offering.core.dao.ActivityDao;
 import com.offering.core.dao.BaseDao;
 import com.offering.core.service.ActivityService;
 import com.offering.utils.RCUtils;
@@ -27,7 +28,7 @@ import com.offering.utils.Utils;
 public class ActivityServiceImpl implements ActivityService{
 
 	@Autowired
-	private BaseDao<Activity> activityDao;
+	private ActivityDao activityDao;
 	
 	@Autowired
 	private BaseDao<Speaker> speakerDao;
@@ -637,5 +638,15 @@ public class ActivityServiceImpl implements ActivityService{
 		ParamInfo paramInfo = new ParamInfo();
 		paramInfo.setTypeAndData(Types.BIGINT, userId);
 		return activityDao.getCount(sql.toString(), paramInfo ,0);
+	}
+	
+	/**
+	 * 根据用户id查询参加过的活动
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public List<Activity> activityHistory(String userId,String type){
+		return activityDao.activityHistory(userId,type);
 	}
 }

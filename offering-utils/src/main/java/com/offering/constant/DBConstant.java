@@ -18,6 +18,19 @@ public final class DBConstant {
 	public final static String CONSULT_RECORD = "CONSULT_RECORD";
 	
 	/**
+	 * 活动表
+	 */
+	public final static String ACTIVITY_INFO = "ACTIVITY_INFO";
+	/**
+	 * 融云群组表
+	 */
+	public final static String RC_GROUP = "RC_GROUP";
+	/**
+	 * 融云群成员表
+	 */
+	public final static String RC_GROUP_MEMBER = "RC_GROUP_MEMBER";
+	
+	/**
 	 * 社区话题表
 	 */
 	public final static String COMMUNITY_TOPIC = "COMMUNITY_TOPIC";

@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,12 +43,13 @@ import com.offering.bean.sys.Suggest;
 import com.offering.bean.trade.TradeRecord;
 import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
+import com.offering.bean.user.Topic;
 import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.ActivityService;
-import com.offering.core.service.GreaterService;
 import com.offering.core.service.ChartService;
 import com.offering.core.service.CommunityService;
+import com.offering.core.service.GreaterService;
 import com.offering.core.service.SystemService;
 import com.offering.core.service.TradeService;
 import com.offering.core.service.UserService;
@@ -68,11 +68,6 @@ import com.pingplusplus.model.Charge;
 public class AppController_new {
 	
 	private final static Logger LOG = Logger.getLogger(AppController_new.class);
-	
-	/**
-	 * 当前APP服务版本
-	 */
-	public final static int APP_SERVICE_VERSION = 2;
 	
 	/**
 	 * 验证码过期时间
@@ -580,18 +575,18 @@ public class AppController_new {
 	public Map<String, Object> updateUserInfo_new(String userId,User user) {
 		String token = user.getToken();
 		user.setId(userId);
-		try {
-			if(!Utils.isEmpty(user.getNickname()))
-			{
-				user.setNickname(new String(user.getNickname().getBytes("iso8859-1")));
-			}
-			if(!Utils.isEmpty(user.getMajor()))
-			{
-				user.setMajor(new String(user.getMajor().getBytes("iso8859-1")));
-			}
-		} catch (UnsupportedEncodingException e) {
-			LOG.error(e);
-		}
+//		try {
+//			if(!Utils.isEmpty(user.getNickname()))
+//			{
+//				user.setNickname(new String(user.getNickname().getBytes("iso8859-1")));
+//			}
+//			if(!Utils.isEmpty(user.getMajor()))
+//			{
+//				user.setMajor(new String(user.getMajor().getBytes("iso8859-1")));
+//			}
+//		} catch (UnsupportedEncodingException e) {
+//			LOG.error(e);
+//		}
 		if(userService.checkToken(userId,token)){
 			userService.updateUser(user);
 			user = userService.getUserInfoById(userId);
@@ -1005,7 +1000,26 @@ public class AppController_new {
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
-			ChartGroup group = activityService.getGroupById(groupId);
+			ChartGroup group = null;
+			if(groupId.indexOf("_") != -1){
+				//如果是咨询大拿创建的群
+				String[] arr = groupId.split("_");
+				group = new ChartGroup();
+				String tmpId = arr[0];
+				if(userId.equals(arr[0]))
+					tmpId = arr[1];
+				User user = userService.getUserInfoById(tmpId);
+				group.setUrl(user.getUrl());
+				if(arr.length <= 2){
+					group.setGroupName("咨询大拿");
+				}else{
+					Topic topic = greaterService.getTopicInfoById(arr[2]);
+					if(topic != null)
+						group.setGroupName(topic.getTitle());
+				}
+			}else{
+				group = activityService.getGroupById(groupId);
+			}
 			if(group == null)
 				return Utils.failture("群组不存在！");
 			return Utils.success(group);
@@ -1135,6 +1149,43 @@ public class AppController_new {
 	}
 	
 	/**
+	 * 判断咨询话题是否存在
+	 * @param userId
+	 * @param token
+	 * @param greaterId
+	 * @param topicId
+	 * @param req
+	 * @param version
+	 * @return
+	 */
+	@RequestMapping(value = "/checkExistsConsult",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> checkExistsConsult(String userId,String token,String greaterId
+			,String topicId,
+			HttpServletRequest req,@PathVariable("version")int version) {
+		Map<String, Object> m = Utils.checkParam(req, new String[]{"userId","token","greaterId"});
+		if(m != null)
+			return m;
+		if(userService.checkToken(userId,token)){
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			ConsultRecord cr = greaterService.getConsultByCreater(userId,greaterId);
+			if(cr != null){
+				dataMap.put("isExists", GloabConstant.YESNO_YES);
+				dataMap.put("chatId", cr.getChatId());
+				if(Utils.isEmpty(cr.getTitle()))
+					dataMap.put("groupName", "咨询大拿");
+				else
+					dataMap.put("groupName", cr.getTitle());
+			}else{
+				dataMap.put("isExists", GloabConstant.YESNO_NO);
+			}
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
 	 * 问大拿
 	 * @param userId
 	 * @param token
@@ -1150,6 +1201,7 @@ public class AppController_new {
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
+			Map<String, Object> dataMap = new HashMap<String, Object>();
 			if(version == 1){
 				chartService.createPrivateChart(userId,greaterId,type,topicId);
 			}else{
@@ -1159,8 +1211,10 @@ public class AppController_new {
 				cr.setTopicId(topicId);
 				cr.setDescription(description);
 				greaterService.askGreater(cr,title);
+				dataMap.put("groupId",cr.getChatId());
+				dataMap.put("groupName",cr.getTitle());
 			}
-			return Utils.success(null);
+			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
 		}
@@ -1455,6 +1509,28 @@ public class AppController_new {
 			dataMap.put("consults", Utils.convertBeanToMap(greaterService.consultHistory(userId,type),
 					new String[]{"createrName","createrUrl","greaterName","greaterUrl",
 					"createTime","description","title","status"}, ConsultRecord.class));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 参与过的活动
+	 * @param userId
+	 * @param token
+	 * @param type
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/activityHistory",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> activityHistory(String userId,String token,
+			String type,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			dataMap.put("activities", Utils.convertBeanToMap(activityService.activityHistory(userId,type),
+					new String[]{"id","title","url","type"}, Activity.class));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");

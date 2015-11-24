@@ -8,6 +8,11 @@ package com.offering.constant;
  */
 public final class GloabConstant {
 	
+	/**
+	 * 当前APP服务版本
+	 */
+	public final static int APP_SERVICE_VERSION = 2;
+	
 	public final static String CURRENT_MODEL = "0";
 	
 	

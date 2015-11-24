@@ -5,6 +5,7 @@ import java.util.List;
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
+import com.offering.bean.user.Topic;
 
 /**
  * 大拿service
@@ -33,7 +34,7 @@ public interface GreaterService {
 	 * @param cr
 	 * @param title
 	 */
-	void askGreater(ConsultRecord cr,String title);
+	String askGreater(ConsultRecord cr,String title);
 	
 	/**
 	 * 咨询历史纪录
@@ -42,4 +43,19 @@ public interface GreaterService {
 	 * @return
 	 */
 	List<ConsultRecord>  consultHistory(String userId,String type);
+	
+	/**
+	 * 根据创建人和大拿获取资讯记录
+	 * @param creater
+	 * @param greaterId
+	 * @return
+	 */
+	ConsultRecord getConsultByCreater(String creater,String greaterId);
+	
+	/**
+	 * 根据话题id获取话题信息
+	 * @param id
+	 * @return
+	 */
+	Topic getTopicInfoById(String id);
 }

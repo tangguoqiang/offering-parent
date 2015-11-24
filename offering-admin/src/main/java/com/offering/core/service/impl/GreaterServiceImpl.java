@@ -145,7 +145,7 @@ public class GreaterServiceImpl implements GreaterService{
 	 * @param title
 	 */
 	@Transactional
-	public void askGreater(ConsultRecord cr,String title){
+	public String askGreater(ConsultRecord cr,String title){
 		if(cr != null){
 			StringBuilder groupId = new StringBuilder(64);
 			groupId.append(cr.getGreaterId()).append("_")
@@ -157,12 +157,13 @@ public class GreaterServiceImpl implements GreaterService{
 			}
 			LOG.info("groupId:" + groupId);
 			cr.setChatId(groupId.toString());
+			cr.setTitle(groupName);
 			long createTime = System.currentTimeMillis();
 			cr.setCreateTime(String.valueOf(createTime));
 			cr.setStatus(GloabConstant.CONSULT_STATUS_0);
 			//如果存在相同的任务则不进行操作
 			if(JobManager.checkExists(groupId.toString(), JobType.CONSULT))
-				return;
+				return groupId.toString();
 			//插入咨询记录
 			long crId = crDao.insertRecord(cr, DBConstant.CONSULT_RECORD);
 			
@@ -182,7 +183,9 @@ public class GreaterServiceImpl implements GreaterService{
 			jobData.put("userId", cr.getCreater());
 			jobData.put("crId", crId);
 			JobManager.addJob(groupId.toString(), JobType.CONSULT, cal.getTime(),jobData);
+			return groupId.toString();
 		}
+		return null;
 	}
 	
 	/**
@@ -208,4 +211,22 @@ public class GreaterServiceImpl implements GreaterService{
 		return crList;
 	}
 	
+	/**
+	 * 根据创建人和大拿获取资讯记录
+	 * @param creater
+	 * @param greaterId
+	 * @return
+	 */
+	public ConsultRecord getConsultByCreater(String creater,String greaterId){
+		return crDao.getConsultByCreater(creater,greaterId);
+	}
+	
+	/**
+	 * 根据话题id获取话题信息
+	 * @param id
+	 * @return
+	 */
+	public Topic getTopicInfoById(String id){
+		return topicDao.getTopicInfoById(id);
+	}
 }

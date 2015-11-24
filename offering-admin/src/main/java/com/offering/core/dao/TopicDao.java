@@ -18,4 +18,11 @@ public interface TopicDao extends BaseDao<Topic>{
 	 */
 	List<Topic> listTopicsByGreaterId(List<String> greaterIds);
 	
+	/**
+	 * 根据话题id获取话题信息
+	 * @param id
+	 * @return
+	 */
+	Topic getTopicInfoById(String id);
+	
 }

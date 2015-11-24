@@ -197,4 +197,12 @@ public interface ActivityService {
 	 * @return
 	 */
 	long getAskGreaterNum(String userId);
+	
+	/**
+	 * 根据用户id查询参加过的活动
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	List<Activity> activityHistory(String userId,String type);
 }

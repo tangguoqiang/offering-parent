@@ -45,5 +45,21 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements TopicDao{
 		
 		return getRecords(sql.toString(),paramInfo,Topic.class);
 	}
+	
+	/**
+	 * 根据话题id获取话题信息
+	 * @param id
+	 * @return
+	 */
+	public Topic getTopicInfoById(String id){
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT T1.id,T1.greaterId,T1.title,T1.content ")
+		   .append("FROM TOPIC_INFO T1 ")
+		   .append("WHERE T1.id=?  ");
+		ParamInfo paramInfo = new ParamInfo();
+		paramInfo.setTypeAndData(Types.BIGINT, id);
+		
+		return getRecord(sql.toString(),paramInfo,Topic.class);
+	}
 
 }

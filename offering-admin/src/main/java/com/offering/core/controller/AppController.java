@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -537,18 +536,18 @@ public class AppController {
 	public Map<String, Object> updateUserInfo_new(String userId,User user) {
 		String token = user.getToken();
 		user.setId(userId);
-		try {
-			if(!Utils.isEmpty(user.getNickname()))
-			{
-				user.setNickname(new String(user.getNickname().getBytes("iso8859-1")));
-			}
-			if(!Utils.isEmpty(user.getMajor()))
-			{
-				user.setMajor(new String(user.getMajor().getBytes("iso8859-1")));
-			}
-		} catch (UnsupportedEncodingException e) {
-			LOG.error(e);
-		}
+//		try {
+//			if(!Utils.isEmpty(user.getNickname()))
+//			{
+//				user.setNickname(new String(user.getNickname().getBytes("iso8859-1")));
+//			}
+//			if(!Utils.isEmpty(user.getMajor()))
+//			{
+//				user.setMajor(new String(user.getMajor().getBytes("iso8859-1")));
+//			}
+//		} catch (UnsupportedEncodingException e) {
+//			LOG.error(e);
+//		}
 		if(userService.checkToken(userId,token)){
 			userService.updateUser(user);
 			user = userService.getUserInfoById(userId);

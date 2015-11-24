@@ -1,4 +1,4 @@
-<%@page import="com.offering.bean.User"%>
+<%@page import="com.offering.bean.user.User"%>
 <%
 	String baseUrl = request.getContextPath();
 	String userName = null,auth = null,userId = null; 

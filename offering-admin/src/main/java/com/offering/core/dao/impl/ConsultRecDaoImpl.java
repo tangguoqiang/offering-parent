@@ -74,4 +74,24 @@ public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements Con
 		pi.setTypeAndData(Types.BIGINT, userId);
 		return getRecords(sql.toString(), pi, ConsultRecord.class);
 	}
+	
+	/**
+	 * 根据创建人和大拿获取资讯记录
+	 * @param creater
+	 * @param greaterId
+	 * @return
+	 */
+	public ConsultRecord getConsultByCreater(String creater,String greaterId){
+		StringBuilder sql = new StringBuilder(128);
+		sql.append("SELECT T1.id,T1.chatId,T2.title ")
+		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ")
+		   .append("LEFT JOIN ").append(DBConstant.TOPIC_INFO)
+		   .append(" T2 ON T2.id=T1.topicId ")
+		   .append("WHERE T1.status=? AND T1.creater=? AND T1.greaterId=?");
+		ParamInfo pi = new ParamInfo(1);
+		pi.setTypeAndData(Types.CHAR, GloabConstant.CONSULT_STATUS_0);
+		pi.setTypeAndData(Types.BIGINT, creater);
+		pi.setTypeAndData(Types.BIGINT, greaterId);
+		return getRecord(sql.toString(), pi, ConsultRecord.class);
+	}
 }
