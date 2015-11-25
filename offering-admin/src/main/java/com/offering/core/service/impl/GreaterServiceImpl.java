@@ -229,4 +229,14 @@ public class GreaterServiceImpl implements GreaterService{
 	public Topic getTopicInfoById(String id){
 		return topicDao.getTopicInfoById(id);
 	}
+	
+	/**
+	 * 根据用户id获取咨询次数
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public long getConsultCount(String userId,String type){
+		return crDao.getConsultCount(userId,type);
+	}
 }

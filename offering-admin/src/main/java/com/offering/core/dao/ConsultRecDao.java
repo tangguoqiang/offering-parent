@@ -40,4 +40,12 @@ public interface ConsultRecDao extends BaseDao<ConsultRecord>{
 	 * @return
 	 */
 	ConsultRecord getConsultByCreater(String creater,String greaterId);
+	
+	/**
+	 * 根据用户id获取咨询次数
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	long getConsultCount(String userId,String type);
 }

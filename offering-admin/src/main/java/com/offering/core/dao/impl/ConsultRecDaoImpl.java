@@ -96,4 +96,24 @@ public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements Con
 		pi.setTypeAndData(Types.BIGINT, greaterId);
 		return getRecord(sql.toString(), pi, ConsultRecord.class);
 	}
+	
+	/**
+	 * 根据用户id获取咨询次数
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public long getConsultCount(String userId,String type){
+		StringBuilder sql = new StringBuilder(128);
+		sql.append("SELECT COUNT(1) ")
+		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ");
+		ParamInfo pi = new ParamInfo(1);
+		if(GloabConstant.USER_TYPE_GREATER.equals(type)){
+			sql.append("WHERE T1.greaterId=? ");
+		}else{
+			sql.append("WHERE T1.creater=? ");
+		}
+		pi.setTypeAndData(Types.BIGINT, userId);
+		return getCount(sql.toString(), pi,0);
+	}
 }

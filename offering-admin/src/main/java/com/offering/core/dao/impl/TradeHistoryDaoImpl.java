@@ -27,7 +27,7 @@ public class TradeHistoryDaoImpl extends BaseDaoImpl<TradeHistory> implements Tr
 	 */
 	public List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo){
 		StringBuilder sql = new StringBuilder(512);
-		sql.append("SELECT T1.tradeTime,T1.amount,T2.nickname payerName,T2.url payerUrl,")
+		sql.append("SELECT T1.tradeTime,FORMAT(T1.amount,2) amount,T2.nickname payerName,T2.url payerUrl,")
 		   .append("T3.nickname payeeName,T3.url payeeUrl ")
 		   .append("FROM TRADE_HISTORY T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.payer ")

@@ -437,8 +437,8 @@ public class AppController_new {
 	 */
 	@RequestMapping(value = "/getUserInfo",method={RequestMethod.POST})
 	@ResponseBody
-	public Map<String, Object> getUserInfo(String userId,String token
-			,HttpServletRequest req) {
+	public Map<String, Object> getUserInfo(String userId,String token,String type
+			,HttpServletRequest req,@PathVariable("version")int version) {
 		Map<String, Object> m = Utils.checkParam(req, new String[]{"userId","token"});
 		if(m != null)
 			return m;
@@ -457,7 +457,14 @@ public class AppController_new {
 			dataMap.put("background_url", user.getBackground_url());
 			dataMap.put("type", user.getType());
 			dataMap.put("joinActivityNum", activityService.getJoinActivityNum(userId) + "");
-			dataMap.put("askGreaterNum", activityService.getAskGreaterNum(userId) + "");
+			if(version == 1){
+				dataMap.put("askGreaterNum", activityService.getAskGreaterNum(userId) + "");
+			}else{
+				dataMap.put("company", user.getCompany());
+				dataMap.put("post", user.getPost());
+				dataMap.put("askGreaterNum", greaterService.getConsultCount(userId,type) + "");
+			}
+			
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1044,7 +1051,12 @@ public class AppController_new {
 		if(m != null)
 			return m;
 		if(userService.checkToken(userId,token)){
-			List<Member> l = activityService.listMembers(groupId);
+			List<Member> l = null;
+			if(groupId.indexOf("_") != -1){
+				
+			}else{
+				l = activityService.listMembers(groupId);
+			}
 			ChartGroup group = activityService.getGroupById(groupId);
 			if(group == null)
 				return Utils.failture("群组不存在！");

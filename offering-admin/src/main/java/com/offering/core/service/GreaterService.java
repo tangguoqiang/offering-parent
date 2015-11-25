@@ -58,4 +58,12 @@ public interface GreaterService {
 	 * @return
 	 */
 	Topic getTopicInfoById(String id);
+	
+	/**
+	 * 根据用户id获取咨询次数
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	long getConsultCount(String userId,String type);
 }

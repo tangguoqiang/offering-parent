@@ -97,10 +97,11 @@ public class UserServiceImpl implements UserService{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select T1.id,password,token,phone,T1.name,nickname,industry,T1.type, ")
 		   .append("schoolId,T2.name as schoolName,major,grade,T3.name AS gradeName,url,rc_token, ")
-		   .append("background_url ")
+		   .append("background_url,T4.company,T4.post ")
 		   .append("from USER_INFO T1 ")
 		   .append("LEFT JOIN SYS_SCHOOL T2 ON T2.ID=T1.schoolId ")
 		   .append("LEFT JOIN SYS_DICT T3 ON T3.CODE=T1.grade AND T3.groupName=? ")
+		   .append("LEFT JOIN USER_GREATER T4 ON T4.ID=T1.id ")
 		   .append("WHERE T1.id=?");
 		ParamInfo paramInfo = new ParamInfo();
 		paramInfo.setTypeAndData(Types.VARCHAR, GloabConstant.GROUP_GRADE);

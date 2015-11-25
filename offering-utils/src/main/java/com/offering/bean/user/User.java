@@ -55,6 +55,25 @@ public class User implements Serializable{
 	@Column
 	private String insertTime;
 	
+	private String company;
+	private String post;
+	
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getPost() {
+		return post;
+	}
+
+	public void setPost(String post) {
+		this.post = post;
+	}
+
 	public String getId() {
 		return id;
 	}
