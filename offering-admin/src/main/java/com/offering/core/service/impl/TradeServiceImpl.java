@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.trade.Account;
 import com.offering.bean.trade.TradeHistory;
 import com.offering.bean.trade.TradeRecord;
@@ -125,7 +126,18 @@ public class TradeServiceImpl implements TradeService{
 	 * @param type
 	 * @return
 	 */
-	public List<TradeHistory> rewardHistory(String userId,String type){
-		return tradeHistoryDao.rewardHistory(userId,type);
+	public List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo){
+		return tradeHistoryDao.rewardHistory(userId,type,pageInfo);
+	}
+	
+	/**
+	 * 获取总金额
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public BigDecimal totalAmount(String userId,String type){
+		String totalAmount = tradeHistoryDao.totalAmount(userId,type);
+		return new BigDecimal(totalAmount).setScale(2);
 	}
 }

@@ -646,7 +646,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 * @param type
 	 * @return
 	 */
-	public List<Activity> activityHistory(String userId,String type){
-		return activityDao.activityHistory(userId,type);
+	public List<Activity> activityHistory(String userId,String type,PageInfo pageInfo){
+		return activityDao.activityHistory(userId,type,pageInfo);
 	}
 }

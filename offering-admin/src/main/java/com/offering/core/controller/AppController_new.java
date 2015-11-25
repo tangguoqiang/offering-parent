@@ -1440,6 +1440,26 @@ public class AppController_new {
 		}
 	}
 	
+	/**
+	 * 删除社区话题
+	 * @param userId
+	 * @param token
+	 * @param topicId
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteCommunityTopic",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> deleteCommunityTopic(String userId,String token,
+			String topicId,HttpServletRequest req) {
+		if(userService.checkToken(userId,token)){
+			communityService.deleteCommunityTopic(topicId);
+			return Utils.success(null);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
 	/*============================ 社区相关接口 end =====================*/
 	
 	/*============================ 支付接口 start =====================*/
@@ -1482,10 +1502,11 @@ public class AppController_new {
 	@RequestMapping(value = "/rewardHistory",method={RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> rewardHistory(String userId,String token,
-			String type,HttpServletRequest req) {
+			String type,PageInfo pageInfo,HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			dataMap.put("rewards", tradeService.rewardHistory(userId,type));
+			dataMap.put("rewards", tradeService.rewardHistory(userId,type,pageInfo));
+			dataMap.put("sum", tradeService.totalAmount(userId,type));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");
@@ -1503,10 +1524,10 @@ public class AppController_new {
 	@RequestMapping(value = "/consultHistory",method={RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> consultHistory(String userId,String token,
-			String type,HttpServletRequest req) {
+			String type,PageInfo pageInfo,HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			dataMap.put("consults", Utils.convertBeanToMap(greaterService.consultHistory(userId,type),
+			dataMap.put("consults", Utils.convertBeanToMap(greaterService.consultHistory(userId,type,pageInfo),
 					new String[]{"createrName","createrUrl","greaterName","greaterUrl",
 					"createTime","description","title","status"}, ConsultRecord.class));
 			return Utils.success(dataMap);
@@ -1526,11 +1547,32 @@ public class AppController_new {
 	@RequestMapping(value = "/activityHistory",method={RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> activityHistory(String userId,String token,
-			String type,HttpServletRequest req) {
+			String type,PageInfo pageInfo,HttpServletRequest req) {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		if(userService.checkToken(userId,token)){
-			dataMap.put("activities", Utils.convertBeanToMap(activityService.activityHistory(userId,type),
+			dataMap.put("activities", Utils.convertBeanToMap(activityService.activityHistory(userId,type,pageInfo),
 					new String[]{"id","title","url","type"}, Activity.class));
+			return Utils.success(dataMap);
+		}else{
+			return Utils.failture("登陆失效，请重新登陆！");
+		}
+	}
+	
+	/**
+	 * 我的发布
+	 * @param userId
+	 * @param token
+	 * @param type
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/communityTopicHistory",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> communityTopicHistory(String userId,String token,
+			String type,PageInfo pageInfo,HttpServletRequest req) {
+		Map<String, Object> dataMap = new HashMap<String,Object>();
+		if(userService.checkToken(userId,token)){
+			dataMap.put("topics", communityService.communityTopicHistory(userId,type,pageInfo));
 			return Utils.success(dataMap);
 		}else{
 			return Utils.failture("登陆失效，请重新登陆！");

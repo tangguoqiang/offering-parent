@@ -194,8 +194,8 @@ public class GreaterServiceImpl implements GreaterService{
 	 * @param type
 	 * @return
 	 */
-	public List<ConsultRecord>  consultHistory(String userId,String type){
-		List<ConsultRecord> crList = crDao.consultHistory(userId,type);
+	public List<ConsultRecord>  consultHistory(String userId,String type,PageInfo pageInfo){
+		List<ConsultRecord> crList = crDao.consultHistory(userId,type,pageInfo);
 		if(crList != null && crList.size() > 0){
 			String status = null;
 			for(ConsultRecord cr : crList){

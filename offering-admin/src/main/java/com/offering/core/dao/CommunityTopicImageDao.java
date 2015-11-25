@@ -24,4 +24,10 @@ public interface CommunityTopicImageDao extends BaseDao<CommunityTopicImage>{
 	 * @return
 	 */
 	List<CommunityTopicImage> listImagesByTopicId(List<String> idList);
+	
+	/**
+	 * 根据话题id删除附件信息
+	 * @param topidId
+	 */
+	void delRecByTopicId(String topidId);
 }

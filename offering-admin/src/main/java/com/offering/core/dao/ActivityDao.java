@@ -3,6 +3,7 @@ package com.offering.core.dao;
 import java.util.List;
 
 import com.offering.bean.activity.Activity;
+import com.offering.bean.sys.PageInfo;
 
 /**
  * 活动dao
@@ -24,5 +25,5 @@ public interface ActivityDao extends BaseDao<Activity>{
 	 * @param type
 	 * @return
 	 */
-	List<Activity> activityHistory(String userId,String type);
+	List<Activity> activityHistory(String userId,String type,PageInfo pageInfo);
 }

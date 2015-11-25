@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.offering.bean.activity.Activity;
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.ParamInfo;
 import com.offering.constant.DBConstant;
 import com.offering.constant.GloabConstant;
@@ -44,17 +45,18 @@ public class ActivityDaoImpl extends BaseDaoImpl<Activity> implements ActivityDa
 	 * @param type
 	 * @return
 	 */
-	public List<Activity> activityHistory(String userId,String type){
+	public List<Activity> activityHistory(String userId,String type,PageInfo pageInfo){
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT DISTINCT T2.id,T2.title,T2.url,case when T2.status='2' THEN '3' else T2.type end type ")
 		   .append("FROM ").append(DBConstant.RC_GROUP_MEMBER).append(" T1 ")
 		   .append("INNER JOIN ").append(DBConstant.ACTIVITY_INFO)
 		   .append(" T2 ON T2.id=T1.groupId ")
-		   .append("WHERE T1.memberId=?  AND T2.status<> ? ");
+		   .append("WHERE T1.memberId=?  AND T2.status<> ? ")
+		   .append("ORDER BY T2.startTime DESC ");
 		ParamInfo paramInfo = new ParamInfo();
 		paramInfo.setTypeAndData(Types.BIGINT, userId);
 		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.ACTIVITY_STATUS_CG);
 		
-		return getRecords(sql.toString(),paramInfo,Activity.class);
+		return getRecords(sql.toString(),paramInfo,pageInfo,Activity.class);
 	}
 }

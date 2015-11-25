@@ -35,6 +35,11 @@ public final class GloabConstant {
 	public final static String STATUS_EFFECT = "1";
 	
 	/**
+	 * 每页显示数量-通用
+	 */
+	public final static int PAGESIZE_COMMON = 15;
+	
+	/**
 	 *  验证码类型 0：注册  1：找回密码
 	 */
 	public final static String CODE_REG = "0";

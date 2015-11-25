@@ -13,6 +13,7 @@ import com.offering.bean.community.CommunityTopic;
 import com.offering.bean.community.CommunityTopicComment;
 import com.offering.bean.community.CommunityTopicImage;
 import com.offering.bean.community.CommunityTopicPraise;
+import com.offering.bean.sys.PageInfo;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.CommunityTopicCommentDao;
 import com.offering.core.dao.CommunityTopicDao;
@@ -314,5 +315,54 @@ public class CommunityServiceImpl implements CommunityService{
 					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
 		}
 		return communityTopicCommentDao.getCommentById(id + "");
+	}
+	
+	/**
+	 * 我的发布
+	 * @param userId
+	 * @param type
+	 * @param pageInfo
+	 * @return
+	 */
+	public List<CommunityTopic> communityTopicHistory(String userId,String type,PageInfo pageInfo){
+		List<CommunityTopic> l =  communityTopicDao.communityTopicHistory(userId,type, pageInfo);
+		
+		List<String> idList = new ArrayList<String>();
+		if(l != null && l.size() > 0){
+			for(CommunityTopic topic : l)
+				idList.add(topic.getId());
+			
+			List<CommunityTopicImage> imageList = communityTopicImageDao.listImagesByTopicId(idList);
+			Map<String, List<String>> imageMap = new HashMap<String, List<String>>();
+			List<String> tmpList = null;
+			String topicId = null;
+			if(imageList != null && imageList.size() > 0){
+				for(CommunityTopicImage image : imageList){
+					topicId = image.getTopicId();
+					if(imageMap.containsKey(topicId))
+						tmpList = imageMap.get(topicId);
+					else
+						tmpList = new ArrayList<String>();
+					tmpList.add(QiniuUtils.getFullUrl(image.getUrl(), QiniuUtils.STYLE_ZOOM));
+					imageMap.put(topicId, tmpList);
+				}
+			}
+			
+			for(CommunityTopic topic : l)
+				topic.setImages(imageMap.get(topic.getId()));
+		}
+		return l;
+	}
+	
+	/**
+	 * 删除社区话题
+	 * @param topicId
+	 */
+	@Transactional
+	public void deleteCommunityTopic(String topicId){
+		communityTopicCommentDao.delRecByTopicId(topicId);
+		communityTopicPraiseDao.delRecByTopicId(topicId);
+		communityTopicImageDao.delRecByTopicId(topicId);
+		communityTopicDao.delRecById(topicId);
 	}
 }

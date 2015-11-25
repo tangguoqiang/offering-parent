@@ -2,6 +2,7 @@ package com.offering.core.dao;
 
 import java.util.List;
 
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.user.ConsultRecord;
 
 /**
@@ -30,7 +31,7 @@ public interface ConsultRecDao extends BaseDao<ConsultRecord>{
 	 * @param type
 	 * @return
 	 */
-	List<ConsultRecord> consultHistory(String userId,String type);
+	List<ConsultRecord> consultHistory(String userId,String type,PageInfo pageInfo);
 	
 	/**
 	 * 根据创建人和大拿获取资讯记录

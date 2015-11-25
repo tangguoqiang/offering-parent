@@ -95,4 +95,16 @@ public class CommunityTopicPraiseDaoImpl extends BaseDaoImpl<CommunityTopicPrais
 		param.setTypeAndData(Types.BIGINT, createrId);
 		delRecord(sql.toString(), param);
 	}
+	
+	/**
+	 * 根据话题id删除点赞信息
+	 * @param topidId
+	 */
+	public void delRecByTopicId(String topidId){
+		StringBuilder sql = new StringBuilder();
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("DELETE FROM COMMUNITY_TOPIC_PRAISE WHERE topicId=? ");
+		paramInfo.setTypeAndData(Types.BIGINT, topidId);
+		delRecord(sql.toString(), paramInfo);
+	}
 }

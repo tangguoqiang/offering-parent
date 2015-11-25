@@ -43,4 +43,10 @@ public interface CommunityTopicCommentDao extends BaseDao<CommunityTopicComment>
 	 * @return
 	 */
 	CommunityTopicComment getCommentById(String id);
+	
+	/**
+	 * 根据话题id删除评论信息
+	 * @param topidId
+	 */
+	void delRecByTopicId(String topidId);
 }

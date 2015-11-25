@@ -44,4 +44,10 @@ public interface CommunityTopicPraiseDao extends BaseDao<CommunityTopicPraise>{
 	 * @param topicId
 	 */
 	void delPraise(String createrId,String topicId);
+	
+	/**
+	 * 根据话题id删除点赞信息
+	 * @param topidId
+	 */
+	void delRecByTopicId(String topidId);
 }

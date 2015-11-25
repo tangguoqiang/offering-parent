@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.ParamInfo;
 import com.offering.bean.user.ConsultRecord;
 import com.offering.constant.DBConstant;
@@ -54,7 +55,7 @@ public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements Con
 	 * @param type
 	 * @return
 	 */
-	public List<ConsultRecord>  consultHistory(String userId,String type){
+	public List<ConsultRecord>  consultHistory(String userId,String type,PageInfo pageInfo){
 		StringBuilder sql = new StringBuilder(128);
 		sql.append("SELECT T1.id,T1.description,T1.createTime,T1.status,T4.title, ")
 		   .append("T2.nickname createrName,T2.url createrUrl,T3.nickname greaterName,T3.url greaterUrl ")
@@ -71,8 +72,9 @@ public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements Con
 		}else{
 			sql.append("WHERE T1.creater=? ");
 		}
+		sql.append("ORDER BY T1.createTime DESC ");
 		pi.setTypeAndData(Types.BIGINT, userId);
-		return getRecords(sql.toString(), pi, ConsultRecord.class);
+		return getRecords(sql.toString(), pi,pageInfo, ConsultRecord.class);
 	}
 	
 	/**

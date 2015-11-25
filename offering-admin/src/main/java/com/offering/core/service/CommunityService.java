@@ -5,6 +5,7 @@ import java.util.List;
 import com.offering.bean.community.CommunityTopic;
 import com.offering.bean.community.CommunityTopicComment;
 import com.offering.bean.community.CommunityTopicPraise;
+import com.offering.bean.sys.PageInfo;
 
 /**
  * 社区service
@@ -83,4 +84,19 @@ public interface CommunityService {
 	 * @param topic_createrId
 	 */
 	CommunityTopicComment addComment(CommunityTopicComment comment,String topic_createrId);
+	
+	/**
+	 * 我的发布
+	 * @param userId
+	 * @param type
+	 * @param pageInfo
+	 * @return
+	 */
+	List<CommunityTopic> communityTopicHistory(String userId,String type,PageInfo pageInfo);
+	
+	/**
+	 * 删除社区话题
+	 * @param topicId
+	 */
+	void deleteCommunityTopic(String topicId);
 }

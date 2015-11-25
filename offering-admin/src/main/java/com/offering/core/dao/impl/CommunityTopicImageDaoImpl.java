@@ -53,5 +53,17 @@ public class CommunityTopicImageDaoImpl extends BaseDaoImpl<CommunityTopicImage>
 		}
 		return null;
 	}
+	
+	/**
+	 * 根据话题id删除附件信息
+	 * @param topidId
+	 */
+	public void delRecByTopicId(String topidId){
+		StringBuilder sql = new StringBuilder();
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("DELETE FROM COMMUNITY_TOPIC_IMAGE WHERE topicId=? ");
+		paramInfo.setTypeAndData(Types.BIGINT, topidId);
+		delRecord(sql.toString(), paramInfo);
+	}
 
 }

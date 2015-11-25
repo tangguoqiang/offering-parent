@@ -42,7 +42,7 @@ public interface GreaterService {
 	 * @param type
 	 * @return
 	 */
-	List<ConsultRecord>  consultHistory(String userId,String type);
+	List<ConsultRecord>  consultHistory(String userId,String type,PageInfo pageInfo);
 	
 	/**
 	 * 根据创建人和大拿获取资讯记录

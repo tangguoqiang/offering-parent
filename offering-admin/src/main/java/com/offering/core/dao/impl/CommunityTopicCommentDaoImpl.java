@@ -141,4 +141,16 @@ public class CommunityTopicCommentDaoImpl extends BaseDaoImpl<CommunityTopicComm
 		paramInfo.setTypeAndData(Types.BIGINT, id);
 		return getRecord(sql.toString(), paramInfo, CommunityTopicComment.class);
 	}
+	
+	/**
+	 * 根据话题id删除评论信息
+	 * @param topidId
+	 */
+	public void delRecByTopicId(String topidId){
+		StringBuilder sql = new StringBuilder();
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("DELETE FROM COMMUNITY_TOPIC_COMMENT WHERE topicId=? ");
+		paramInfo.setTypeAndData(Types.BIGINT, topidId);
+		delRecord(sql.toString(), paramInfo);
+	}
 }

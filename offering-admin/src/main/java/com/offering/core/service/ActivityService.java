@@ -204,5 +204,5 @@ public interface ActivityService {
 	 * @param type
 	 * @return
 	 */
-	List<Activity> activityHistory(String userId,String type);
+	List<Activity> activityHistory(String userId,String type,PageInfo pageInfo);
 }
