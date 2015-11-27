@@ -1,7 +1,9 @@
 package com.offering.core.service.impl;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -20,6 +22,8 @@ import com.offering.core.dao.TradeRecordDao;
 import com.offering.core.service.TradeService;
 import com.offering.pay.PayUtils;
 import com.offering.pay.PingPay;
+import com.offering.utils.JpushUtils;
+import com.offering.utils.JpushUtils.JpushType;
 import com.pingplusplus.model.Charge;
 
 /**
@@ -52,7 +56,12 @@ public class TradeServiceImpl implements TradeService{
 		String tradeNo = PayUtils.getTradeNo();
 		trade.setTradeNo(tradeNo);
 		tradeDao.insertRecord(trade, "TRADE_RECORD");
-		return PingPay.pay(trade,tradeNo);
+		Charge charge = PingPay.pay(trade,tradeNo);
+		Map<String, String> extras = new HashMap<String, String>();
+		extras.put("type", GloabConstant.NOTIFY_TYPE_3);
+		JpushUtils.sendMessage(GloabConstant.NOTIFY_TEXT_REWARD, 
+				new String[]{trade.getPayee()}, extras, JpushType.NOTIFY);
+		return charge;
 	}
 	
 	/**

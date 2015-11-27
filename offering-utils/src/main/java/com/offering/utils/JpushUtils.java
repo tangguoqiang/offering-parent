@@ -34,7 +34,7 @@ public class JpushUtils {
 	
 	private final static Queue<JpushMessage> queue = new LinkedBlockingQueue<JpushMessage>(1000);
 	
-	public final static String ALIAS_PREV = "userId_";
+	private final static String ALIAS_PREV = "userId_";
 	
 	private final static Thread thread = new JpushThread("Jpush");
 	
@@ -75,9 +75,10 @@ public class JpushUtils {
 		public JpushMessage(String content, String[] alias,
 				Map<String, String> extras,JpushType type) {
 			this.content = content;
-			this.alias = alias;
 			this.extras = extras;
 			this.type = type;
+			
+			setAlias(alias);
 		}
 		
 		public String getContent() {
@@ -90,7 +91,16 @@ public class JpushUtils {
 			return alias;
 		}
 		public void setAlias(String[] alias) {
-			this.alias = alias;
+			if(alias != null){
+				String[] tmpArr = new String[alias.length];
+				int i = 0;
+				for(String alia : alias){
+					tmpArr[i++] = ALIAS_PREV + alia;
+				}
+				this.alias = tmpArr;
+			}else{
+				this.alias = null;
+			}
 		}
 		public Map<String, String> getExtras() {
 			return extras;

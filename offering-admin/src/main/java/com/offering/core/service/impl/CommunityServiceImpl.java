@@ -21,9 +21,9 @@ import com.offering.core.dao.CommunityTopicImageDao;
 import com.offering.core.dao.CommunityTopicPraiseDao;
 import com.offering.core.service.CommunityService;
 import com.offering.utils.JpushUtils;
+import com.offering.utils.JpushUtils.JpushType;
 import com.offering.utils.QiniuUtils;
 import com.offering.utils.Utils;
-import com.offering.utils.JpushUtils.JpushType;
 
 /**
  * 社区service实现
@@ -178,8 +178,9 @@ public class CommunityServiceImpl implements CommunityService{
 					(!topic_createrId.equals(praise.getCreaterId()))){
 				Map<String, String> extras = new HashMap<String, String>();
 				extras.put("topicId", praise.getTopicId());
-				JpushUtils.sendMessage("有人给您点了一个赞！", 
-						new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+				extras.put("type", GloabConstant.NOTIFY_TYPE_2);
+				JpushUtils.sendMessage(GloabConstant.NOTIFY_TEXT_PRAISE, 
+						new String[]{topic_createrId},extras,JpushType.NOTIFY);
 			}
 		}else{
 			communityTopicPraiseDao.delPraise(praise.getCreaterId(),praise.getTopicId());
@@ -311,8 +312,9 @@ public class CommunityServiceImpl implements CommunityService{
 				(!topic_createrId.equals(comment.getCreaterId()))){
 			Map<String, String> extras = new HashMap<String, String>();
 			extras.put("topicId", comment.getTopicId());
-			JpushUtils.sendMessage("看!有评论！", 
-					new String[]{JpushUtils.ALIAS_PREV + topic_createrId},extras,JpushType.NOTIFY);
+			extras.put("type", GloabConstant.NOTIFY_TYPE_2);
+			JpushUtils.sendMessage(GloabConstant.NOTIFY_TEXT_COMMENT, 
+					new String[]{topic_createrId},extras,JpushType.NOTIFY);
 		}
 		return communityTopicCommentDao.getCommentById(id + "");
 	}

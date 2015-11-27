@@ -139,10 +139,11 @@ public final class GloabConstant {
 	public final static String COMMENT_TYPE_2 = "2";
 	
 	/**
-	 * 通知消息类型  1:新话题 2:新评论
+	 * 通知消息类型  1:新话题 2:新评论 3:打赏
 	 */
 	public final static String NOTIFY_TYPE_1 = "1";
 	public final static String NOTIFY_TYPE_2 = "2";
+	public final static String NOTIFY_TYPE_3 = "3";
 	
 	/**
 	 * 交易渠道  1:支付宝 2:微信
@@ -162,9 +163,15 @@ public final class GloabConstant {
 	public final static String CONSULT_STATUS_1 = "1";
 	public final static String CONSULT_STATUS_2 = "2";
 	
+	/**
+	 * 通知文本
+	 */
+	public final static String NOTIFY_TEXT_REWARD = "哇哦！有人赏了你一下";
+	public final static String NOTIFY_TEXT_PRAISE = "有人给您点了一个赞！";
+	public final static String NOTIFY_TEXT_COMMENT = "看!有评论！";
 	
 	/**
-	 * 文件系统根目录 /home/offering/images/ and C:\\gtang\\picture\\
+	 * 文件系统根目录 
 	 */
 	public final static String ROOT_DIR = "/home/offering/images/";
 	
