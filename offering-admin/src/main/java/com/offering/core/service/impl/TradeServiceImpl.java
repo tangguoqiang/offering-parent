@@ -57,10 +57,6 @@ public class TradeServiceImpl implements TradeService{
 		trade.setTradeNo(tradeNo);
 		tradeDao.insertRecord(trade, "TRADE_RECORD");
 		Charge charge = PingPay.pay(trade,tradeNo);
-		Map<String, String> extras = new HashMap<String, String>();
-		extras.put("type", GloabConstant.NOTIFY_TYPE_3);
-		JpushUtils.sendMessage(GloabConstant.NOTIFY_TEXT_REWARD, 
-				new String[]{trade.getPayee()}, extras, JpushType.NOTIFY);
 		return charge;
 	}
 	
@@ -85,6 +81,10 @@ public class TradeServiceImpl implements TradeService{
 //				updateAccount();
 				//更新收款人账户
 				updateAccount(trade.getPayee(),trade.getAmount());
+				Map<String, String> extras = new HashMap<String, String>();
+				extras.put("type", GloabConstant.NOTIFY_TYPE_3);
+				JpushUtils.sendMessage(GloabConstant.NOTIFY_TEXT_REWARD, 
+						new String[]{trade.getPayee()}, extras, JpushType.NOTIFY);
 			}
 		}
 	}
