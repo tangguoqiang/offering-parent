@@ -73,6 +73,13 @@ public interface BaseDao<T> {
 	public void updateRecord(String sql,ParamInfo paramInfo);
 	
 	/**
+	 * 根据主键删除记录
+	 * @param id
+	 * @param tableName
+	 */
+	public void delRecordById(String id,String tableName);
+	
+	/**
 	 * 删除一条记录
 	 * @param sql
 	 * @param paramInfo

@@ -34,4 +34,8 @@ public final class DBConstant {
 	 * 社区话题表
 	 */
 	public final static String COMMUNITY_TOPIC = "COMMUNITY_TOPIC";
+	/**
+	 * 社区话题评论表
+	 */
+	public final static String COMMUNITY_TOPIC_COMMENT = "COMMUNITY_TOPIC_COMMENT";
 }

@@ -147,7 +147,7 @@ public class CommunityServiceImpl implements CommunityService{
 		
 		//发送通知
 		Map<String, String> extras = new HashMap<String, String>();
-		extras.put("type", GloabConstant.NOTIFY_TYPE_1);
+		extras.put("type", GloabConstant.MESSAGE_TYPE_1);
 		JpushUtils.sendMessage("有新话题", null, extras,JpushType.MESSAGE);
 		
 		CommunityTopic returnTopic = communityTopicDao.getTopicInfoById(topic.getCreaterId(),id + "");

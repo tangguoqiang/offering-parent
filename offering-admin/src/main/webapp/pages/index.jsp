@@ -27,6 +27,9 @@
 	        <li>
 	          <a href="javascript:void(0);" url="pages/activity/activity.jsp" onclick="clickTopbar(this);" role="button" aria-expanded="false">活动管理 <span class="sr-only"></span></a>
 	        </li>
+	         <li>
+	          <a href="javascript:void(0);" url="pages/community/community.jsp" onclick="clickTopbar(this);" role="button" aria-expanded="false">社区管理 <span class="sr-only"></span></a>
+	        </li>
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">

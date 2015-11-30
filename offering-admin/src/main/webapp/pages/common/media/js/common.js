@@ -269,6 +269,12 @@ function getComboValue(group,code)
 			return "已结束";
 		if(code == '3')
 			return "草稿";
+	}else if(group == "YESNO")
+	{
+		if(code == '0')
+			return "是";
+		if(code == '1')
+			return "否";
 	}
 }
 

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,6 +211,20 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}else{
 			jdbcTemplate.update(sql, paramInfo.getParams(), paramInfo.getTypes());
 		}
+	}
+	
+	/**
+	 * 根据主键删除记录
+	 * @param id
+	 * @param tableName
+	 */
+	public void delRecordById(String id,String tableName){
+		StringBuilder sql = new StringBuilder();
+		sql.append("DELETE FROM ").append(tableName)
+		   .append(" WHERE id=? ");
+		ParamInfo paramInfo = new ParamInfo();
+		paramInfo.setTypeAndData(Types.BIGINT, id);
+		updateRecord(sql.toString(), paramInfo);
 	}
 	
 	public void delRecord(String sql,ParamInfo paramInfo){

@@ -150,9 +150,10 @@ public final class GloabConstant {
 	public final static String NOTIFY_TYPE_3 = "3";
 	
 	/**
-	 * 极光消息类型  1:解散群组
+	 * 极光消息类型  1:新话题 2:解散群组
 	 */
 	public final static String MESSAGE_TYPE_1 = "1";
+	public final static String MESSAGE_TYPE_2 = "2";
 	
 	/**
 	 * 交易渠道  1:支付宝 2:微信

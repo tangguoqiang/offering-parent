@@ -38,7 +38,7 @@ public final class ConsultJob extends BaseJob{
 			
 			Map<String, String> extras = new HashMap<String, String>();
 			extras.put("groupId", groupId);
-			extras.put("type", GloabConstant.MESSAGE_TYPE_1);
+			extras.put("type", GloabConstant.MESSAGE_TYPE_2);
 			JpushUtils.sendMessage("", new String[]{arr[0],arr[1]}, extras, JpushType.MESSAGE);
 			//更新记录状态为待评价
 			ConsultRecDao crDao = (ConsultRecDao)applicationContext.getBean("ConsultRecDao");
