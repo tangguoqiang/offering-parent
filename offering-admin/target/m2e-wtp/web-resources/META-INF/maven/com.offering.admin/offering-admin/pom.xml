@@ -15,11 +15,6 @@
   <dependencies>
     <dependency>
 		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-		<version>4.2.1.RELEASE</version>
-	</dependency>
-    <dependency>
-		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 		<version>4.2.1.RELEASE</version>
 	</dependency>
@@ -51,11 +46,6 @@
 	<dependency>
 		<groupId>com.offering.redis</groupId>
 		<artifactId>offering-redis</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>com.offering.pay</groupId>
-		<artifactId>offering-pay</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
   </dependencies>

@@ -13,8 +13,12 @@ public final class GloabConstant {
 	 */
 	public final static int APP_SERVICE_VERSION = 2;
 	
-	public final static String CURRENT_MODEL = "0";
+	public final static String CURRENT_MODEL = "1";
 	
+	/**
+	 * 管理员服务器地址  http://119.254.211.188:8080/admin  http://www.myoffering.cn/admin
+	 */
+	public final static String SERVER_ADMIN_URL = "http://www.myoffering.cn/admin";
 	
 	/**
 	 * 产品状态 0：测试 1:生产
@@ -139,11 +143,16 @@ public final class GloabConstant {
 	public final static String COMMENT_TYPE_2 = "2";
 	
 	/**
-	 * 通知消息类型  1:新话题 2:新评论 3:打赏
+	 * 极光通知类型  1:新话题 2:新评论 3:打赏
 	 */
 	public final static String NOTIFY_TYPE_1 = "1";
 	public final static String NOTIFY_TYPE_2 = "2";
 	public final static String NOTIFY_TYPE_3 = "3";
+	
+	/**
+	 * 极光消息类型  1:解散群组
+	 */
+	public final static String MESSAGE_TYPE_1 = "1";
 	
 	/**
 	 * 交易渠道  1:支付宝 2:微信
@@ -169,6 +178,12 @@ public final class GloabConstant {
 	public final static String NOTIFY_TEXT_REWARD = "哇哦！有人赏了你一下";
 	public final static String NOTIFY_TEXT_PRAISE = "有人给您点了一个赞！";
 	public final static String NOTIFY_TEXT_COMMENT = "看!有评论！";
+	
+	/**
+	 * 任务类型 0:咨询 1:活动
+	 */
+	public final static String JOB_TYPE_0 = "0";
+	public final static String JOB_TYPE_1 = "1";
 	
 	/**
 	 * 文件系统根目录 

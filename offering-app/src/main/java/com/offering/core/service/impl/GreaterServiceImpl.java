@@ -23,6 +23,7 @@ import com.offering.core.dao.GreaterDao;
 import com.offering.core.dao.TopicDao;
 import com.offering.core.service.GreaterService;
 import com.offering.redis.RedisOp;
+import com.offering.utils.HttpUtils;
 import com.offering.utils.RCUtils;
 import com.offering.utils.Utils;
 
@@ -173,14 +174,16 @@ public class GreaterServiceImpl implements GreaterService{
 			//新增定时任务
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(createTime);
-			cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
-//			cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) +1 );
-			//TODO 移除注解
-//			JobDataMap jobData = new JobDataMap();
-//			jobData.put("groupId", groupId.toString());
-//			jobData.put("userId", cr.getCreater());
-//			jobData.put("crId", crId);
-//			JobManager.addJob(groupId.toString(), JobType.CONSULT, cal.getTime(),jobData);
+//			cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+			cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) +5 );
+			Map<String, String> requestParams = new HashMap<String, String>();
+			requestParams.put("groupId", groupId.toString());
+			requestParams.put("userId", cr.getCreater());
+			requestParams.put("crId", String.valueOf(crId));
+			requestParams.put("jobName", groupId.toString());
+			requestParams.put("startTime", String.valueOf(cal.getTimeInMillis()));
+			requestParams.put("type", GloabConstant.JOB_TYPE_0);
+			HttpUtils.post(GloabConstant.SERVER_ADMIN_URL + "/addJob", requestParams);
 			return groupId.toString();
 		}
 		return null;

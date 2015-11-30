@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.offering.bean.chart.ChartGroup;
+import com.offering.bean.chart.Member;
 import com.offering.constant.GloabConstant;
+import com.offering.core.service.ActivityService;
 import com.offering.core.service.TradeService;
+import com.offering.utils.Utils;
 import com.pingplusplus.model.Event;
 import com.pingplusplus.model.Webhooks;
 
@@ -33,7 +38,35 @@ public class MainController {
 	
 	@Autowired
 	private TradeService tradeService;
+	
+	@Autowired
+	private ActivityService activityService;
 
+	/**
+	 * 获取群成员
+	 * @param groupId
+	 * @return
+	 */
+	@RequestMapping(value = "/listMembers",method={RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> listMembers(String groupId) {
+		List<Member> l = activityService.listMembers(groupId);
+		ChartGroup group = activityService.getGroupById(groupId);
+		if(group == null)
+			return Utils.failture("群组不存在！");
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		if(l != null && l.size() > 0)
+		{
+			dataMap.put("members", Utils.convertBeanToMap(l, 
+					new String[]{"memberId","nickname","url"}, Member.class));
+		}
+		//TODO 分页网页
+		dataMap.put("share_url", "/wxshare/groupmember_" + groupId);
+		dataMap.put("createTime", group.getCreateTime());
+		dataMap.put("groupInfo", group.getGroupInfo());
+		dataMap.put("groupName", group.getGroupName());
+		return Utils.success(dataMap);
+	}
 	
 	/**
 	 * 文件下载

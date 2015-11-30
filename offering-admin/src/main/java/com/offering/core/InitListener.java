@@ -8,7 +8,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.offering.core.job.JobManager;
-import com.offering.pay.PingPay;
 import com.offering.utils.JpushUtils;
 
 
@@ -26,7 +25,5 @@ public class InitListener implements ServletContextListener{
 				.getRequiredWebApplicationContext(arg0.getServletContext());
 		JpushUtils.init();
 		JobManager.init((Scheduler)context.getBean("schedulerFactory"),context);
-		//ping++支付接口初始化
-		PingPay.init();
 	}
 }
