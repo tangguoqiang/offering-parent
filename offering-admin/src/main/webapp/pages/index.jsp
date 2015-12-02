@@ -41,6 +41,12 @@
 	           	<li><a href="javascript:void(0);" url="pages/trade/trade.jsp" onclick="clickTopbar(this);">交易历史</a></li>
 	          </ul>
 	        </li>
+	        <li class="dropdown">
+	          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">系统功能 <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	          	<li><a href="javascript:void(0);" url="pages/sys/newUsersDay.jsp" onclick="clickTopbar(this);">新增用户(天)</a></li>
+	          </ul>
+	        </li>
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">

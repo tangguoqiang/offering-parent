@@ -65,23 +65,26 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select count(1) from USER_INFO WHERE 1=1 ");
 		ParamInfo paramInfo = new ParamInfo();
-		if(!Utils.isEmpty(user.getName()))
-		{
-			sql.append(" AND nickname like ? ");
-			paramInfo.setTypeAndData(Types.VARCHAR, "%" + user.getName() + "%");
+		if(user != null){
+			if(!Utils.isEmpty(user.getName()))
+			{
+				sql.append(" AND nickname like ? ");
+				paramInfo.setTypeAndData(Types.VARCHAR, "%" + user.getName() + "%");
+			}
+			
+			if(!Utils.isEmpty(user.getType()))
+			{
+				sql.append(" AND type = ? ");
+				paramInfo.setTypeAndData(Types.CHAR, user.getType());
+			}
+			
+			if(!Utils.isEmpty(user.getPhone()))
+			{
+				sql.append(" AND phone = ? ");
+				paramInfo.setTypeAndData(Types.BIGINT, user.getPhone());
+			}
 		}
 		
-		if(!Utils.isEmpty(user.getType()))
-		{
-			sql.append(" AND type = ? ");
-			paramInfo.setTypeAndData(Types.CHAR, user.getType());
-		}
-		
-		if(!Utils.isEmpty(user.getPhone()))
-		{
-			sql.append(" AND phone = ? ");
-			paramInfo.setTypeAndData(Types.BIGINT, user.getPhone());
-		}
 		return getCount(sql.toString(), paramInfo);
 	}
 	

@@ -1,16 +1,22 @@
 package com.offering.core.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.quartz.JobDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +27,7 @@ import com.offering.constant.GloabConstant;
 import com.offering.core.job.JobManager;
 import com.offering.core.job.JobManager.JobType;
 import com.offering.core.service.UserService;
+import com.offering.log.LogUtil;
 import com.offering.utils.MD5Util;
 
 @Controller
@@ -119,5 +126,51 @@ public class MainController {
 		
 		m.put("success", true);
 		return m;
+	}
+	
+	/**
+	 * 文件下载
+	 * @param path
+	 * @param fileName
+	 * @return
+	 */
+	@RequestMapping(value = "/download/{path}/{fileName}.{suff}",method={RequestMethod.GET,RequestMethod.POST})
+	public void dowload(@PathVariable("path")String path, 
+			@PathVariable("fileName")String fileName,@PathVariable("suff")String suff,
+			HttpServletResponse rep){
+		rep.setHeader("Content-Disposition", "attachment; filename=" + fileName + "." + suff);  
+		LogUtil.debug(fileName + "." + suff);
+		if("apk".equals(suff))
+		{
+//			rep.setHeader("Content-Encoding","gzip");
+			rep.setContentType("application/octet-stream");
+		}
+		else
+			rep.setContentType("image/*");  
+		String filePath = GloabConstant.ROOT_DIR + path + "/" + fileName + "." + suff;
+		long contentLength = new File(filePath).length();
+		LogUtil.debug("文件大小:" + contentLength);
+        rep.setContentLength((int) contentLength);
+		FileInputStream fis = null; 
+        OutputStream os = null; 
+        try {
+        	fis = new FileInputStream(filePath);
+            os = rep.getOutputStream();
+            int count = 0;
+            byte[] buffer = new byte[1024*8];
+            while ( (count = fis.read(buffer)) != -1 ){
+              os.write(buffer, 0, count);
+              os.flush();
+            }
+        }catch(Exception e){
+        	e.printStackTrace();
+        }finally {
+            try {
+				fis.close();
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
 	}
 }

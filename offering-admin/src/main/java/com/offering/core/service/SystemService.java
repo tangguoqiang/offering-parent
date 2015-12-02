@@ -1,19 +1,18 @@
 package com.offering.core.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.offering.bean.sys.AppVersion;
-import com.offering.bean.sys.Comcode;
-import com.offering.bean.sys.School;
-import com.offering.bean.sys.Suggest;
-
+/**
+ * 系统功能service
+ * @author surfacepro3
+ *
+ */
 public interface SystemService {
 
-	List<School> listSchools(String province);
-	
-	List<Comcode> getComcodeByGroup(String group);
-	
-	void insertSuggest(Suggest s);
-	
-	AppVersion getCurrentVersion(String deviceType);
+	/**
+	 * 统计每天新增用户量
+	 * @return
+	 */
+	List<Map<String, Object>> countNewUsersByDay();
 }

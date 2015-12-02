@@ -1,14 +1,8 @@
 package com.offering.redis;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Map.Entry;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
 /**
  * Hello world!
@@ -40,7 +34,10 @@ public class App {
 //		redisOp.delete("user");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		System.out.println(sdf.format(new Date()));;
-		System.err.println(System.getProperty("os.name"));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH, -2);
+		System.out.println(sdf.format(cal.getTime()));
 	}
 	
 	public static class TestBean{

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +30,7 @@ import com.offering.bean.chart.Member;
 import com.offering.bean.sys.PageInfo;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.ActivityService;
+import com.offering.log.LogUtil;
 import com.offering.utils.Utils;
 
 /**
@@ -42,8 +42,6 @@ import com.offering.utils.Utils;
 @RequestMapping(value ="/activity")
 public class ActivityController {
 
-	private final static Logger LOG = Logger.getLogger(ActivityController.class);
-	
 	@Autowired
 	private ActivityService activityService;
 	
@@ -316,7 +314,7 @@ public class ActivityController {
 	                String value = item.getName();  
 	                filename = value.substring(value.lastIndexOf("\\") + 1);  
 	                filename = "activity_" + System.currentTimeMillis() + filename.substring(filename.indexOf("."));
-	                LOG.info("获取文件总量的容量:"+ item.getSize());  
+	                LogUtil.info("获取文件总量的容量:"+ item.getSize());  
 	                InputStream in = item.getInputStream();  
 	                out = new FileOutputStream(
 		            		new File(GloabConstant.ROOT_DIR + "userImages",filename));
@@ -328,14 +326,14 @@ public class ActivityController {
 	    		}  
 	    	}  
 	    }catch(Exception e){  
-	    	LOG.error(e.getMessage());
+	    	LogUtil.error(e.getMessage());
 	    }  
 	    finally{
 	    	if(out != null)
 				try {
 					out.close();
 				} catch (IOException e) {
-					LOG.error(e.getMessage());
+					LogUtil.error(e.getMessage());
 				}
 	    }
 	    

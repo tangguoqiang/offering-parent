@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +27,7 @@ import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.service.GreaterService;
 import com.offering.core.service.UserService;
+import com.offering.log.LogUtil;
 import com.offering.utils.MD5Util;
 import com.offering.utils.Utils;
 
@@ -35,8 +35,6 @@ import com.offering.utils.Utils;
 @RequestMapping(value ="/greater")
 public class GreaterController {
 
-	private final static Logger LOG = Logger.getLogger(GreaterController.class);
-	
 	@Autowired
 	private GreaterService greaterService;
 	
@@ -139,7 +137,7 @@ public class GreaterController {
 	                String value = item.getName();  
 	                filename = value.substring(value.lastIndexOf("\\") + 1);  
 	                filename = System.currentTimeMillis() +"_greater" + filename.substring(filename.indexOf("."));
-	                LOG.info("获取文件总量的容量:"+ item.getSize());  
+	                LogUtil.info("获取文件总量的容量:"+ item.getSize());  
 	                in = item.getInputStream();  
 	                out = new FileOutputStream(
 		            		new File(GloabConstant.ROOT_DIR + "userImages",filename));
@@ -151,7 +149,7 @@ public class GreaterController {
 	    		}  
 	    	}  
 	    }catch(Exception e){  
-	    	LOG.error(e.getMessage());
+	    	LogUtil.error(e.getMessage());
 	    }  
 	    finally{
 	    	if(out != null)
@@ -159,7 +157,7 @@ public class GreaterController {
 	    		try {
 					out.close();
 				} catch (IOException e) {
-					LOG.error(e.getMessage());
+					LogUtil.error(e.getMessage());
 				}
 	    	}
 	    	
@@ -169,7 +167,7 @@ public class GreaterController {
 	    		try {
 	    			in.close();
 				} catch (IOException e) {
-					LOG.error(e.getMessage());
+					LogUtil.error(e.getMessage());
 				}
 	    	}
 	    }

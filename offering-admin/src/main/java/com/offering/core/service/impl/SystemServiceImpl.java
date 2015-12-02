@@ -1,70 +1,64 @@
 package com.offering.core.service.impl;
 
-import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.offering.bean.sys.AppVersion;
-import com.offering.bean.sys.Comcode;
-import com.offering.bean.sys.ParamInfo;
-import com.offering.bean.sys.School;
-import com.offering.bean.sys.Suggest;
-import com.offering.constant.GloabConstant;
-import com.offering.core.dao.BaseDao;
+import com.offering.core.dao.UserDao;
 import com.offering.core.service.SystemService;
+import com.offering.redis.RedisOp;
 import com.offering.utils.Utils;
 
+/**
+ * 系统功能service实现
+ * @author surfacepro3
+ *
+ */
 @Service
 public class SystemServiceImpl implements SystemService{
 
 	@Autowired
-	private BaseDao<School> schoolDao;
-	@Autowired
-	private BaseDao<Comcode> comcodeDao;
-	@Autowired
-	private BaseDao<Suggest> suggestDao;
-	@Autowired
-	private BaseDao<AppVersion> versionDao;
+	private RedisOp redisOp;
 	
-	public List<School> listSchools(String province)
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append(" select id,name,province from SYS_SCHOOL ");
-		if(!Utils.isEmpty(province))
-		{
-			sql.append("where province=? ");
-			ParamInfo paramInfo = new ParamInfo();
-			paramInfo.setTypeAndData(Types.VARCHAR, province);
-			return schoolDao.getRecords(sql.toString(),paramInfo,School.class);
+	@Autowired
+	private UserDao userDao;
+	
+	/**
+	 * 统计每天新增用户量
+	 * @return
+	 */
+	public List<Map<String, Object>> countNewUsersByDay(){
+		List<Map<String, Object>> l = new ArrayList<Map<String,Object>>();
+		Map<String, Object> m = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+		String count = null,day = null;
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		
+		for(int len = 10;len > 0;len --){
+			m = new HashMap<String, Object>();
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+			day = sdf.format(cal.getTime());
+			count = redisOp.get(day + "_user");
+			m.put("day", day);
+			if(Utils.isEmpty(count))
+				m.put("count", 0);
+			else
+				m.put("count", count);
+			l.add(m);
 		}
-		return schoolDao.getRecords(sql.toString(),null,School.class);
-	}
-	
-	public List<Comcode> getComcodeByGroup(String group)
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append(" select code,name from SYS_DICT WHERE groupName=? ");
-		ParamInfo paramInfo = new ParamInfo();
-		paramInfo.setTypeAndData(Types.VARCHAR, group);
-		return comcodeDao.getRecords(sql.toString(),paramInfo,Comcode.class);
-	}
-	
-	public void insertSuggest(Suggest s)
-	{
-		suggestDao.insertRecord(s, "SYS_SUGGEST");
-	}
-	
-	public AppVersion getCurrentVersion(String deviceType)
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append(" select versionCode,versionName,updateDesc,appUrl FROM SYS_APPVERSION ")
-		   .append("WHERE insertTime IS NOT NULL AND deviceType=? AND status=? ")
-		   .append("ORDER BY insertTime DESC LIMIT 1 ");
-		ParamInfo paramInfo = new ParamInfo();
-		paramInfo.setTypeAndData(Types.CHAR, deviceType);
-		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.STATUS_EFFECT);
-		return versionDao.getRecord(sql.toString(),paramInfo,AppVersion.class);
+		m = new HashMap<String, Object>();
+		m.put("day", "用户总数");
+		m.put("count", userDao.getUserCount(null));
+		l.add(m);
+		return l;
 	}
 }
