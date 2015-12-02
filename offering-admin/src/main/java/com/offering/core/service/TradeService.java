@@ -1,9 +1,9 @@
 package com.offering.core.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.offering.bean.sys.PageInfo;
+import com.offering.bean.trade.Account;
 import com.offering.bean.trade.TradeHistory;
 
 /**
@@ -12,20 +12,22 @@ import com.offering.bean.trade.TradeHistory;
  *
  */
 public interface TradeService {
-
-	/**
-	 * 打赏历史纪录
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo);
 	
 	/**
-	 * 获取总金额
-	 * @param userId
-	 * @param type
+	 * 查询账户信息
+	 * @param account
+	 * @param page
 	 * @return
 	 */
-	BigDecimal totalAmount(String userId,String type);
+	List<Account> listAccounts(Account account,PageInfo page);
+	long getAccountCount(Account account);
+
+	/**
+	 * 交易历史纪录
+	 * @param th
+	 * @param pageInfo
+	 * @return
+	 */
+	List<TradeHistory> listTradeHistory(TradeHistory th,PageInfo pageInfo);
+	long getThCount(TradeHistory th);
 }

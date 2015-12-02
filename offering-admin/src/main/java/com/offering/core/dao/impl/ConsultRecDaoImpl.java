@@ -11,6 +11,7 @@ import com.offering.bean.user.ConsultRecord;
 import com.offering.constant.DBConstant;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.ConsultRecDao;
+import com.offering.utils.Utils;
 
 /**
  * 咨询记录dao实现
@@ -20,6 +21,70 @@ import com.offering.core.dao.ConsultRecDao;
 @Repository(value="ConsultRecDao")
 public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements ConsultRecDao{
 
+	/**
+	 * 查询咨询历史
+	 * @param cr
+	 * @param page
+	 * @return
+	 */
+	public List<ConsultRecord> listConsultRecs(ConsultRecord cr,PageInfo page){
+		StringBuilder sql = new StringBuilder(128);
+		sql.append("SELECT T1.id,T1.description,T1.createTime,T1.status,T4.title, ")
+		   .append("T2.nickname createrName,T2.url createrUrl,T3.nickname greaterName,T3.url greaterUrl ")
+		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ")
+		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
+		   .append(" T2 ON T2.id=T1.creater ")
+		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
+		   .append(" T3 ON T3.id=T1.greaterId ")
+		   .append("LEFT JOIN ").append(DBConstant.TOPIC_INFO)
+		   .append(" T4 ON T4.id=T1.topicId ")
+		   .append("WHERE 1=1 ");
+		ParamInfo pi = new ParamInfo(1);
+		if(!Utils.isEmpty(cr.getDescription())){
+			sql.append("AND T1.description LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getDescription() + "%");
+		}
+		if(!Utils.isEmpty(cr.getGreaterName())){
+			sql.append("AND T3.nickname LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getGreaterName() + "%");
+		}
+		if(!Utils.isEmpty(cr.getTitle())){
+			sql.append("AND T4.title LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getTitle() + "%");
+		}
+		sql.append("ORDER BY T1.createTime DESC ");
+		
+		return getRecords(sql.toString(), pi,page, ConsultRecord.class);
+	}
+	
+	public long getConsultCount(ConsultRecord cr){
+		StringBuilder sql = new StringBuilder(128);
+		sql.append("SELECT count(1) ")
+		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ")
+		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
+		   .append(" T2 ON T2.id=T1.creater ")
+		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
+		   .append(" T3 ON T3.id=T1.greaterId ")
+		   .append("LEFT JOIN ").append(DBConstant.TOPIC_INFO)
+		   .append(" T4 ON T4.id=T1.topicId ")
+		   .append("WHERE 1=1 ");
+		ParamInfo pi = new ParamInfo(1);
+		if(!Utils.isEmpty(cr.getDescription())){
+			sql.append("AND T1.description LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getDescription() + "%");
+		}
+		if(!Utils.isEmpty(cr.getGreaterName())){
+			sql.append("AND T3.nickname LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getGreaterName() + "%");
+		}
+		if(!Utils.isEmpty(cr.getTitle())){
+			sql.append("AND T4.title LIKE ? ");
+			pi.setTypeAndData(Types.VARCHAR, "%" + cr.getTitle() + "%");
+		}
+		sql.append("ORDER BY T1.createTime DESC ");
+		return getCount(sql.toString(), pi);
+	}
+	
 	/**
 	 * 更新咨询记录状态
 	 * @param id
@@ -47,73 +112,5 @@ public class ConsultRecDaoImpl extends BaseDaoImpl<ConsultRecord> implements Con
 		ParamInfo pi = new ParamInfo(1);
 		pi.setTypeAndData(Types.CHAR, GloabConstant.CONSULT_STATUS_0);
 		return getRecords(sql.toString(), pi, ConsultRecord.class);
-	}
-	
-	/**
-	 * 咨询历史纪录
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	public List<ConsultRecord>  consultHistory(String userId,String type,PageInfo pageInfo){
-		StringBuilder sql = new StringBuilder(128);
-		sql.append("SELECT T1.id,T1.description,T1.createTime,T1.status,T4.title, ")
-		   .append("T2.nickname createrName,T2.url createrUrl,T3.nickname greaterName,T3.url greaterUrl ")
-		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ")
-		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
-		   .append(" T2 ON T2.id=T1.creater ")
-		   .append("INNER JOIN ").append(DBConstant.USER_INFO)
-		   .append(" T3 ON T3.id=T1.greaterId ")
-		   .append("LEFT JOIN ").append(DBConstant.TOPIC_INFO)
-		   .append(" T4 ON T4.id=T1.topicId ");
-		ParamInfo pi = new ParamInfo(1);
-		if(GloabConstant.USER_TYPE_GREATER.equals(type)){
-			sql.append("WHERE T1.greaterId=? ");
-		}else{
-			sql.append("WHERE T1.creater=? ");
-		}
-		sql.append("ORDER BY T1.createTime DESC ");
-		pi.setTypeAndData(Types.BIGINT, userId);
-		return getRecords(sql.toString(), pi,pageInfo, ConsultRecord.class);
-	}
-	
-	/**
-	 * 根据创建人和大拿获取资讯记录
-	 * @param creater
-	 * @param greaterId
-	 * @return
-	 */
-	public ConsultRecord getConsultByCreater(String creater,String greaterId){
-		StringBuilder sql = new StringBuilder(128);
-		sql.append("SELECT T1.id,T1.chatId,T2.title ")
-		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ")
-		   .append("LEFT JOIN ").append(DBConstant.TOPIC_INFO)
-		   .append(" T2 ON T2.id=T1.topicId ")
-		   .append("WHERE T1.status=? AND T1.creater=? AND T1.greaterId=?");
-		ParamInfo pi = new ParamInfo(1);
-		pi.setTypeAndData(Types.CHAR, GloabConstant.CONSULT_STATUS_0);
-		pi.setTypeAndData(Types.BIGINT, creater);
-		pi.setTypeAndData(Types.BIGINT, greaterId);
-		return getRecord(sql.toString(), pi, ConsultRecord.class);
-	}
-	
-	/**
-	 * 根据用户id获取咨询次数
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	public long getConsultCount(String userId,String type){
-		StringBuilder sql = new StringBuilder(128);
-		sql.append("SELECT COUNT(1) ")
-		   .append("FROM ").append(DBConstant.CONSULT_RECORD).append(" T1 ");
-		ParamInfo pi = new ParamInfo(1);
-		if(GloabConstant.USER_TYPE_GREATER.equals(type)){
-			sql.append("WHERE T1.greaterId=? ");
-		}else{
-			sql.append("WHERE T1.creater=? ");
-		}
-		pi.setTypeAndData(Types.BIGINT, userId);
-		return getCount(sql.toString(), pi,0);
 	}
 }

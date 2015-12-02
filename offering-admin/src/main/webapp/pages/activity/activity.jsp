@@ -289,7 +289,7 @@ $(document).ready(function(){
             		bootstrapMajorVersion:3,
             		currentPage:currentPage,
             		numberOfPages: 5, 
-            		totalPages:Math.ceil(data.totalCount/pageSize),
+            		totalPages:data.totalCount == 0?1:Math.ceil(data.totalCount/pageSize),
             		size:"normal",  
                     alignment:"center",  
                     itemTexts: function (type, page, current) {  

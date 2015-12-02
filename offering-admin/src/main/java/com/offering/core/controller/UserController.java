@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.user.User;
 import com.offering.core.service.UserService;
-import com.offering.utils.Utils;
 
 /**
  * 用户维护
@@ -51,42 +50,5 @@ public class UserController {
 	@ResponseBody
 	public User getUserInfo(String id){
 		return userService.getUserInfoById(id);
-	}
-	
-	@RequestMapping(value = "/user/saveUser", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> saveUser(User user){
-		Map<String, Object> m = new HashMap<String, Object>();
-		boolean isExists = userService.isExistUser(user);
-		if(isExists){
-			m.put("success", false);
-			m.put("msg", "用户名已经存在！");
-		}else{
-			if(Utils.isEmpty(user.getId())){
-				//新增用户
-				userService.insertUser(user);
-			}else{
-				//更新用户信息
-				userService.updateUser(user);
-			}
-			m.put("success", true);
-		}
-		
-		return m;
-	}
-	
-	/**
-	 * 删除用户
-	 * @param user
-	 * @return
-	 */
-	@RequestMapping(value = "/user/delUser", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> delUser(String id){
-		Map<String, Object> m = new HashMap<String, Object>();
-		userService.delUser(id);
-		m.put("success", true);
-		
-		return m;
 	}
 }

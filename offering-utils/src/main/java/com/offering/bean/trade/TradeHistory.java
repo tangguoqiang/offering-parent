@@ -26,6 +26,7 @@ public class TradeHistory {
 	private String payeeName;
 	private String payerUrl;
 	private String payeeUrl;
+	private String channel;
 	
 	public String getPayerName() {
 		return payerName;
@@ -86,5 +87,11 @@ public class TradeHistory {
 	}
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+	public String getChannel() {
+		return channel;
+	}
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 }

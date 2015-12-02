@@ -1,13 +1,12 @@
 package com.offering.core.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.offering.bean.sys.PageInfo;
+import com.offering.bean.trade.Account;
 import com.offering.bean.trade.TradeHistory;
 import com.offering.core.dao.TradeAccountDao;
 import com.offering.core.dao.TradeHistoryDao;
@@ -22,8 +21,6 @@ import com.offering.core.service.TradeService;
 @Service
 public class TradeServiceImpl implements TradeService{
 
-	private final static Logger LOG = Logger.getLogger(TradeServiceImpl.class);
-	
 	@Autowired
 	private TradeAccountDao accountDao;
 	
@@ -34,23 +31,29 @@ public class TradeServiceImpl implements TradeService{
 	private TradeHistoryDao tradeHistoryDao;
 	
 	/**
-	 * 打赏历史纪录
-	 * @param userId
-	 * @param type
+	 * 查询账户信息
+	 * @param account
+	 * @param page
 	 * @return
 	 */
-	public List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo){
-		return tradeHistoryDao.rewardHistory(userId,type,pageInfo);
+	public List<Account> listAccounts(Account account,PageInfo page){
+		return accountDao.listAccounts(account, page);
+	}
+	public long getAccountCount(Account account){
+		return accountDao.getAccountCount(account);
 	}
 	
+
 	/**
-	 * 获取总金额
-	 * @param userId
-	 * @param type
+	 * 交易历史纪录
+	 * @param th
+	 * @param pageInfo
 	 * @return
 	 */
-	public BigDecimal totalAmount(String userId,String type){
-		String totalAmount = tradeHistoryDao.totalAmount(userId,type);
-		return new BigDecimal(totalAmount).setScale(2);
+	public List<TradeHistory> listTradeHistory(TradeHistory th,PageInfo pageInfo){
+		return tradeHistoryDao.listTradeHistory(th, pageInfo);
+	}
+	public long getThCount(TradeHistory th){
+		return tradeHistoryDao.getThCount(th);
 	}
 }

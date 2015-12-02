@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.user.Greater;
+import com.offering.bean.user.Topic;
 import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
+import com.offering.core.service.GreaterService;
 import com.offering.core.service.UserService;
 import com.offering.utils.MD5Util;
 import com.offering.utils.Utils;
@@ -34,6 +36,9 @@ import com.offering.utils.Utils;
 public class GreaterController {
 
 	private final static Logger LOG = Logger.getLogger(GreaterController.class);
+	
+	@Autowired
+	private GreaterService greaterService;
 	
 	@Autowired
 	private UserService userService;
@@ -48,9 +53,8 @@ public class GreaterController {
 	@ResponseBody
 	public Map<String, Object> listGreaters(User user,PageInfo page){
 		Map<String, Object> m = new HashMap<String, Object>();
-		List<Greater> l = userService.listGreaters(user,page);
-		m.put("records", l);
-		m.put("totalCount", userService.getGreaterCount(user));
+		m.put("records", greaterService.listGreaters(user,page));
+		m.put("totalCount", greaterService.getGreaterCount(user));
 		return m;
 	}
 	
@@ -63,7 +67,7 @@ public class GreaterController {
 	@RequestMapping(value = "/getGreaterInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Greater getGreaterInfo(String id){
-		return userService.getGreaterInfoById(id);
+		return greaterService.getGreaterInfoById(id);
 	}
 	
 	/**
@@ -80,9 +84,8 @@ public class GreaterController {
 		user.setNickname(greater.getNickname());
 		user.setPhone(greater.getPhone());
 		user.setType(GloabConstant.USER_TYPE_GREATER);
+		user.setIndustry(greater.getIndustry());
 		
-		greater.setNickname(null);
-		greater.setPhone(null);
 		boolean isExists = userService.isExistUser(user);
 		if(isExists){
 			m.put("success", false);
@@ -92,10 +95,10 @@ public class GreaterController {
 				//新增用户
 				//初始密码123
 				user.setPassword(MD5Util.string2MD5("offering"));
-				userService.insertGreater(user,greater);
+				greaterService.insertGreater(user,greater);
 			}else{
 				//更新用户信息
-				userService.updateGreater(user,greater);
+				greaterService.updateGreater(user,greater);
 			}
 			m.put("success", true);
 		}
@@ -174,7 +177,7 @@ public class GreaterController {
 	    String id = paramMap.get("id");
 	    String uploadType = paramMap.get("uploadType");
 	    
-	    Greater greater = userService.getGreaterInfoById(id);
+	    Greater greater = greaterService.getGreaterInfoById(id);
 	    if("0".equals(uploadType))
 	    {
 	    	//大拿头像
@@ -203,7 +206,7 @@ public class GreaterController {
 	    }
 	    
 	    String url = "/download/userImages/" + filename;
-	    userService.uploadGreaterImage(id,url,uploadType);
+	    greaterService.uploadGreaterImage(id,url,uploadType);
 	    
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("success", true);
@@ -219,8 +222,65 @@ public class GreaterController {
 	@ResponseBody
 	public Map<String, Object> delGreater(String id)
 	{
-		userService.delGreater(id);
+		greaterService.delGreater(id);
 		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("success", true);
+		return m;
+	}
+	
+	/**
+	 * 查询话题数据
+	 * @param user
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/listTopics", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> listTopics(String greaterId){
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("records", greaterService.listTopics(greaterId));
+		return m;
+	}
+	
+	/**
+	 * 根据话题id查询话题数据
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/getTopicInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Topic getTopicInfo(String id){
+		return greaterService.getTopicInfo(id);
+	}
+	
+	/**
+	 * 保存话题
+	 * @param topic
+	 * @return
+	 */
+	@RequestMapping(value = "/saveTopic", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveTopic(Topic topic){
+		Map<String, Object> m = new HashMap<String, Object>();
+		if(Utils.isEmpty(topic.getId())){
+			greaterService.addTopic(topic);
+		}else{
+			greaterService.updateTopic(topic);
+		}
+		m.put("success", true);
+		return m;
+	}
+	
+	/**
+	 * 删除话题
+	 * @param topic
+	 * @return
+	 */
+	@RequestMapping(value = "/delTopic", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> delTopic(String id){
+		Map<String, Object> m = new HashMap<String, Object>();
+		greaterService.delTopic(id);
 		m.put("success", true);
 		return m;
 	}

@@ -21,9 +21,7 @@
 	    <form class="form-horizontal">
           <div class="form-group">
 	      	<div class="col-sm-10">
-	        	<!-- <button id="addBtn" type="button" class="btn btn-default">新增</button> -->
 	            <button id="delBtn" type="button" class="btn btn-default">预留</button>
-	            <!-- <button id="qytyBtn" type="button" class="btn btn-default">启用/停用</button> -->
 	        </div>
           </div>
           <div class="form-group">
@@ -32,14 +30,10 @@
 			    <div class="col-sm-3">
 			      <input class="form-control" id="userName">
 			    </div>
-			    <!-- <label for="qryStatus" class="col-sm-2 control-label">状态:</label>
+			    <label for="qryPhone" class="col-sm-1 control-label">手机号:</label>
 			    <div class="col-sm-3">
-			       <select class="form-control" id="qryStatus">
-                      <option value="">全部</option>
-                      <option value="0">启用</option>
-                      <option value="1">停用</option>
-                    </select>
-			    </div> -->
+			      <input class="form-control" id="qryPhone">
+			    </div>
 	            <button id="queryBtn" type="button" class="btn btn-default">查询</button>
 	        </div>
           </div>
@@ -49,8 +43,9 @@
 		  	<thead>
 				<tr class="success">
 					<th width="40px" dataIndex="_index">序号</th>
-					<th width="100px" dataIndex="id" style="display: none;">用户Id</th>
-                    <th width="120px" dataIndex="nickname" renderFunc="viewUser(this);">用户名</th>
+					<th width="10px" dataIndex="id" style="display: none;">用户Id</th>
+                    <th width="100px" dataIndex="nickname" renderFunc="viewUser(this);">用户名</th>
+                    <th width="100px" dataIndex="phone">手机号</th>
 					<th width="100px" dataIndex="schoolName">学校</th>
 					<th width="100px" dataIndex="major">专业</th>
 					<th width="100px" dataIndex="gradeName">年级</th>
@@ -132,7 +127,7 @@ $(document).ready(function(){
             url:'<%=baseUrl%>'+"/user/listUsers",
             data:{
             	nickname:$("#userName").val(),
-            	//status:$("#qryStatus").val(),
+            	phone:$("#qryPhone").val(),
             	type : '<%=GloabConstant.USER_TYPE_NORMAL %>',
             	pageSize:pageSize,
             	currentPage:currentPage
@@ -143,34 +138,8 @@ $(document).ready(function(){
             		data.totalCount=1;
             	sel_id="";
             	loadTableData("adminTable", data.records);
-            	$('#paginator').bootstrapPaginator({ 
-            		bootstrapMajorVersion:3,
-            		currentPage:currentPage,
-            		numberOfPages: 5, 
-            		totalPages:Math.ceil(data.totalCount/pageSize),
-            		size:"normal",  
-                    alignment:"center",  
-                    itemTexts: function (type, page, current) {  
-                        switch (type) {  
-                            case "first":  
-                                return "第一页";  
-                            case "prev":  
-                                return "<";  
-                            case "next":  
-                                return ">";  
-                            case "last":  
-                                return "最后页";  
-                            case "page":  
-                                return  page;  
-                        }                 
-                    },  
-                    //onPageChanged: page,
-                    onPageClicked: function (e, originalEvent, type, page) {  
-                    	currentPage=page;
-                    	$("#queryBtn").trigger("click");
-                    }  
-                });
-            	$("#paginator a").css("cursor","pointer");
+            	
+            	initPage("paginator",currentPage,data.totalCount,pageClicked);
             	
             	$("#adminTable tbody tr").css("cursor","pointer");
         		$("#adminTable tbody tr").click(function() {
@@ -187,6 +156,11 @@ $(document).ready(function(){
 	 
 	 $("#queryBtn").trigger("click");
 });
+
+function pageClicked(page){
+	currentPage=page;
+	$("#queryBtn").trigger("click");
+}
 
 function viewUser(el){
 	$("#detailModal").modal("show");

@@ -13,18 +13,11 @@ import com.offering.bean.trade.TradeHistory;
 public interface TradeHistoryDao extends BaseDao<TradeHistory>{
 
 	/**
-	 * 打赏历史纪录
-	 * @param userId
-	 * @param type
+	 * 交易历史纪录
+	 * @param th
+	 * @param pageInfo
 	 * @return
 	 */
-	List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo);
-	
-	/**
-	 * 获取总金额
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	String totalAmount(String userId,String type);
+	List<TradeHistory> listTradeHistory(TradeHistory th,PageInfo pageInfo);
+	long getThCount(TradeHistory th);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.user.Greater;
+import com.offering.bean.user.User;
 
 /**
  * 大拿dao
@@ -11,18 +12,31 @@ import com.offering.bean.user.Greater;
  *
  */
 public interface GreaterDao extends BaseDao<Greater>{
-
+	
 	/**
-	 * 查询大拿列表(app端)
+	 * 查询大拿列表
 	 * @param page
 	 * @return
 	 */
-	List<Greater> listGreaters_app(PageInfo page);
+	List<Greater> listGreaters(User user,PageInfo page);
 	
 	/**
-	 * 根据大拿id获取大拿信息(app端)
+	 * 获取大拿数量
+	 * @param user
+	 * @return
+	 */
+	long getGreaterCount(User user);
+
+	/**
+	 * 根据大拿id获取大拿信息
 	 * @param id
 	 * @return
 	 */
-	Greater getGreaterInfoById_app(String id);
+	Greater getGreaterInfoById(String id);
+	
+	/**
+	 * 更新大拿信息
+	 * @param greater
+	 */
+	public void updateGreater(Greater greater);
 }

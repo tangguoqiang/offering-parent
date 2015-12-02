@@ -1,14 +1,16 @@
 package com.offering.core.dao.impl;
 
-import java.math.BigDecimal;
 import java.sql.Types;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.ParamInfo;
 import com.offering.bean.trade.Account;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.TradeAccountDao;
+import com.offering.utils.Utils;
 
 /**
  * 交易账户dao实现
@@ -19,33 +21,39 @@ import com.offering.core.dao.TradeAccountDao;
 public class TradeAccountDaoImpl extends BaseDaoImpl<Account> implements TradeAccountDao{
 
 	/**
-	 * 根据用户id获取用户账户
-	 * @param userId
+	 * 查询账户信息
+	 * @param account
+	 * @param page
 	 * @return
 	 */
-	public Account getRecByUserId(String userId){
+	public List<Account> listAccounts(Account account,PageInfo page){
 		StringBuilder sql = new StringBuilder(256);
-		sql.append("SELECT id,balance ")
-		   .append("FROM TRADE_ACCOUNT ")
-		   .append("WHERE userId=? AND status=? ");
+		sql.append("SELECT T1.id,T1.code,FORMAT(T1.balance,2) balance,T2.nickname name ")
+		   .append("FROM TRADE_ACCOUNT T1 ")
+		   .append("INNER JOIN USER_INFO T2 ON T2.id=T1.userId ")
+		   .append("WHERE T1.status=? ");
 		ParamInfo paramInfo = new ParamInfo();
-		paramInfo.setTypeAndData(Types.BIGINT, userId);
 		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.STATUS_EFFECT);
-		return getRecord(sql.toString(), paramInfo, Account.class);
+		if(!Utils.isEmpty(account.getName())){
+			sql.append("AND T2.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + account.getName() + "%");
+		}
+		return getRecords(sql.toString(), paramInfo,page, Account.class);
 	}
 	
-	/**
-	 * 更新账户余额
-	 * @param userId
-	 * @param balance
-	 */
-	public void updateBalance(String id,BigDecimal balance){
-		StringBuilder sql = new StringBuilder(128);
-		sql.append("UPDATE TRADE_ACCOUNT SET balance=?,opTime=? WHERE id=? ");
+	public long getAccountCount(Account account){
+		StringBuilder sql = new StringBuilder(256);
+		sql.append("SELECT COUNT(1) ")
+		   .append("FROM TRADE_ACCOUNT T1 ")
+		   .append("INNER JOIN USER_INFO T2 ON T2.id=T1.userId ")
+		   .append("WHERE T1.status=? ");
 		ParamInfo paramInfo = new ParamInfo();
-		paramInfo.setTypeAndData(Types.VARCHAR, balance + "");
-		paramInfo.setTypeAndData(Types.BIGINT, String.valueOf(System.currentTimeMillis()));
-		paramInfo.setTypeAndData(Types.BIGINT, id);
-		updateRecord(sql.toString(), paramInfo);
+		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.STATUS_EFFECT);
+		if(!Utils.isEmpty(account.getName())){
+			sql.append("AND T2.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + account.getName() + "%");
+		}
+		return getCount(sql.toString(), paramInfo);
 	}
+	
 }

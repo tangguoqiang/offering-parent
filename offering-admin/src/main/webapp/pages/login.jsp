@@ -7,6 +7,7 @@ String baseUrl = request.getContextPath();
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="images/favicon/favicon.ico" rel="shortcut icon">
 <title>Offering</title>
 	<script src="js/jquery.min.js" type="text/javascript"></script>
 	<link href="css/login.css" rel="stylesheet" type="text/css"/>

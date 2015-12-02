@@ -114,6 +114,7 @@
 	                    <th width="100px" dataIndex="comment">内容</th>
 	                    <th width="100px" dataIndex="createTime" type="time">评论时间</th>
 						<th width="100px" dataIndex="name">创建人</th>
+						<th width="100px" dataIndex="toUserName">被评论人</th>
 					</tr>
 				</thead>
 				<tbody>

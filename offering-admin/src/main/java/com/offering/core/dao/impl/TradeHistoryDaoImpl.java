@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.offering.bean.sys.PageInfo;
 import com.offering.bean.sys.ParamInfo;
 import com.offering.bean.trade.TradeHistory;
-import com.offering.constant.GloabConstant;
 import com.offering.core.dao.TradeHistoryDao;
+import com.offering.utils.Utils;
 
 /**
  * 交易历史dao实现
@@ -20,55 +20,54 @@ import com.offering.core.dao.TradeHistoryDao;
 public class TradeHistoryDaoImpl extends BaseDaoImpl<TradeHistory> implements TradeHistoryDao{
 
 	/**
-	 * 打赏历史纪录
-	 * @param userId
-	 * @param type
+	 * 交易历史纪录
+	 * @param th
+	 * @param pageInfo
 	 * @return
 	 */
-	public List<TradeHistory> rewardHistory(String userId,String type,PageInfo pageInfo){
+	public List<TradeHistory> listTradeHistory(TradeHistory th,PageInfo pageInfo){
 		StringBuilder sql = new StringBuilder(512);
-		sql.append("SELECT T1.tradeTime,FORMAT(T1.amount,2) amount,T2.nickname payerName,T2.url payerUrl,")
-		   .append("T3.nickname payeeName,T3.url payeeUrl ")
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("SELECT T1.tradeNo,T1.tradeTime,FORMAT(T1.amount,2) amount,T2.nickname payerName,")
+		   .append("T1.type,T3.nickname payeeName,T4.channel,T1.type ")
 		   .append("FROM TRADE_HISTORY T1 ")
 		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.payer ")
 		   .append("INNER JOIN USER_INFO T3 ON T3.ID=T1.payee ")
-		   .append("WHERE T1.type=? ");
-		if(GloabConstant.USER_TYPE_GREATER.equals(type)){
-			sql.append("AND T1.payee=? ");
-		}else{
-			sql.append("AND T1.payer=? ");
+		   .append("INNER JOIN TRADE_RECORD T4 ON T4.tradeNo=T1.tradeNo ")
+		   .append("WHERE 1=1 ");
+		
+		if(!Utils.isEmpty(th.getPayerName())){
+			sql.append("AND T2.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + th.getPayerName() + "%");
+		}
+		
+		if(!Utils.isEmpty(th.getPayeeName())){
+			sql.append("AND T3.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + th.getPayeeName() + "%");
 		}
 		sql.append("ORDER BY T1.tradeTime DESC ");
-		ParamInfo paramInfo = new ParamInfo(2);
-		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.TRADE_TYPE_1);
-		paramInfo.setTypeAndData(Types.BIGINT, userId);
+		
 		return getRecords(sql.toString(), paramInfo,pageInfo, TradeHistory.class);
 	}
-	
-	/**
-	 * 获取总金额
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	public String totalAmount(String userId,String type){
+	public long getThCount(TradeHistory th){
 		StringBuilder sql = new StringBuilder(512);
-		sql.append("SELECT SUM(T1.amount) amount ")
+		ParamInfo paramInfo = new ParamInfo();
+		sql.append("SELECT COUNT(1) ")
 		   .append("FROM TRADE_HISTORY T1 ")
-		   .append("WHERE T1.type=? ");
-		if(GloabConstant.USER_TYPE_GREATER.equals(type)){
-			sql.append("AND T1.payee=? ")
-			   .append("GROUP BY T1.payee ");
-		}else{
-			sql.append("AND T1.payer=? ")
-			   .append("GROUP BY T1.payer ");
+		   .append("INNER JOIN USER_INFO T2 ON T2.ID=T1.payer ")
+		   .append("INNER JOIN USER_INFO T3 ON T3.ID=T1.payee ")
+		   .append("WHERE 1=1 ");
+		
+		if(!Utils.isEmpty(th.getPayerName())){
+			sql.append("AND T2.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + th.getPayerName() + "%");
 		}
-		ParamInfo paramInfo = new ParamInfo(2);
-		paramInfo.setTypeAndData(Types.CHAR, GloabConstant.TRADE_TYPE_1);
-		paramInfo.setTypeAndData(Types.BIGINT, userId);
-		TradeHistory th = getRecord(sql.toString(), paramInfo, TradeHistory.class);
-		if(th != null)
-			return th.getAmount();
-		return "0";
+		
+		if(!Utils.isEmpty(th.getPayeeName())){
+			sql.append("AND T3.nickname LIKE ? ");
+			paramInfo.setTypeAndData(Types.VARCHAR, "%" + th.getPayeeName() + "%");
+		}
+		
+		return getCount(sql.toString(), paramInfo);
 	}
 }

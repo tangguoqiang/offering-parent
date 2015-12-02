@@ -12,11 +12,11 @@ import com.offering.bean.user.Topic;
 public interface TopicDao extends BaseDao<Topic>{
 
 	/**
-	 * 根据大拿批量获取话题数据
+	 * 根据大拿id获取话题数据
 	 * @param greaterIds
 	 * @return
 	 */
-	List<Topic> listTopicsByGreaterId(List<String> greaterIds);
+	List<Topic> listTopicsByGreaterId(String greaterId);
 	
 	/**
 	 * 根据话题id获取话题信息
@@ -24,5 +24,17 @@ public interface TopicDao extends BaseDao<Topic>{
 	 * @return
 	 */
 	Topic getTopicInfoById(String id);
+	
+	/**
+	 * 根据大拿id删除话题数据
+	 * @param greaterId
+	 */
+	void delRecsByGreaterId(String greaterId);
+	
+	/**
+	 * 更新话题
+	 * @param topic
+	 */
+	void updateTopic(Topic topic);
 	
 }

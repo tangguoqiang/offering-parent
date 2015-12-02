@@ -8,6 +8,11 @@ public final class DBConstant {
 	public final static String USER_INFO = "USER_INFO";
 	
 	/**
+	 * 大拿信息表
+	 */
+	public final static String USER_GREATER = "USER_GREATER";
+	
+	/**
 	 * 大拿话题
 	 */
 	public final static String TOPIC_INFO = "TOPIC_INFO";

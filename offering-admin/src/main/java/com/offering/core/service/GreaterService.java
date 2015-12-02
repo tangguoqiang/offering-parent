@@ -3,9 +3,9 @@ package com.offering.core.service;
 import java.util.List;
 
 import com.offering.bean.sys.PageInfo;
-import com.offering.bean.user.ConsultRecord;
 import com.offering.bean.user.Greater;
 import com.offering.bean.user.Topic;
+import com.offering.bean.user.User;
 
 /**
  * 大拿service
@@ -15,55 +15,80 @@ import com.offering.bean.user.Topic;
 public interface GreaterService {
 
 	/**
-	 * 获取大拿列表
+	 * 查询大拿列表
 	 * @param page
 	 * @return
 	 */
-	List<Greater> listGreaters(PageInfo page,int v);
+	List<Greater> listGreaters(User user,PageInfo page);
+	
+	/**
+	 * 获取大拿数量
+	 * @param user
+	 * @return
+	 */
+	long getGreaterCount(User user);
 	
 	/**
 	 * 根据大拿id获取大拿信息
 	 * @param id
-	 * @param v
 	 * @return
 	 */
-	Greater getGreaterInfoById(String id,int v);
+	Greater getGreaterInfoById(String id);
 	
 	/**
-	 * 问大拿
-	 * @param cr
-	 * @param title
+	 * 新增大拿
+	 * @param greater
 	 */
-	String askGreater(ConsultRecord cr,String title);
+	void insertGreater(User user,Greater greater);
 	
 	/**
-	 * 咨询历史纪录
-	 * @param userId
-	 * @param type
-	 * @return
+	 * 更新大拿
+	 * @param greater
 	 */
-	List<ConsultRecord>  consultHistory(String userId,String type,PageInfo pageInfo);
+	void updateGreater(User user,Greater greater);
 	
 	/**
-	 * 根据创建人和大拿获取资讯记录
-	 * @param creater
+	 * 上传大拿头像
+	 * @param id
+	 * @param url
+	 */
+	void uploadGreaterImage(String id,String url,String uploadType);
+	
+	/**
+	 * 删除大拿
+	 * @param id
+	 */
+	void delGreater(String id);
+	
+	/**
+	 * 根据大拿id获取话题数据
 	 * @param greaterId
 	 * @return
 	 */
-	ConsultRecord getConsultByCreater(String creater,String greaterId);
+	List<Topic> listTopics(String greaterId);
 	
 	/**
 	 * 根据话题id获取话题信息
 	 * @param id
 	 * @return
 	 */
-	Topic getTopicInfoById(String id);
+	Topic getTopicInfo(String id);
 	
 	/**
-	 * 根据用户id获取咨询次数
-	 * @param userId
-	 * @param type
-	 * @return
+	 * 新增话题
+	 * @param topic
 	 */
-	long getConsultCount(String userId,String type);
+	void addTopic(Topic topic);
+	
+	/**
+	 * 更新话题
+	 * @param topic
+	 */
+	void updateTopic(Topic topic);
+	
+	/**
+	 * 删除话题
+	 * @param id
+	 */
+	void delTopic(String id);
 }

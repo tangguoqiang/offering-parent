@@ -27,6 +27,8 @@ public class Account {
 	private String opTime;
 	@Column
 	private String opUser;
+	
+	private String name;
 	public String getId() {
 		return id;
 	}
@@ -80,5 +82,11 @@ public class Account {
 	}
 	public void setOpUser(String opUser) {
 		this.opUser = opUser;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -47,7 +47,7 @@ function loadTableData(tableId,data){
 	tbody.empty();
 	var html="";
 	for(var i=0,len=data.length;i<len;i++){
-		html+="<tr>";
+		html+="<tr style='cursor:pointer;'>";
 		temp=data[i];
 		for(var j=0,len1=fields.length;j<len1;j++){
 			obj=fields[j];
@@ -244,7 +244,7 @@ function resetForm(formId){
 
 function formatTime(value)
 {
-	if(typeof value=="undefined" || value.trim() == "")
+	if(typeof value=="undefined" || value==null || value.trim() == "")
 		return "";
 	var d = new Date();
 	d.setTime(parseInt(value));
@@ -275,6 +275,14 @@ function getComboValue(group,code)
 			return "是";
 		if(code == '1')
 			return "否";
+	}else if(group == "TRADE_CHANNEL"){
+		if(code == '1')
+			return "支付宝";
+		if(code == '2')
+			return "微信";
+	}else if(group == "TRADE_TYPE"){
+		if(code == '1')
+			return "打赏";
 	}
 }
 
@@ -285,4 +293,34 @@ function initCombox(id,data){
 		temp=data[i];
 		$("#"+id).append("<option value='"+ temp.id +"'>"+temp.nickname+"</option>");
 	}
+}
+
+function initPage(id,currentPage,totalCount,pageClickedFunc){
+	$('#' + id).bootstrapPaginator({ 
+		bootstrapMajorVersion:3,
+		currentPage:currentPage,
+		numberOfPages: 5, 
+		totalPages:totalCount == 0?1:Math.ceil(totalCount/pageSize),
+		size:"normal",  
+        alignment:"center",  
+        itemTexts: function (type, page, current) {  
+            switch (type) {  
+                case "first":  
+                    return "第一页";  
+                case "prev":  
+                    return "<";  
+                case "next":  
+                    return ">";  
+                case "last":  
+                    return "最后页";  
+                case "page":  
+                    return  page;  
+            }                 
+        },  
+        //onPageChanged: page,
+        onPageClicked: function (e, originalEvent, type, page) {  
+        	pageClickedFunc(page);
+        }  
+    });
+	$('#' + id + " a").css("cursor","pointer");
 }

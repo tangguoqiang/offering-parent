@@ -1,7 +1,8 @@
 package com.offering.core.dao;
 
-import java.math.BigDecimal;
+import java.util.List;
 
+import com.offering.bean.sys.PageInfo;
 import com.offering.bean.trade.Account;
 
 /**
@@ -12,16 +13,12 @@ import com.offering.bean.trade.Account;
 public interface TradeAccountDao extends BaseDao<Account>{
 
 	/**
-	 * 根据用户id获取用户账户
-	 * @param userId
+	 * 查询账户信息
+	 * @param account
+	 * @param page
 	 * @return
 	 */
-	Account getRecByUserId(String userId);
+	List<Account> listAccounts(Account account,PageInfo page);
+	long getAccountCount(Account account);
 	
-	/**
-	 * 更新账户余额
-	 * @param userId
-	 * @param balance
-	 */
-	void updateBalance(String userId,BigDecimal balance);
 }

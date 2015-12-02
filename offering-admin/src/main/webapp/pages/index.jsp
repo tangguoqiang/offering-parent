@@ -27,8 +27,19 @@
 	        <li>
 	          <a href="javascript:void(0);" url="pages/activity/activity.jsp" onclick="clickTopbar(this);" role="button" aria-expanded="false">活动管理 <span class="sr-only"></span></a>
 	        </li>
-	         <li>
+	        <li>
 	          <a href="javascript:void(0);" url="pages/community/community.jsp" onclick="clickTopbar(this);" role="button" aria-expanded="false">社区管理 <span class="sr-only"></span></a>
+	        </li>
+	        <li>
+	          <a href="javascript:void(0);" url="pages/consult/consult.jsp" onclick="clickTopbar(this);" role="button" aria-expanded="false">咨询历史<span class="sr-only"></span></a>
+	        </li>
+	        <li class="dropdown">
+	          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">交易管理 <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	          	<li><a href="javascript:void(0);" url="pages/trade/account.jsp" onclick="clickTopbar(this);">用户账户</a></li>
+	          	<li class="divider"></li>
+	           	<li><a href="javascript:void(0);" url="pages/trade/trade.jsp" onclick="clickTopbar(this);">交易历史</a></li>
+	          </ul>
 	        </li>
 	      </ul>
 	      
@@ -40,7 +51,7 @@
 	    </div>
 	  </div>
 	</nav>
-	<iframe id="mainIframe" src="pages/user/user.jsp" style="width: 99.6%;border: none;overflow: false;">
+	<iframe id="mainIframe" src="pages/user/user.jsp" style="width: 99.6%;border: none;overflow: auto;">
 	</iframe>
 	
 	<div class="modal fade" id="messageModal">
@@ -58,21 +69,7 @@
 	</div>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#mainIframe").attr("height",$(window).height() - 75);
-//	if(auth === '0'){
-//		$.each($(".lan_bottitle").children(),function(i,el){
-//			if(i != 0){
-//				$(el).hide();
-//			}
-//		});
-//	}else if(auth === '-1'){
-//		$.each($(".lan_bottitle").children(),function(i,el){
-//			$(el).show();
-//		});
-//	}
-	
-	// 加载短信数据
-//	loadTableData();
+	$("#mainIframe").attr("height",$(window).height() - 80);
 });
 
 function clickTopbar(el){
