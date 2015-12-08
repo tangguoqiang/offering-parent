@@ -84,6 +84,8 @@ public class ActivityController {
 				act.setEndTime(sdf.format(new Date(Long.valueOf(act.getEndTime()))));
 			m.put("startTime", act.getStartTime());
 			m.put("endTime", act.getEndTime());
+			m.put("remark", act.getRemark());
+			m.put("address", act.getAddress());
 		}
 		
 		ChartGroup group = activityService.getGroupById(id);

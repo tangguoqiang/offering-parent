@@ -10,7 +10,6 @@ import com.offering.bean.trade.Account;
 import com.offering.bean.trade.TradeHistory;
 import com.offering.core.dao.TradeAccountDao;
 import com.offering.core.dao.TradeHistoryDao;
-import com.offering.core.dao.TradeRecordDao;
 import com.offering.core.service.TradeService;
 
 /**
@@ -23,9 +22,6 @@ public class TradeServiceImpl implements TradeService{
 
 	@Autowired
 	private TradeAccountDao accountDao;
-	
-	@Autowired
-	private TradeRecordDao tradeDao;
 	
 	@Autowired
 	private TradeHistoryDao tradeHistoryDao;

@@ -22,7 +22,6 @@ import com.offering.core.dao.ConsultRecDao;
 import com.offering.core.dao.GreaterDao;
 import com.offering.core.dao.TopicDao;
 import com.offering.core.service.GreaterService;
-import com.offering.redis.RedisOp;
 import com.offering.utils.HttpUtils;
 import com.offering.utils.RCUtils;
 import com.offering.utils.Utils;
@@ -49,8 +48,8 @@ public class GreaterServiceImpl implements GreaterService{
 	@Autowired
 	private ConsultRecDao crDao;
 	
-	@Autowired
-	private RedisOp redisOp;
+//	@Autowired
+//	private RedisOp redisOp;
 	
 	/**
 	 * 获取大拿列表

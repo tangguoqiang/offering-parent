@@ -12,16 +12,12 @@ import com.offering.bean.user.User;
 import com.offering.constant.GloabConstant;
 import com.offering.core.dao.UserDao;
 import com.offering.core.service.UserService;
-import com.offering.redis.RedisOp;
 
 @Service
 public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserDao userDao;
-	
-	@Autowired
-	private RedisOp redisOp;
 	
 	
 	/**

@@ -13,13 +13,10 @@ import com.offering.bean.user.Greater;
 import com.offering.bean.user.Topic;
 import com.offering.bean.user.User;
 import com.offering.constant.DBConstant;
-import com.offering.core.dao.ActivityDao;
-import com.offering.core.dao.ConsultRecDao;
 import com.offering.core.dao.GreaterDao;
 import com.offering.core.dao.TopicDao;
 import com.offering.core.dao.UserDao;
 import com.offering.core.service.GreaterService;
-import com.offering.redis.RedisOp;
 
 /**
  * 大拿service实现
@@ -36,16 +33,7 @@ public class GreaterServiceImpl implements GreaterService{
 	private GreaterDao greaterDao;
 	
 	@Autowired
-	private ActivityDao activityDao;
-	
-	@Autowired
 	private TopicDao topicDao;
-	
-	@Autowired
-	private ConsultRecDao crDao;
-	
-	@Autowired
-	private RedisOp redisOp;
 	
 	/**
 	 * 查询大拿列表

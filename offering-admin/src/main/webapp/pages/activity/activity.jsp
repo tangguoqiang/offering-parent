@@ -111,7 +111,20 @@
 			      	<select class="form-control" id="type">
 			      		<option value="0">求职咨询</option>
                       	<option value="1">线上宣讲会</option>
+                      	<option value="2">线下宣讲会</option>
                     </select>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="remark" class="col-sm-2 control-label">活动简介:</label>
+			    <div class="col-sm-9">
+			      	<textarea class="form-control" rows="3" id="remark"></textarea>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="address" class="col-sm-2 control-label">活动地点:</label>
+			    <div class="col-sm-9">
+			      	<input class="form-control" id="address">
 			    </div>
 			  </div>
 			  <div class="form-group">

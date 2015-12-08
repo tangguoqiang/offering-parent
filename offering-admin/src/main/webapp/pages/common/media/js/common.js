@@ -259,6 +259,8 @@ function getComboValue(group,code)
 			return "求职咨询";
 		if(code == '1')
 			return "线上宣讲会";
+		if(code == '2')
+			return "线下宣讲会";
 	}else if(group == "ACTIVITY_STATUS")
 	{
 		if(code == '0')

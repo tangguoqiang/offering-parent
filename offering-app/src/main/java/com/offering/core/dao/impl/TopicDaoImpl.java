@@ -27,7 +27,7 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements TopicDao{
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT id,greaterId,title,content,askNums from (");
 		sql.append("SELECT T1.id,T1.greaterId,T1.title,T1.content, ")
-		   .append("(SELECT count(1) FROM TOPIC_MEMBER T WHERE T.topicId=T1.id) askNums ")
+		   .append("(SELECT count(1) FROM CONSULT_RECORD T WHERE T.topicId=T1.id) askNums ")
 		   .append("FROM TOPIC_INFO T1 ")
 		   .append("WHERE 1=1  ");
 		ParamInfo paramInfo = new ParamInfo();
