@@ -54,7 +54,7 @@ function loadTableData(tableId,data){
 			if((typeof obj["style"]) != "undefined")
 				html= html+"<td style='" +obj["style"]+"'>";
 			else
-				html+="<td>";
+				html+="<td style='height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;'>";
 			if((typeof obj["renderFunc"]) != "undefined")
 				html= html+"<a href='javascript:void(0);'  onclick='" +obj["renderFunc"]+"'>";
 			
